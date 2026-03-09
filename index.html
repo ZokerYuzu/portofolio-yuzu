@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portofolio Personal - Web Developer & Sistem Informasi">
+    <title>Yuzu | Tech Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Background Canvas for tech particles -->
+    <canvas id="techCanvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">YUZU_<span>SYS</span></div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="menu-btn"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h3 class="subtitle">System Initialize... <span class="blink">_</span></h3>
+            <h1 class="title">HELLO, I'M <span class="glow-text">YUZU</span></h1>
+            <h2 class="role">Web Developer | Mahasiswa Sistem Informasi</h2>
+            <p class="description">
+                Membangun solusi digital yang inovatif dan mendalami dunia pengembangan perangkat lunak
+                serta sistem informasi. Siap mengintegrasikan logika komputasi dengan desain futuristik.
+            </p>
+            <div class="hero-btns">
+                <a href="#projects" class="btn primary-btn"><i class="fas fa-rocket"></i> Lihat Proyek</a>
+                <a href="#contact" class="btn secondary-btn"><i class="fas fa-envelope"></i> Hubungi Saya</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="image-wrapper">
+                <img src="assets/profile.png" alt="Yuzu - Web Developer">
+                <div class="scanning-line"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+        <h2 class="section-title" data-text="ABOUT_ME">ABOUT_ME</h2>
+        <div class="about-container">
+            <div class="about-text">
+                <p>
+                    Saya adalah seorang mahasiswa Sistem Informasi dan Web Developer yang berdedikasi tinggi.
+                    Saya memiliki gairah dalam menggabungkan logika komputasi dengan desain antarmuka
+                    untuk menciptakan aplikasi web yang fungsional dan indah. Memahami bagaimana sistem informasi
+                    bekerja sangat membantu saya dalam merancang struktur database dan algoritma backend.
+                </p>
+                <ul class="about-list">
+                    <li><i class="fas fa-angle-right"></i> <strong>Fokus:</strong> Full-Stack Web Development</li>
+                    <li><i class="fas fa-angle-right"></i> <strong>Pendidikan:</strong> Sistem Informasi</li>
+                    <li><i class="fas fa-angle-right"></i> <strong>Minat:</strong> UI/UX, Basis Data, Tech Architecture
+                    </li>
+                </ul>
+            </div>
+            <div class="tech-box">
+                <div class="tech-icon"><i class="fas fa-laptop-code"></i></div>
+                <div class="tech-icon"><i class="fas fa-database"></i></div>
+                <div class="tech-icon"><i class="fas fa-server"></i></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills section">
+        <h2 class="section-title" data-text="CORE_SKILLS">CORE_SKILLS</h2>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <i class="fab fa-html5"></i>
+                <h3>Front-End</h3>
+                <p>HTML5, CSS3, JavaScript (ES6+), React.js, Tailwind CSS</p>
+            </div>
+            <div class="skill-card">
+                <i class="fab fa-node-js"></i>
+                <h3>Back-End</h3>
+                <p>Node.js, Express, PHP, Laravel, RESTful API</p>
+            </div>
+            <div class="skill-card">
+                <i class="fas fa-database"></i>
+                <h3>Database</h3>
+                <p>MySQL, MongoDB, PostgreSQL, SQL Server</p>
+            </div>
+            <div class="skill-card">
+                <i class="fas fa-cogs"></i>
+                <h3>Tools & Lainnya</h3>
+                <p>Git, GitHub, VS Code, Figma, Postman</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects section">
+        <h2 class="section-title" data-text="PROJECT_LOGS">PROJECT_LOGS</h2>
+        <div class="project-grid">
+            <div class="project-card">
+                <div class="project-img">
+                    <img src="assets/project1.png" alt="Project Sistem Informasi">
+                    <div class="overlay">
+                        <a href="#" class="view-btn"><i class="fas fa-external-link-alt"></i> Detail Proyek</a>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>Dashboard Sistem Informasi</h3>
+                    <p>Aplikasi dashboard berbasis web untuk mengelola data operasional perusahaan dengan antarmuka
+                        modern dan analisis data real-time.</p>
+                    <div class="tags">
+                        <span>PHP</span><span>Laravel</span><span>MySQL</span><span>CSS</span>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-img">
+                    <img src="assets/project2.png" alt="Project Landing Page AI">
+                    <div class="overlay">
+                        <a href="#" class="view-btn"><i class="fas fa-external-link-alt"></i> Detail Proyek</a>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>AI/Tech Agency Landing Page</h3>
+                    <p>Desain antarmuka futuristik untuk startup teknologi dengan animasi interaktif, performa tinggi,
+                        dan micro-interactions.</p>
+                    <div class="tags">
+                        <span>React</span><span>JavaScript</span><span>Framer Motion</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
+        <h2 class="section-title" data-text="COMM_LINK">COMM_LINK</h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Mari Terhubung</h3>
+                <p>Tertarik untuk berkolaborasi, mencari developer untuk tim Anda, atau sekadar memiliki pertanyaan
+                    seputar proyek?</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            <form class="contact-form">
+                <div class="input-box">
+                    <input type="text" required>
+                    <label>Nama Anda</label>
+                </div>
+                <div class="input-box">
+                    <input type="email" required>
+                    <label>Email Anda</label>
+                </div>
+                <div class="input-box message-box">
+                    <textarea required></textarea>
+                    <label>Pesan Anda</label>
+                </div>
+                <button type="submit" class="btn primary-btn"><i class="fas fa-paper-plane"></i> Kirim
+                    Transmisi</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 YUZU_SYS | Crafted with <span class="glow-text">Techno Vibe</span></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
