@@ -1,191 +1,662 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portofolio Personal - Web Developer & Sistem Informasi">
-    <title>Yuzu | Tech Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@400;500;600;700&display=swap"
+    <meta name="description" content="Portofolio Yudha Pratama - Web Developer">
+    <title>Yudha Pratama | Web Developer</title>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <!-- FontAwesome for Icons -->
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        pitchBlack: '#050505',
+                        darkCharcoal: '#121212',
+                        dimGray: '#1f1f1f',
+                        silverLight: '#d4d4d4',
+                        ashGray: '#858585',
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #050505;
+            color: #d4d4d4;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3f3f3f;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #737373;
+        }
+
+        .glass-card {
+            background: rgba(18, 18, 18, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #ffffff, #858585);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #d4d4d4;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Bg blobs - Monokrom/Abu-abu */
+        .bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            filter: blur(100px);
+            opacity: 0.15;
+            border-radius: 50%;
+        }
+
+        .shape-1 {
+            top: -10%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: #ffffff;
+        }
+
+        .shape-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 700px;
+            height: 700px;
+            background: #737373;
+        }
+
+        .shape-3 {
+            top: 40%;
+            left: 50%;
+            width: 500px;
+            height: 500px;
+            background: #a3a3a3;
+            animation-delay: 2s;
+        }
+    </style>
 </head>
 
-<body>
-    <!-- Background Canvas for tech particles -->
-    <canvas id="techCanvas"></canvas>
+<body class="antialiased">
 
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="logo">YUZU_<span>SYS</span></div>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-        <div class="menu-btn"><i class="fas fa-bars"></i></div>
+    <!-- Background Decoration -->
+    <div class="bg-shapes">
+        <div class="shape shape-1 animate-blob"></div>
+        <div class="shape shape-2 animate-blob" style="animation-delay: 3s;"></div>
+        <div class="shape shape-3 animate-blob" style="animation-delay: 5s;"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 glass-card mx-auto">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
+                <div
+                    class="w-8 h-8 rounded-lg bg-gradient-to-tr from-gray-400 to-gray-700 flex items-center justify-center text-sm">
+                    Y<span class="text-white">P</span>
+                </div>
+                Yudha.
+            </a>
+
+            <div class="hidden md:flex space-x-8 text-sm font-semibold">
+                <a href="#tentang" class="text-gray-400 hover:text-white nav-link transition-colors">Tentang</a>
+                <a href="#proyek" class="text-gray-400 hover:text-white nav-link transition-colors">Portofolio</a>
+                <a href="#pengalaman" class="text-gray-400 hover:text-white nav-link transition-colors">Pengalaman</a>
+                <a href="#keahlian" class="text-gray-400 hover:text-white nav-link transition-colors">Keahlian</a>
+            </div>
+
+            <a href="mailto:zokeryudha00@gmail.com"
+                class="hidden md:inline-flex items-center justify-center px-5 py-2 text-sm font-semibold text-white transition-all duration-200 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                <i class="fas fa-paper-plane mr-2"></i> Sapa Saya
+            </a>
+
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-gray-300 hover:text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h3 class="subtitle">System Initialize... <span class="blink">_</span></h3>
-            <h1 class="title">HELLO, I'M <span class="glow-text">YUZU</span></h1>
-            <h2 class="role">Web Developer | Mahasiswa Sistem Informasi</h2>
-            <p class="description">
-                Membangun solusi digital yang inovatif dan mendalami dunia pengembangan perangkat lunak
-                serta sistem informasi. Siap mengintegrasikan logika komputasi dengan desain futuristik.
+    <section id="tentang"
+        class="pt-32 pb-20 md:pt-48 md:pb-32 px-6 max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center gap-12">
+        <div class="flex-1 text-center md:text-left">
+            <div
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gray-300 text-xs font-semibold uppercase tracking-wider mb-6">
+                <span class="w-2 h-2 rounded-full bg-gray-400 animate-pulse"></span>
+                Tersedia untuk Kolaborasi
+            </div>
+
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
+                Membangun Solusi Digital dengan <br class="hidden md:block" />
+                <span class="gradient-text">Kode & Kreativitas.</span>
+            </h1>
+
+            <p class="text-lg text-ashGray mb-8 max-w-2xl mx-auto md:mx-0 leading-relaxed">
+                Saya <span class="text-white font-medium">Yudha Pratama</span>, seorang Web & Software Developer dari
+                UMSU. Saya mengubah ide-ide kompleks menjadi antarmuka yang ramah pengguna melalui teknologi web modern
+                dan arsitektur sistem yang solid.
             </p>
-            <div class="hero-btns">
-                <a href="#projects" class="btn primary-btn"><i class="fas fa-rocket"></i> Lihat Proyek</a>
-                <a href="#contact" class="btn secondary-btn"><i class="fas fa-envelope"></i> Hubungi Saya</a>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
+                <a href="#proyek"
+                    class="w-full sm:w-auto px-8 py-3 rounded-full bg-gradient-to-r from-gray-700 to-gray-900 text-white font-semibold flex items-center justify-center gap-2 border border-gray-600 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all duration-300 hover:-translate-y-1">
+                    Lihat Karya Saya <i class="fas fa-arrow-right"></i>
+                </a>
+                <div class="flex gap-4">
+                    <a href="https://linkedin.com/in/yudha-pratama-7a10382b4" target="_blank"
+                        class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors border border-white/10">
+                        <i class="fab fa-linkedin-in text-xl"></i>
+                    </a>
+                    <a href="https://github.com" target="_blank"
+                        class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors border border-white/10">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="hero-image">
-            <div class="image-wrapper">
-                <img src="assets/profile.png" alt="Yuzu - Web Developer">
-                <div class="scanning-line"></div>
+
+        <div class="flex-shrink-0 animate-float">
+            <div
+                class="relative w-56 h-56 md:w-80 md:h-80 rounded-3xl overflow-hidden border border-gray-700 glass-card p-2 transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                <img src="assets/profile.png" alt="Yudha Pratama"
+                    class="w-full h-full object-cover rounded-2xl grayscale hover:grayscale-0 transition duration-500">
+                <!-- Decorative elements -->
+                <div class="absolute -bottom-4 -left-4 w-24 h-24 bg-gray-500 blur-2xl opacity-20 rounded-full"></div>
+                <div class="absolute -top-4 -right-4 w-24 h-24 bg-gray-300 blur-2xl opacity-20 rounded-full"></div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="about section">
-        <h2 class="section-title" data-text="ABOUT_ME">ABOUT_ME</h2>
-        <div class="about-container">
-            <div class="about-text">
-                <p>
-                    Saya adalah seorang mahasiswa Sistem Informasi dan Web Developer yang berdedikasi tinggi.
-                    Saya memiliki gairah dalam menggabungkan logika komputasi dengan desain antarmuka
-                    untuk menciptakan aplikasi web yang fungsional dan indah. Memahami bagaimana sistem informasi
-                    bekerja sangat membantu saya dalam merancang struktur database dan algoritma backend.
-                </p>
-                <ul class="about-list">
-                    <li><i class="fas fa-angle-right"></i> <strong>Fokus:</strong> Full-Stack Web Development</li>
-                    <li><i class="fas fa-angle-right"></i> <strong>Pendidikan:</strong> Sistem Informasi</li>
-                    <li><i class="fas fa-angle-right"></i> <strong>Minat:</strong> UI/UX, Basis Data, Tech Architecture
-                    </li>
-                </ul>
-            </div>
-            <div class="tech-box">
-                <div class="tech-icon"><i class="fas fa-laptop-code"></i></div>
-                <div class="tech-icon"><i class="fas fa-database"></i></div>
-                <div class="tech-icon"><i class="fas fa-server"></i></div>
-            </div>
+    <!-- Proyek Unggulan -->
+    <section id="proyek" class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">Proyek <span
+                    class="gradient-text">Unggulan</span></h2>
+            <p class="text-ashGray max-w-2xl mx-auto">Kompilasi proyek riil dan akademik yang menonjolkan kemampuan
+                problem-solving dan penguasaan teknologi pengembangan perangkat lunak.</p>
         </div>
-    </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="skills section">
-        <h2 class="section-title" data-text="CORE_SKILLS">CORE_SKILLS</h2>
-        <div class="skills-grid">
-            <div class="skill-card">
-                <i class="fab fa-html5"></i>
-                <h3>Front-End</h3>
-                <p>HTML5, CSS3, JavaScript (ES6+), React.js, Tailwind CSS</p>
-            </div>
-            <div class="skill-card">
-                <i class="fab fa-node-js"></i>
-                <h3>Back-End</h3>
-                <p>Node.js, Express, PHP, Laravel, RESTful API</p>
-            </div>
-            <div class="skill-card">
-                <i class="fas fa-database"></i>
-                <h3>Database</h3>
-                <p>MySQL, MongoDB, PostgreSQL, SQL Server</p>
-            </div>
-            <div class="skill-card">
-                <i class="fas fa-cogs"></i>
-                <h3>Tools & Lainnya</h3>
-                <p>Git, GitHub, VS Code, Figma, Postman</p>
-            </div>
-        </div>
-    </section>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects section">
-        <h2 class="section-title" data-text="PROJECT_LOGS">PROJECT_LOGS</h2>
-        <div class="project-grid">
-            <div class="project-card">
-                <div class="project-img">
-                    <img src="assets/project1.png" alt="Project Sistem Informasi">
-                    <div class="overlay">
-                        <a href="#" class="view-btn"><i class="fas fa-external-link-alt"></i> Detail Proyek</a>
+            <!-- Project Card 1: AR Hola -->
+            <div
+                class="group relative bg-[#0a0a0a] rounded-3xl overflow-hidden hover:-translate-y-2 transition-all duration-300 border border-[#2a2a2a] hover:border-gray-500">
+                <div class="relative h-64 overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-darkCharcoal bg-[url('assets/project2.png')] bg-cover bg-center transition-transform duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/60 to-transparent"></div>
+
+                    <div class="absolute top-4 left-4 flex gap-2">
+                        <span
+                            class="px-3 py-1 text-xs font-semibold bg-black/40 backdrop-blur-md rounded-full text-white border border-white/10 tracking-wide">Mobile
+                            Dev</span>
+                        <span
+                            class="px-3 py-1 text-xs font-semibold bg-gray-800/60 backdrop-blur-md rounded-full text-gray-300 border border-gray-600 tracking-wide">Unity
+                            3D</span>
                     </div>
                 </div>
-                <div class="project-info">
-                    <h3>Dashboard Sistem Informasi</h3>
-                    <p>Aplikasi dashboard berbasis web untuk mengelola data operasional perusahaan dengan antarmuka
-                        modern dan analisis data real-time.</p>
-                    <div class="tags">
-                        <span>PHP</span><span>Laravel</span><span>MySQL</span><span>CSS</span>
-                    </div>
-                </div>
-            </div>
-            <div class="project-card">
-                <div class="project-img">
-                    <img src="assets/project2.png" alt="Project Landing Page AI">
-                    <div class="overlay">
-                        <a href="#" class="view-btn"><i class="fas fa-external-link-alt"></i> Detail Proyek</a>
-                    </div>
-                </div>
-                <div class="project-info">
-                    <h3>AI/Tech Agency Landing Page</h3>
-                    <p>Desain antarmuka futuristik untuk startup teknologi dengan animasi interaktif, performa tinggi,
-                        dan micro-interactions.</p>
-                    <div class="tags">
-                        <span>React</span><span>JavaScript</span><span>Framer Motion</span>
+
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-gray-300 transition-colors">Aplikasi
+                        AR "Hola"</h3>
+                    <p class="text-sm text-gray-400 font-medium mb-4"><i class="fas fa-trophy mr-1"></i> Proyek Sosial
+                        Innovillage 2025</p>
+                    <p class="text-ashGray mb-6 line-clamp-3">
+                        Pengembangan aplikasi Android berbasis Augmented Reality untuk media pembelajaran visual siswa
+                        tunagrahita. Menggunakan ARCore untuk proyeksikan objek 3D interaktif dan algoritma puzzle
+                        edukatif "Pohon Pertumbuhan".
+                    </p>
+
+                    <div class="flex items-center justify-between">
+                        <div class="flex gap-3 text-xl text-gray-500">
+                            <i class="fab fa-unity hover:text-white transition-colors" title="Unity"></i>
+                            <span
+                                class="text-sm font-bold flex items-center justify-center hover:text-white transition-colors"
+                                title="C#">C#</span>
+                        </div>
+                        <a href="#"
+                            class="text-sm font-semibold text-white flex items-center gap-2 hover:text-gray-400 transition-colors">
+                            Lihat Detail <i
+                                class="fas fa-arrow-right -rotate-45 group-hover:rotate-0 transition-transform"></i>
+                        </a>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact section">
-        <h2 class="section-title" data-text="COMM_LINK">COMM_LINK</h2>
-        <div class="contact-container">
-            <div class="contact-info">
-                <h3>Mari Terhubung</h3>
-                <p>Tertarik untuk berkolaborasi, mencari developer untuk tim Anda, atau sekadar memiliki pertanyaan
-                    seputar proyek?</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fas fa-envelope"></i></a>
+            <!-- Project Card 2: Zoom UI -->
+            <div
+                class="group relative bg-[#0a0a0a] rounded-3xl overflow-hidden hover:-translate-y-2 transition-all duration-300 border border-[#2a2a2a] hover:border-gray-500">
+                <div class="relative h-64 overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-darkCharcoal bg-[url('assets/project1.png')] bg-cover bg-center transition-transform duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/60 to-transparent"></div>
+
+                    <div class="absolute top-4 left-4 flex gap-2">
+                        <span
+                            class="px-3 py-1 text-xs font-semibold bg-black/40 backdrop-blur-md rounded-full text-white border border-white/10 tracking-wide">Web
+                            App</span>
+                        <span
+                            class="px-3 py-1 text-xs font-semibold bg-gray-800/60 backdrop-blur-md rounded-full text-gray-300 border border-gray-600 tracking-wide">Laravel</span>
+                    </div>
+                </div>
+
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-gray-300 transition-colors">
+                        Monitoring Video Conference</h3>
+                    <p class="text-sm text-gray-400 font-medium mb-4"><i class="fas fa-building mr-1"></i> PTPN IV -
+                        Regional 1</p>
+                    <p class="text-ashGray mb-6 line-clamp-3">
+                        Sistem manajemen rapat berbasis web yang terintegrasi penuh dengan Zoom API. Memfasilitasi
+                        pengecekan akun real-time dan otomasi pemesanan jadwal untuk mencegah bentrokan penggunaan
+                        lisensi antar divisi.
+                    </p>
+
+                    <div class="flex items-center justify-between">
+                        <div class="flex gap-3 text-xl text-gray-500">
+                            <i class="fab fa-laravel hover:text-white transition-colors" title="Laravel"></i>
+                            <i class="fab fa-php hover:text-white transition-colors" title="PHP"></i>
+                            <i class="fas fa-video hover:text-white transition-colors" title="Zoom API"></i>
+                        </div>
+                        <a href="#"
+                            class="text-sm font-semibold text-white flex items-center gap-2 hover:text-gray-400 transition-colors">
+                            Lihat Detail <i
+                                class="fas fa-arrow-right -rotate-45 group-hover:rotate-0 transition-transform"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-            <form class="contact-form">
-                <div class="input-box">
-                    <input type="text" required>
-                    <label>Nama Anda</label>
+
+        </div>
+
+        <!-- Mini Projects Grid -->
+        <h3 class="text-2xl font-bold text-white mb-8 mt-16 flex items-center gap-4">
+            Eksplorasi Web Lainnya
+            <div class="h-px bg-gray-800 flex-grow"></div>
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <div
+                class="bg-dimGray p-6 rounded-2xl hover:bg-[#2a2a2a] transition-colors border border-[#303030] hover:border-gray-500 group">
+                <div
+                    class="w-12 h-12 rounded-xl bg-gray-800 border border-gray-700 text-gray-300 group-hover:text-white group-hover:bg-gray-700 transition flex items-center justify-center text-2xl mb-4">
+                    <i class="fas fa-file-excel"></i>
                 </div>
-                <div class="input-box">
-                    <input type="email" required>
-                    <label>Email Anda</label>
+                <h4 class="text-lg font-bold text-white mb-2">PDF/Excel Extractor</h4>
+                <p class="text-sm text-ashGray mb-4 h-16">Otomasi konversi laporan data karyawan dengan algoritma data
+                    cleaning.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span
+                        class="text-xs text-gray-300 bg-pitchBlack px-2 py-1 rounded border border-gray-800">Python</span>
+                    <span
+                        class="text-xs text-gray-300 bg-pitchBlack px-2 py-1 rounded border border-gray-800">Automation</span>
                 </div>
-                <div class="input-box message-box">
-                    <textarea required></textarea>
-                    <label>Pesan Anda</label>
+            </div>
+
+            <div
+                class="bg-dimGray p-6 rounded-2xl hover:bg-[#2a2a2a] transition-colors border border-[#303030] hover:border-gray-500 group">
+                <div
+                    class="w-12 h-12 rounded-xl bg-gray-800 border border-gray-700 text-gray-300 group-hover:text-white group-hover:bg-gray-700 transition flex items-center justify-center text-2xl mb-4">
+                    <i class="fas fa-tshirt"></i>
                 </div>
-                <button type="submit" class="btn primary-btn"><i class="fas fa-paper-plane"></i> Kirim
-                    Transmisi</button>
-            </form>
+                <h4 class="text-lg font-bold text-white mb-2">Laundry Management</h4>
+                <p class="text-sm text-ashGray mb-4 h-16">Aplikasi operasional laundry lengkap dengan status cucian &
+                    laporan.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-xs text-gray-300 bg-pitchBlack px-2 py-1 rounded border border-gray-800">PHP
+                        Native</span>
+                    <span
+                        class="text-xs text-gray-300 bg-pitchBlack px-2 py-1 rounded border border-gray-800">Bootstrap</span>
+                </div>
+            </div>
+
+            <div
+                class="bg-dimGray p-6 rounded-2xl hover:bg-[#2a2a2a] transition-colors border border-[#303030] hover:border-gray-500 group">
+                <div
+                    class="w-12 h-12 rounded-xl bg-gray-800 border border-gray-700 text-gray-300 group-hover:text-white group-hover:bg-gray-700 transition flex items-center justify-center text-2xl mb-4">
+                    <i class="fas fa-spray-can"></i>
+                </div>
+                <h4 class="text-lg font-bold text-white mb-2">Wardah Web Catalog</h4>
+                <p class="text-sm text-ashGray mb-4 h-16">Katalog kosmetik clean UI dengan sistem administrasi backend
+                    inventaris.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span
+                        class="text-xs text-gray-300 bg-pitchBlack px-2 py-1 rounded border border-gray-800">PHP</span>
+                    <span
+                        class="text-xs text-gray-300 bg-pitchBlack px-2 py-1 rounded border border-gray-800">MySQL</span>
+                </div>
+            </div>
+
         </div>
     </section>
 
-    <footer>
-        <p>&copy; 2026 YUZU_SYS | Crafted with <span class="glow-text">Techno Vibe</span></p>
+    <!-- Pengalaman / Karir (SEPARATE SECTION) -->
+    <section id="pengalaman" class="py-20 bg-darkCharcoal border-t border-[#202020]">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">Perjalanan <span
+                        class="gradient-text">Karir</span></h2>
+                <div class="w-24 h-1 bg-gray-700 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="relative border-l-2 border-gray-700 ml-4 md:ml-10 space-y-12">
+                <!-- Item 1 -->
+                <div class="relative pl-8 md:pl-12 group">
+                    <div
+                        class="absolute -left-[9px] top-1.5 w-[16px] h-[16px] rounded-full bg-darkCharcoal border-4 border-gray-600 group-hover:border-white group-hover:bg-gray-300 transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.8)]">
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                        <h3 class="text-xl font-bold text-white group-hover:text-gray-300 transition-colors">Programmer
+                            Proyek Sosial "Hola"</h3>
+                        <span
+                            class="text-xs font-semibold text-gray-300 bg-gray-800 border border-gray-600 px-4 py-1.5 rounded-full w-fit mt-2 sm:mt-0 shadow-sm">Sept
+                            2024 - Sekarang</span>
+                    </div>
+                    <p class="text-sm text-gray-400 font-medium mb-3 uppercase tracking-wider">Innovillage 2025</p>
+                    <p
+                        class="text-ashGray text-base leading-relaxed bg-[#0a0a0a] p-5 rounded-xl border border-[#202020] hover:border-gray-600 transition-colors">
+                        Memimpin secara teknis dalam perancangan aplikasi AR edukatif, dari proses kreasi desain UI/UX
+                        hingga implementasi interaksi pembelajaran puzzle yang disesuaikan untuk siswa tunagrahita.
+                        Bertanggung jawab atas stabilitas dan performa program berbasis C# menggunakan alat ARCore.
+                    </p>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="relative pl-8 md:pl-12 group">
+                    <div
+                        class="absolute -left-[9px] top-1.5 w-[16px] h-[16px] rounded-full bg-darkCharcoal border-4 border-gray-600 group-hover:border-white group-hover:bg-gray-300 transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.8)]">
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                        <h3 class="text-xl font-bold text-white group-hover:text-gray-300 transition-colors">Programmer
+                            Intern</h3>
+                        <span
+                            class="text-xs font-semibold text-gray-300 bg-gray-800 border border-gray-600 px-4 py-1.5 rounded-full w-fit mt-2 sm:mt-0 shadow-sm">Januari
+                            - Februari 2024</span>
+                    </div>
+                    <p class="text-sm text-gray-400 font-medium mb-3 uppercase tracking-wider">PTPN IV - Regional 1</p>
+                    <p
+                        class="text-ashGray text-base leading-relaxed bg-[#0a0a0a] p-5 rounded-xl border border-[#202020] hover:border-gray-600 transition-colors">
+                        Bertanggung jawab dalam mendigitalisasi proses manajemen SDM serta merancang algoritma ekstraksi
+                        data Python (PDF to Excel). Melakukan pengembangan aplikasi pemesanan peminjaman ruangan meeting
+                        perpaduan Zoom API di bawah ekosistem kerangka kerja Laravel.
+                    </p>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="relative pl-8 md:pl-12 group">
+                    <div
+                        class="absolute -left-[9px] top-1.5 w-[16px] h-[16px] rounded-full bg-darkCharcoal border-4 border-gray-600 group-hover:border-white group-hover:bg-gray-300 transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.8)]">
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                        <h3 class="text-xl font-bold text-white group-hover:text-gray-300 transition-colors">Ketua Unit
+                            Riset & Mentoring</h3>
+                        <span
+                            class="text-xs font-semibold text-gray-300 bg-gray-800 border border-gray-600 px-4 py-1.5 rounded-full w-fit mt-2 sm:mt-0 shadow-sm">2024
+                            - Sekarang</span>
+                    </div>
+                    <p class="text-sm text-gray-400 font-medium mb-3 uppercase tracking-wider">HIMASI UMSU</p>
+                    <p
+                        class="text-ashGray text-base leading-relaxed bg-[#0a0a0a] p-5 rounded-xl border border-[#202020] hover:border-gray-600 transition-colors">
+                        Bukan sekadar koding, melainkan mengorganisasikan dan menciptakan rutinitas edukasi (workshop
+                        teknologi). Menjaga gairah transfer wawasan seputar integrasi API maupun pemahaman teknologi AI
+                        kepada mahasiswa secara terstruktur di dalam unit ekosistem riset.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Keahlian Teknis (SEPARATE SECTION) -->
+    <section id="keahlian" class="py-20 bg-pitchBlack border-t border-[#202020]">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">Penguasaan <span
+                        class="gradient-text">Keahlian</span></h2>
+                <div class="w-24 h-1 bg-gray-700 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+                <!-- Skill Set -->
+                <div class="space-y-8">
+                    <div class="group">
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-white font-medium flex items-center gap-2"><i
+                                    class="fas fa-server text-gray-500"></i> Backend Development</span>
+                            <span class="text-gray-400 font-bold group-hover:text-white transition-colors">90%</span>
+                        </div>
+                        <div class="w-full bg-[#111] rounded-full h-2.5 outline outline-1 outline-[#333]">
+                            <div class="bg-gradient-to-r from-gray-700 to-gray-200 h-2.5 rounded-full group-hover:shadow-[0_0_10px_rgba(255,255,255,0.5)] transition-shadow"
+                                style="width: 90%"></div>
+                        </div>
+                        <p class="text-xs text-ashGray mt-2">PHP (Native & Laravel) • Python • Web Services / API •
+                            Logic</p>
+                    </div>
+
+                    <div class="group">
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-white font-medium flex items-center gap-2"><i
+                                    class="fas fa-laptop-code text-gray-500"></i> Frontend Development</span>
+                            <span class="text-gray-400 font-bold group-hover:text-white transition-colors">85%</span>
+                        </div>
+                        <div class="w-full bg-[#111] rounded-full h-2.5 outline outline-1 outline-[#333]">
+                            <div class="bg-gradient-to-r from-gray-700 to-gray-200 h-2.5 rounded-full group-hover:shadow-[0_0_10px_rgba(255,255,255,0.5)] transition-shadow"
+                                style="width: 85%"></div>
+                        </div>
+                        <p class="text-xs text-ashGray mt-2">HTML5 • CSS3 • Tailwind CSS • Bootstrap • JavaScript (DOM)
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Skill Set 2 -->
+                <div class="space-y-8">
+                    <div class="group">
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-white font-medium flex items-center gap-2"><i
+                                    class="fas fa-database text-gray-500"></i> Database Management</span>
+                            <span class="text-gray-400 font-bold group-hover:text-white transition-colors">80%</span>
+                        </div>
+                        <div class="w-full bg-[#111] rounded-full h-2.5 outline outline-1 outline-[#333]">
+                            <div class="bg-gradient-to-r from-gray-700 to-gray-200 h-2.5 rounded-full group-hover:shadow-[0_0_10px_rgba(255,255,255,0.5)] transition-shadow"
+                                style="width: 80%"></div>
+                        </div>
+                        <p class="text-xs text-ashGray mt-2">MySQL • SQL Server • ERD Design • Relational Logic</p>
+                    </div>
+
+                    <div class="pt-2">
+                        <h4 class="text-sm text-gray-300 mb-4 uppercase tracking-wider font-semibold">Tools & Software
+                            Tambahan</h4>
+                        <div class="flex flex-wrap gap-3">
+                            <span
+                                class="px-4 py-2 bg-[#121212] text-gray-300 hover:text-white hover:bg-gray-800 transition-colors rounded-lg text-sm border border-[#303030] flex items-center gap-2 cursor-default"><i
+                                    class="fab fa-git-alt"></i> Git/Github</span>
+                            <span
+                                class="px-4 py-2 bg-[#121212] text-gray-300 hover:text-white hover:bg-gray-800 transition-colors rounded-lg text-sm border border-[#303030] flex items-center gap-2 cursor-default"><i
+                                    class="fab fa-unity"></i> Unity (AR/VR)</span>
+                            <span
+                                class="px-4 py-2 bg-[#121212] text-gray-300 hover:text-white hover:bg-gray-800 transition-colors rounded-lg text-sm border border-[#303030] flex items-center gap-2 cursor-default"><i
+                                    class="fas fa-puzzle-piece"></i> Problem Solving</span>
+                            <span
+                                class="px-4 py-2 bg-[#121212] text-gray-300 hover:text-white hover:bg-gray-800 transition-colors rounded-lg text-sm border border-[#303030] flex items-center gap-2 cursor-default"><i
+                                    class="fas fa-clock"></i> Time Delivery</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gelar & Pendidikan (SEPARATE SECTION) -->
+    <section class="py-20 bg-darkCharcoal border-t border-b border-[#202020]">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">Gelar & <span class="gradient-text">Lisensi
+                        Berkualitas</span></h2>
+                <div class="w-24 h-1 bg-gray-700 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Pendidikan Card -->
+                <div
+                    class="p-8 bg-[#0a0a0a] rounded-3xl border border-gray-800 hover:border-gray-500 transition-colors group">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-[#1a1a1a] flex items-center justify-center text-gray-400 text-3xl mb-6 group-hover:text-white group-hover:scale-110 transition-all border border-gray-700">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">S1 Sistem Informasi</h3>
+                    <p class="text-gray-400 font-medium mb-1">Universitas Muhammadiyah Sumatera Utara</p>
+                    <p class="text-sm font-semibold text-gray-500 mb-6 bg-gray-900 inline-block px-3 py-1 rounded">2023
+                        - Sekarang</p>
+                    <div class="pt-4 border-t border-gray-800">
+                        <p class="text-4xl font-extrabold text-white">3.83<span
+                                class="text-lg text-gray-500 font-normal"> / 4.00 IPK</span></p>
+                    </div>
+                </div>
+
+                <!-- Lisensi Card -->
+                <div
+                    class="p-8 bg-[#0a0a0a] rounded-3xl border border-gray-800 hover:border-gray-500 transition-colors group">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-[#1a1a1a] flex items-center justify-center text-gray-400 text-3xl mb-6 group-hover:text-white group-hover:scale-110 transition-all border border-gray-700">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Sertifikasi Profesional</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-gray-400 mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-gray-200">Junior Web Developer</h4>
+                                <p class="text-sm text-gray-500">Dikeluarkan oleh Badan Nasional Sertifikasi Profesi
+                                    (BNSP)</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-gray-400 mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-gray-200">Code Generation & Optimization</h4>
+                                <p class="text-sm text-gray-500">Dikeluarkan oleh IBM Granite / Hacktiv8 Indonesia</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Action -->
+    <section class="py-24 px-6 text-center relative overflow-hidden bg-[#050505]">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#111] to-[#050505] z-[-1]"></div>
+        <h2
+            class="text-3xl md:text-5xl font-extrabold text-white mb-6 transform transition hover:scale-105 duration-300">
+            Punya Ide Proyek? <br /> Mari <span class="gradient-text">Wujudkan Bersama.</span></h2>
+        <p class="text-ashGray max-w-2xl mx-auto mb-10 text-lg">
+            Terbuka untuk kolaborasi proyek IT, pengembangan arsitektur web, atau sekadar diskusi seputar industri
+            teknologi yang mendalam.
+        </p>
+        <a href="mailto:zokeryudha00@gmail.com"
+            class="inline-flex items-center justify-center px-10 py-5 text-lg font-bold text-[#050505] transition-all duration-300 bg-white rounded-full hover:scale-110 hover:bg-gray-200 border border-gray-300 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
+            <i class="fas fa-envelope mr-3"></i> Tulis Pesan kepada Saya
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-[#202020] py-8 bg-[#0a0a0a]">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2 font-bold text-white text-xl">
+                Yudha.
+            </div>
+            <p class="text-sm text-gray-500 text-center md:text-left">
+                &copy; 2026 Yudha Pratama Portfolio. <br class="md:hidden" />Didesain dengan minimalisme dan presisi.
+            </p>
+            <div class="flex space-x-4">
+                <a href="#"
+                    class="w-10 h-10 rounded-full flex items-center justify-center bg-[#151515] text-gray-500 hover:text-white hover:bg-gray-800 transition border border-[#252525]">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://linkedin.com/in/yudha-pratama-7a10382b4" target="_blank"
+                    class="w-10 h-10 rounded-full flex items-center justify-center bg-[#151515] text-gray-500 hover:text-white hover:bg-gray-800 transition border border-[#252525]">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
+        </div>
     </footer>
 
-    <script src="script.js"></script>
 </body>
 
 </html>
