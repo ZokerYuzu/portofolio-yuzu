@@ -1,7 +1,306 @@
-/* Minimal style to complement tailwind since most is handled by utility classes */
-@layer base {
-    body {
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
+/* ==============================================
+   BASE
+============================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #050505;
+    color: #d4d4d4;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3a3a3a;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #666;
+}
+
+/* ==============================================
+   REUSABLE UTILITIES
+============================================== */
+.glass-card {
+    background: rgba(18, 18, 18, 0.65);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.gradient-text {
+    background: linear-gradient(to right, #ffffff, #6b6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.nav-link {
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: #fff;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+.nav-link.active {
+    color: #fff !important;
+}
+
+/* ==============================================
+   BACKGROUND BLOBS
+============================================== */
+.bg-shapes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.shape {
+    position: absolute;
+    filter: blur(100px);
+    opacity: 0.13;
+    border-radius: 50%;
+}
+
+.shape-1 {
+    top: -10%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: #fff;
+}
+
+.shape-2 {
+    bottom: -10%;
+    right: -10%;
+    width: 700px;
+    height: 700px;
+    background: #737373;
+}
+
+.shape-3 {
+    top: 40%;
+    left: 50%;
+    width: 500px;
+    height: 500px;
+    background: #a3a3a3;
+    animation-delay: 2s;
+}
+
+/* ==============================================
+   TYPING CURSOR BLINK
+============================================== */
+.typing-cursor {
+    display: inline-block;
+    color: #d4d4d4;
+    font-weight: 300;
+    animation: blink 0.9s step-end infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
     }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+/* ==============================================
+   ANIMATE ON SCROLL (AOS)
+============================================== */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(36px);
+    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-in-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.delay-100 {
+    transition-delay: 100ms;
+}
+
+.delay-200 {
+    transition-delay: 200ms;
+}
+
+.delay-300 {
+    transition-delay: 300ms;
+}
+
+/* ==============================================
+   PROGRESS BARS
+============================================== */
+.width-animate {
+    width: 0% !important;
+    transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.width-animate.is-visible {
+    width: var(--target-width) !important;
+}
+
+/* ==============================================
+   3D TILT
+============================================== */
+.tilt-card {
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+/* ==============================================
+   RIPPLE BUTTON
+============================================== */
+.ripple-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple-btn .ripple-circle {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    background: rgba(255, 255, 255, 0.22);
+    pointer-events: none;
+    animation: ripple-anim 0.65s linear;
+}
+
+@keyframes ripple-anim {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* ==============================================
+   TECH MARQUEE
+============================================== */
+.marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll 32s linear infinite;
+}
+
+.marquee-track:hover {
+    animation-play-state: paused;
+}
+
+.marquee-item {
+    cursor: default;
+    transition: color 0.2s;
+}
+
+.marquee-item:hover {
+    color: #fff;
+}
+
+@keyframes marquee-scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* ==============================================
+   BACK TO TOP
+============================================== */
+#back-to-top {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+#back-to-top.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+/* ==============================================
+   MOBILE MENU
+============================================== */
+#mobile-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.45s ease;
+}
+
+#mobile-menu.open {
+    max-height: 360px;
+}
+
+/* ==============================================
+   PROJECT CARDS
+============================================== */
+
+/* Tech badge tag */
+.tech-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #9ca3af;
+    background-color: #0a0a0a;
+    border: 1px solid #2d2d2d;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.tech-tag:hover {
+    color: #ffffff;
+    border-color: #555;
+}
+
+/* Image placeholder when screenshot is missing */
+.img-placeholder {
+    background: repeating-linear-gradient(135deg,
+            #111 0px,
+            #111 10px,
+            #151515 10px,
+            #151515 20px);
 }
