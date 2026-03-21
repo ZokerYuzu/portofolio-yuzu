@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     // 2. TYPING ANIMATION
     // ==========================================
-    const phrases = ["Kode & Kreativitas", "Sistem Informasi", "Laravel & PHP", "Web & Mobile Dev"];
+    const phrases = ["Kode & Kreativitas", "Sistem Informasi", "Laravel & PHP", "Web Developer"];
     let phraseIdx = 0, charIdx = 0, isDeleting = false;
     const typingEl = document.getElementById("typing-text");
 
@@ -66,16 +66,22 @@ document.addEventListener("DOMContentLoaded", () => {
     if (counters.length) counterObserver.observe(counters[0].closest("div") || counters[0]);
 
     function animateCounter(el) {
-        const target = parseInt(el.dataset.target, 10);
+        const target = parseFloat(el.dataset.target);
+        const isDecimal = !Number.isInteger(target);
         const duration = 1600;
         const step = target / (duration / 16);
         let current = 0;
         const timer = setInterval(() => {
             current += step;
-            if (current >= target) { el.textContent = target; clearInterval(timer); return; }
-            el.textContent = Math.floor(current);
+            if (current >= target) {
+                el.textContent = isDecimal ? target.toFixed(2) : target;
+                clearInterval(timer);
+                return;
+            }
+            el.textContent = isDecimal ? current.toFixed(2) : Math.floor(current);
         }, 16);
     }
+
 
     // Active nav highlight on scroll
     const sectionObserver = new IntersectionObserver((entries) => {
