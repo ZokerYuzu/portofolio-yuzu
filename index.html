@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portofolio Yudha Pratama - Web Developer & Sistem Informasi">
-    <title>Yudha Pratama | Web Developer</title>
+    <meta name="description" content="Portofolio Yudha Pratama - Web Developer, UI/UX Designer & Sistem Informasi">
+    <title>Yudha Pratama | Web & Software Developer</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,11 +18,14 @@
                 extend: {
                     fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
                     colors: {
-                        pitchBlack: '#050505',
-                        darkCharcoal: '#121212',
-                        dimGray: '#1f1f1f',
-                        silverLight: '#d4d4d4',
-                        ashGray: '#858585',
+                        voidBlack: '#040711',
+                        deepNavy: '#080d1a',
+                        navyCard: '#0f172a',
+                        navyLight: '#1e293b',
+                        royalBlue: '#3b82f6',
+                        electricCyan: '#38bdf8',
+                        slateLight: '#cbd5e1',
+                        steelSilver: '#94a3b8',
                     },
                     animation: {
                         'blob': 'blob 10s infinite',
@@ -48,10 +51,9 @@
 
 <body class="antialiased">
 
-
     <!-- Back to Top Button -->
     <button id="back-to-top" aria-label="Kembali ke atas"
-        class="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full glass-card border border-gray-600 text-white flex items-center justify-center opacity-0 pointer-events-none translate-y-4 transition-all duration-300 hover:bg-white/10 hover-target">
+        class="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full navy-glass border border-royalBlue/20 text-royalBlue flex items-center justify-center opacity-0 pointer-events-none translate-y-4 transition-all duration-300 hover:bg-royalBlue/10 hover:text-electricCyan">
         <i class="fas fa-arrow-up pointer-events-none"></i>
     </button>
 
@@ -62,35 +64,41 @@
         <div class="shape shape-3 animate-blob" style="animation-delay: 5s;"></div>
     </div>
 
-    <!-- Navbar -->
-    <nav id="navbar" class="fixed top-0 w-full z-40 glass-card transition-all duration-300">
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- ============================================ -->
+    <!-- NAVBAR -->
+    <!-- ============================================ -->
+    <nav id="navbar" class="fixed top-0 w-full z-40 navy-glass transition-all duration-300">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-extrabold tracking-tight text-white flex items-center gap-2 hover-target">
+            <a href="#" class="text-2xl font-extrabold tracking-tight text-white flex items-center gap-2.5">
                 <div
-                    class="w-8 h-8 rounded-lg bg-gradient-to-tr from-gray-400 to-gray-700 flex items-center justify-center text-sm font-black">
+                    class="w-9 h-9 rounded-lg bg-gradient-to-br from-royalBlue to-blue-900 flex items-center justify-center text-sm font-black text-white shadow-lg shadow-royalBlue/20">
+                    YP
                 </div>
-                Yudha Pratama
+                <span>Yudha<span class="text-royalBlue">.</span></span>
             </a>
 
             <!-- Desktop Nav -->
             <div class="hidden md:flex space-x-8 text-sm font-semibold" id="nav-links">
-                <a href="#tentang" class="nav-link text-gray-400 hover:text-white transition-colors hover-target"
+                <a href="#tentang" class="nav-link text-steelSilver hover:text-white transition-colors"
                     data-section="tentang">Tentang</a>
-                <a href="#proyek" class="nav-link text-gray-400 hover:text-white transition-colors hover-target"
+                <a href="#proyek" class="nav-link text-steelSilver hover:text-white transition-colors"
                     data-section="proyek">Portofolio</a>
-                <a href="#pengalaman" class="nav-link text-gray-400 hover:text-white transition-colors hover-target"
+                <a href="#pengalaman" class="nav-link text-steelSilver hover:text-white transition-colors"
                     data-section="pengalaman">Pengalaman</a>
-                <a href="#keahlian" class="nav-link text-gray-400 hover:text-white transition-colors hover-target"
+                <a href="#keahlian" class="nav-link text-steelSilver hover:text-white transition-colors"
                     data-section="keahlian">Keahlian</a>
             </div>
 
-            <a href="mailto:zokeryudha00@gmail.com"
-                class="hidden md:inline-flex items-center justify-center px-5 py-2 text-sm font-semibold text-white bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all duration-200 hover-target ripple-btn">
+            <a href="#" onclick="return false;"
+                class="copy-email-btn hidden md:inline-flex items-center justify-center px-5 py-2 text-sm font-semibold text-white bg-royalBlue/10 border border-royalBlue/25 rounded-full hover:bg-royalBlue/20 hover:border-royalBlue/40 transition-all duration-200 ripple-btn">
                 <i class="fas fa-paper-plane mr-2 pointer-events-none"></i> Sapa Saya
             </a>
 
             <!-- Hamburger Button (Mobile) -->
-            <button id="hamburger-btn" class="md:hidden text-gray-300 hover:text-white focus:outline-none hover-target"
+            <button id="hamburger-btn" class="md:hidden text-slateLight hover:text-white focus:outline-none"
                 aria-label="Toggle menu">
                 <i id="hamburger-icon" class="fas fa-bars text-2xl pointer-events-none"></i>
             </button>
@@ -98,644 +106,687 @@
 
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="md:hidden max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-            <div class="px-6 pb-6 pt-2 flex flex-col gap-4 border-t border-gray-800">
+            <div class="px-6 pb-6 pt-2 flex flex-col gap-4">
                 <a href="#tentang"
-                    class="mobile-nav-link nav-link text-gray-400 hover:text-white font-semibold transition-colors py-2 hover-target">Tentang</a>
+                    class="mobile-nav-link nav-link text-steelSilver hover:text-white font-semibold transition-colors py-2">Tentang</a>
                 <a href="#proyek"
-                    class="mobile-nav-link nav-link text-gray-400 hover:text-white font-semibold transition-colors py-2 hover-target">Portofolio</a>
+                    class="mobile-nav-link nav-link text-steelSilver hover:text-white font-semibold transition-colors py-2">Portofolio</a>
                 <a href="#pengalaman"
-                    class="mobile-nav-link nav-link text-gray-400 hover:text-white font-semibold transition-colors py-2 hover-target">Pengalaman</a>
+                    class="mobile-nav-link nav-link text-steelSilver hover:text-white font-semibold transition-colors py-2">Pengalaman</a>
                 <a href="#keahlian"
-                    class="mobile-nav-link nav-link text-gray-400 hover:text-white font-semibold transition-colors py-2 hover-target">Keahlian</a>
-                <a href="mailto:zokeryudha00@gmail.com"
-                    class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all hover-target w-fit">
+                    class="mobile-nav-link nav-link text-steelSilver hover:text-white font-semibold transition-colors py-2">Keahlian</a>
+                <a href="#" onclick="return false;"
+                    class="copy-email-btn inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white bg-royalBlue/10 border border-royalBlue/25 rounded-full hover:bg-royalBlue/20 transition-all w-fit">
                     <i class="fas fa-paper-plane mr-2 pointer-events-none"></i> Sapa Saya
                 </a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="tentang"
-        class="pt-32 pb-10 md:pt-48 md:pb-20 px-6 max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center gap-12">
-        <div class="flex-1 text-center md:text-left fade-in-up">
-            <div
-                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gray-300 text-xs font-semibold uppercase tracking-wider mb-6">
-                <span class="w-2 h-2 rounded-full bg-gray-400 animate-pulse"></span>
-                Tersedia untuk Kolaborasi
+    <!-- ============================================ -->
+    <!-- HERO SECTION -->
+    <!-- ============================================ -->
+    <section id="tentang" class="pt-32 pb-16 md:pt-44 md:pb-24 relative overflow-hidden bg-gradient-to-b from-voidBlack via-deepNavy to-voidBlack w-full">
+        <canvas id="hero-particles" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
+        
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col-reverse md:flex-row items-center gap-10 md:gap-14 relative z-10">
+
+            <!-- Left: Text -->
+            <div class="flex-1 text-center md:text-left fade-in-up">
+                <div
+                    class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-royalBlue/5 border border-royalBlue/15 text-sm font-semibold mb-6">
+                    <span class="live-dot"></span>
+                    <span class="text-slateLight">Tersedia untuk Kolaborasi</span>
+                </div>
+
+                <h1 class="text-4xl md:text-[3.4rem] font-extrabold text-white leading-[1.15] mb-6 tracking-tight">
+                    Saya Merancang <span class="gradient-text-blue">Sistem</span> yang Bekerja
+                    <br class="hidden md:block" />
+                    & <span class="gradient-text-blue">Antarmuka</span> yang Dirasakan<span class="text-royalBlue">.</span>
+                </h1>
+
+                <p class="text-lg text-steelSilver mb-8 max-w-2xl mx-auto md:mx-0 leading-relaxed">
+                    <span class="text-white font-medium">Yudha Pratama</span> — Mahasiswa Sistem Informasi UMSU,
+                    Project Lead Innovillage 2025, dan
+                    <span class="text-white font-medium" id="typing-text"></span><span class="typing-cursor">|</span>
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
+                    <a href="#proyek"
+                        class="ripple-btn w-full sm:w-auto px-8 py-3.5 rounded-full bg-gradient-to-r from-royalBlue to-blue-700 text-white font-semibold flex items-center justify-center gap-2 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+                        <span class="pointer-events-none">Lihat Karya Saya <i
+                                class="fas fa-arrow-right ml-1"></i></span>
+                    </a>
+                    <a href="#" onclick="return false;"
+                        class="cv-btn w-full sm:w-auto px-7 py-3.5 rounded-full font-semibold flex items-center justify-center gap-2 transition-all duration-300">
+                        <i class="fas fa-download pointer-events-none"></i>
+                        <span class="pointer-events-none">Download CV</span>
+                    </a>
+                </div>
             </div>
 
-            <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-                Membangun Solusi Digital <br class="hidden md:block" /> dengan
-                <span class="gradient-text" id="typing-text"></span><span class="typing-cursor">|</span>
-            </h1>
-
-            <p class="text-lg text-ashGray mb-8 max-w-2xl mx-auto md:mx-0 leading-relaxed">
-                Saya <span class="text-white font-medium">Yudha Pratama</span>, Seorang mahasiswa Sistem Informasi di
-                UMSU yang berfokus pada Web & Software Developer.
-                Saya mengubah ide-ide kompleks menjadi antarmuka yang ramah pengguna melalui teknologi web modern dan
-                arsitektur sistem yang solid.
-            </p>
-
-            <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
-                <a href="#proyek"
-                    class="ripple-btn w-full sm:w-auto px-8 py-3 rounded-full bg-gradient-to-r from-gray-700 to-gray-900 text-white font-semibold flex items-center justify-center gap-2 border border-gray-600 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all duration-300 hover:-translate-y-1 hover-target overflow-hidden">
-                    <span class="pointer-events-none">Lihat Karya Saya <i class="fas fa-arrow-right ml-1"></i></span>
-                </a>
-                <div class="flex gap-4">
+            <!-- Right: Profile Photo -->
+            <div class="flex-shrink-0 animate-float fade-in-up delay-100">
+                <div
+                    class="profile-photo-wrapper relative w-56 h-56 md:w-72 md:h-72 rounded-3xl overflow-hidden border border-royalBlue/20 navy-glass p-2 tilt-card">
+                    <img src="assets/profile.png" alt="Yudha Pratama"
+                        class="w-full h-full object-cover rounded-2xl pointer-events-none">
+                    <div
+                        class="absolute -bottom-6 -left-6 w-32 h-32 bg-royalBlue blur-3xl opacity-20 rounded-full pointer-events-none">
+                    </div>
+                    <div
+                        class="absolute -top-6 -right-6 w-32 h-32 bg-electricCyan blur-3xl opacity-12 rounded-full pointer-events-none">
+                    </div>
+                </div>
+                <!-- Social links below photo -->
+                <div class="flex justify-center gap-3 mt-5">
                     <a href="https://linkedin.com/in/yudha-pratama-7a10382b4" target="_blank"
-                        class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors border border-white/10 hover-target">
-                        <i class="fab fa-linkedin-in text-xl pointer-events-none"></i>
+                        class="w-10 h-10 rounded-full navy-glass-solid flex items-center justify-center text-steelSilver hover:text-royalBlue hover:border-royalBlue/30 transition-all border border-royalBlue/10">
+                        <i class="fab fa-linkedin-in pointer-events-none"></i>
                     </a>
                     <a href="https://github.com/ZokerYuzu" target="_blank"
-                        class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors border border-white/10 hover-target">
-                        <i class="fab fa-github text-xl pointer-events-none"></i>
+                        class="w-10 h-10 rounded-full navy-glass-solid flex items-center justify-center text-steelSilver hover:text-royalBlue hover:border-royalBlue/30 transition-all border border-royalBlue/10">
+                        <i class="fab fa-github pointer-events-none"></i>
                     </a>
                     <a href="https://instagram.com/yudhavillyy" target="_blank"
-                        class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors border border-white/10 hover-target">
-                        <i class="fab fa-instagram text-xl pointer-events-none"></i>
+                        class="w-10 h-10 rounded-full navy-glass-solid flex items-center justify-center text-steelSilver hover:text-royalBlue hover:border-royalBlue/30 transition-all border border-royalBlue/10">
+                        <i class="fab fa-instagram pointer-events-none"></i>
                     </a>
                 </div>
             </div>
         </div>
+        </div>
+    </section>
 
-        <div class="flex-shrink-0 animate-float fade-in-up delay-100">
+    <!-- ============================================ -->
+    <!-- STATS BENTO + ABOUT HIGHLIGHTS -->
+    <!-- ============================================ -->
+    <section class="py-24 bg-deepNavy">
+        <div class="max-w-7xl mx-auto px-6">
+
+            <!-- Stats Row -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 fade-in-up mb-16">
             <div
-                class="relative w-56 h-56 md:w-80 md:h-80 rounded-3xl overflow-hidden border border-gray-700 glass-card p-2 transform rotate-3 hover:rotate-0 transition-transform duration-500 hover-target tilt-card">
-                <img src="assets/profile.png" alt="Yudha Pratama"
-                    class="w-full h-full object-cover rounded-2xl grayscale hover:grayscale-0 transition duration-500 pointer-events-none">
+                class="stat-glow navy-glass-solid rounded-2xl py-6 px-5 text-center tilt-card hover:border-royalBlue/25 transition-colors">
+                <div class="text-royalBlue text-xl mb-2"><i class="fas fa-rocket"></i></div>
+                <p class="text-3xl font-extrabold text-white counter" data-target="6">0</p>
+                <p class="text-xs text-steelSilver mt-1 font-medium">Proyek Terdelivery</p>
+            </div>
+            <div
+                class="stat-glow navy-glass-solid rounded-2xl py-6 px-5 text-center tilt-card hover:border-royalBlue/25 transition-colors">
+                <div class="text-electricCyan text-xl mb-2"><i class="fas fa-briefcase"></i></div>
+                <p class="text-3xl font-extrabold text-white counter" data-target="2">0</p>
+                <p class="text-xs text-steelSilver mt-1 font-medium">Pengalaman Industri</p>
+            </div>
+            <div
+                class="stat-glow navy-glass-solid rounded-2xl py-6 px-5 text-center tilt-card hover:border-royalBlue/25 transition-colors">
+                <div class="text-blue-400 text-xl mb-2"><i class="fas fa-graduation-cap"></i></div>
+                <p class="text-3xl font-extrabold text-white"><span class="counter"
+                        data-target="3.83">3.83</span></p>
+                <p class="text-xs text-steelSilver mt-1 font-medium">IPK dari 4.00</p>
+            </div>
+            <div
+                class="stat-glow navy-glass-solid rounded-2xl py-6 px-5 text-center tilt-card hover:border-royalBlue/25 transition-colors">
+                <div class="text-blue-300 text-xl mb-2"><i class="fas fa-award"></i></div>
+                <p class="text-3xl font-extrabold text-white counter" data-target="2">0</p>
+                <p class="text-xs text-steelSilver mt-1 font-medium">BNSP & IBM Certified</p>
+            </div>
+        </div>
+
+        <!-- About Highlights -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 fade-in-up delay-100">
+            <div class="highlight-card rounded-2xl p-5 flex items-start gap-4 tilt-card">
                 <div
-                    class="absolute -bottom-4 -left-4 w-24 h-24 bg-gray-500 blur-2xl opacity-20 rounded-full pointer-events-none">
+                    class="highlight-icon w-12 h-12 rounded-xl bg-royalBlue/10 border border-royalBlue/20 flex items-center justify-center text-royalBlue text-lg flex-shrink-0">
+                    <i class="fas fa-crown"></i>
                 </div>
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-1">Project Lead — Innovillage 2025</h4>
+                    <p class="text-steelSilver text-xs leading-relaxed">Memimpin tim pengembangan aplikasi AR & Web
+                        edukasi anak tunagrahita.</p>
+                </div>
+            </div>
+            <div class="highlight-card rounded-2xl p-5 flex items-start gap-4 tilt-card">
                 <div
-                    class="absolute -top-4 -right-4 w-24 h-24 bg-gray-300 blur-2xl opacity-20 rounded-full pointer-events-none">
+                    class="highlight-icon w-12 h-12 rounded-xl bg-royalBlue/10 border border-royalBlue/20 flex items-center justify-center text-electricCyan text-lg flex-shrink-0">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-1">Intern Programmer — PTPN IV</h4>
+                    <p class="text-steelSilver text-xs leading-relaxed">Membangun sistem Zoom API & otomasi data
+                        cleaning Python untuk perusahaan BUMN.</p>
+                </div>
+            </div>
+            <div class="highlight-card rounded-2xl p-5 flex items-start gap-4 tilt-card">
+                <div
+                    class="highlight-icon w-12 h-12 rounded-xl bg-royalBlue/10 border border-royalBlue/20 flex items-center justify-center text-blue-400 text-lg flex-shrink-0">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-1">Sertifikasi BNSP & IBM</h4>
+                    <p class="text-steelSilver text-xs leading-relaxed">Junior Web Developer (BNSP) & Code Generation
+                        Optimization (IBM/Hacktiv8).</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Stats Counter -->
-    <div class="max-w-4xl mx-auto px-6 pb-16 fade-in-up">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            <div class="glass-card rounded-2xl py-6 px-4 hover-target">
-                <p class="text-3xl font-extrabold text-white counter" data-target="6">0</p>
-                <p class="text-sm text-ashGray mt-1">Proyek Selesai</p>
-            </div>
-            <div class="glass-card rounded-2xl py-6 px-4 hover-target">
-                <p class="text-3xl font-extrabold text-white counter" data-target="2">0</p>
-                <p class="text-sm text-ashGray mt-1">Pengalaman Kerja</p>
-            </div>
-            <div class="glass-card rounded-2xl py-6 px-4 hover-target">
-                <p class="text-3xl font-extrabold text-white"><span class="counter" data-target="3.83">3.83</span></p>
-                <p class="text-sm text-ashGray mt-1">IPK</p>
-            </div>
-            <div class="glass-card rounded-2xl py-6 px-4 hover-target">
-                <p class="text-3xl font-extrabold text-white counter" data-target="2">0</p>
-                <p class="text-sm text-ashGray mt-1">Sertifikasi</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Tech Marquee Ticker -->
-    <div class="py-6 border-y border-gray-800 overflow-hidden bg-darkCharcoal">
-        <div class="marquee-track flex gap-0 whitespace-nowrap">
+    <!-- ============================================ -->
+    <!-- TECH MARQUEE TICKER
+    ================================================= -->
+    <section class="py-16 bg-deepNavy">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="border-y border-royalBlue/8 overflow-hidden">
+            <div class="marquee-track flex gap-0 whitespace-nowrap">
             <div
-                class="marquee-content flex items-center gap-10 text-ashGray text-sm font-semibold uppercase tracking-widest pr-10">
+                class="marquee-content flex items-center gap-10 text-steelSilver text-sm font-semibold uppercase tracking-widest pr-10">
                 <span class="marquee-item"><i class="fab fa-laravel mr-2 text-lg"></i>Laravel</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fab fa-php mr-2 text-lg"></i>PHP</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fab fa-python mr-2 text-lg"></i>Python</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fab fa-js-square mr-2 text-lg"></i>JavaScript</span>
-                <!-- <span class="text-gray-700">·</span>
-                <span class="marquee-item"><i class="fab fa-unity mr-2 text-lg"></i>Unity C#</span> -->
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fas fa-database mr-2 text-lg"></i>MySQL</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fab fa-git-alt mr-2 text-lg"></i>Git</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fas fa-wind mr-2 text-lg"></i>Tailwind</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fab fa-bootstrap mr-2 text-lg"></i>Bootstrap</span>
-                <!-- <span class="text-gray-700">·</span>
-                <span class="marquee-item"><i class="fas fa-cube mr-2 text-lg"></i>ARCore</span> -->
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fas fa-video mr-2 text-lg"></i>Zoom API</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
+                <span class="marquee-item"><i class="fab fa-figma mr-2 text-lg"></i>Figma</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fab fa-html5 mr-2 text-lg"></i>HTML5</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fab fa-css3-alt mr-2 text-lg"></i>CSS3</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
             </div>
-            <!-- Duplicate for seamless loop -->
-            <div class="marquee-content flex items-center gap-10 text-ashGray text-sm font-semibold uppercase tracking-widest pr-10"
+            <div class="marquee-content flex items-center gap-10 text-steelSilver text-sm font-semibold uppercase tracking-widest pr-10"
                 aria-hidden="true">
                 <span class="marquee-item"><i class="fab fa-laravel mr-2 text-lg"></i>Laravel</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fab fa-php mr-2 text-lg"></i>PHP</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fab fa-python mr-2 text-lg"></i>Python</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fab fa-js-square mr-2 text-lg"></i>JavaScript</span>
-                <!-- <span class="text-gray-700">·</span>
-                <span class="marquee-item"><i class="fab fa-unity mr-2 text-lg"></i>Unity C#</span> -->
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fas fa-database mr-2 text-lg"></i>MySQL</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fab fa-git-alt mr-2 text-lg"></i>Git</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fas fa-wind mr-2 text-lg"></i>Tailwind</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fab fa-bootstrap mr-2 text-lg"></i>Bootstrap</span>
-                <!-- <span class="text-gray-700">·</span>
-                <span class="marquee-item"><i class="fas fa-cube mr-2 text-lg"></i>ARCore</span> -->
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fas fa-video mr-2 text-lg"></i>Zoom API</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
+                <span class="marquee-item"><i class="fab fa-figma mr-2 text-lg"></i>Figma</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fab fa-html5 mr-2 text-lg"></i>HTML5</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
                 <span class="marquee-item"><i class="fab fa-css3-alt mr-2 text-lg"></i>CSS3</span>
-                <span class="text-gray-700">·</span>
+                <span class="text-navyLight">·</span>
+            </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Semua Proyek (Unified Single Section) -->
-    <section id="proyek" class="py-20 px-6 max-w-7xl mx-auto">
-        <div class="text-center mb-16 fade-in-up">
-            <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">Semua <span class="gradient-text">Proyek</span>
-            </h2>
-            <p class="text-ashGray max-w-2xl mx-auto">Kompilasi proyek riil dan akademik yang menonjolkan kemampuan
-                problem-solving dan penguasaan teknologi pengembangan perangkat lunak.</p>
+    <!-- ============================================ -->
+    <!-- PROYEK SECTION — Featured + Filter + Cards -->
+    <!-- ============================================ -->
+    <section id="proyek" class="py-24 bg-voidBlack w-full">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-up">
+            <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">Semua <span
+                    class="gradient-text-blue">Proyek</span></h2>
+            <p class="text-steelSilver max-w-2xl mx-auto">Kompilasi proyek riil dan akademik yang menonjolkan
+                kemampuan problem-solving dan penguasaan teknologi pengembangan perangkat lunak.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+        <!-- Filter Tabs -->
+        <div class="flex flex-wrap justify-center gap-3 mb-12 fade-in-up delay-100">
+            <button class="filter-tab active" data-filter="all">Semua</button>
+            <button class="filter-tab" data-filter="web">Web App</button>
+            <button class="filter-tab" data-filter="mobile">Mobile & AR</button>
+            <button class="filter-tab" data-filter="automation">Otomasi</button>
+        </div>
 
-            <!-- Card 1: AR Hola -->
-            <div
-                class="group bg-[#0d0d0d] rounded-2xl overflow-hidden border border-[#252525] hover:border-gray-500 transition-all duration-300 hover:-translate-y-2 fade-in-up tilt-card flex flex-col">
-                <!-- Screenshot Area -->
-                <div class="relative h-52 overflow-hidden bg-[#151515]">
-                    <img src="assets/apphola.png" alt="AR Hola Screenshot"
-                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
-                        onerror="this.parentElement.classList.add('img-placeholder')">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent"></div>
-                    <div class="absolute top-3 left-3 flex gap-2 flex-wrap">
-                        <span
-                            class="px-2.5 py-1 text-xs font-semibold bg-black/60 backdrop-blur-sm rounded-full text-white border border-white/10">Mobile
-                            Dev</span>
-                        <span
-                            class="px-2.5 py-1 text-xs font-semibold bg-black/60 backdrop-blur-sm rounded-full text-gray-300 border border-gray-700">UI/UX
-                            Design</span>
-                    </div>
-                </div>
-                <!-- Content -->
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-gray-300 transition-colors">Aplikasi
-                        AR "Hola"</h3>
-                    <p class="text-xs text-gray-500 font-medium mb-3 uppercase tracking-wide"><i
-                            class="fas fa-trophy mr-1"></i> Innovillage 2025</p>
-                    <p class="text-sm text-ashGray mb-5 leading-relaxed flex-grow">Memimpin jalannya proyek aplikasi
-                        edukasi anak tunagrahita. Berfokus pada perancangan antarmuka pengguna, penciptaan prototipe
-                        interaktif menggunakan Figma, serta memastikan kelancaran alur manajemen proyek.</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
-                        <span class="tech-tag">Project Management</span>
-                        <span class="tech-tag">Figma</span>
-                        <span class="tech-tag">UI/UX</span>
-                        <span class="tech-tag">Prototyping</span>
-                    </div>
-                </div>
-            </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            <!-- Card 2: Website Edukasi Hola -->
-            <div
-                class="group bg-[#0d0d0d] rounded-2xl overflow-hidden border border-[#252525] hover:border-gray-500 transition-all duration-300 hover:-translate-y-2 fade-in-up delay-100 tilt-card flex flex-col">
-                <!-- Screenshot Area -->
-                <div class="relative h-52 overflow-hidden bg-[#151515]">
+            <!-- Card 1: Website Edukasi Hola -->
+            <div class="project-card group bg-navyCard rounded-2xl overflow-hidden border border-royalBlue/10 hover:-translate-y-2 fade-in-up tilt-card spotlight-card flex flex-col cursor-pointer"
+                data-category="web"
+                data-project="hola">
+                <div class="relative overflow-hidden bg-deepNavy h-52">
                     <img src="assets/webhola.png" alt="Website Edukasi Hola Screenshot"
-                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+                        class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
                         onerror="this.parentElement.classList.add('img-placeholder')">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-navyCard via-transparent to-transparent"></div>
                     <div class="absolute top-3 left-3 flex gap-2 flex-wrap">
                         <span
-                            class="px-2.5 py-1 text-xs font-semibold bg-black/60 backdrop-blur-sm rounded-full text-white border border-white/10">Web
-                            App</span>
+                            class="px-2.5 py-1 text-xs font-bold bg-royalBlue/30 backdrop-blur-sm rounded-full text-white border border-royalBlue/40">⭐
+                            Featured</span>
                         <span
-                            class="px-2.5 py-1 text-xs font-semibold bg-black/60 backdrop-blur-sm rounded-full text-gray-300 border border-gray-700">Laravel</span>
+                            class="px-2.5 py-1 text-xs font-semibold bg-deepNavy/60 backdrop-blur-sm rounded-full text-slateLight border border-navyLight/50">Laravel</span>
                     </div>
                 </div>
-                <!-- Content -->
                 <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-gray-300 transition-colors">Website
-                        Edukasi "Hola!"</h3>
-                    <p class="text-xs text-gray-500 font-medium mb-3 uppercase tracking-wide"><i
+                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-royalBlue transition-colors">
+                        Website Edukasi "Hola!"</h3>
+                    <p class="text-xs text-royalBlue/70 font-medium mb-3 uppercase tracking-wide"><i
                             class="fas fa-trophy mr-1"></i> Innovillage 2025</p>
-                    <p class="text-sm text-ashGray mb-5 leading-relaxed flex-grow">Aplikasi pembelajaran interaktif
-                        berbasis web. Menyediakan audio interaktif, materi huruf, angka, bentuk & warna berbasis kartu
-                        edukatif, beserta fitur mini-games seperti menebak bentuk, kata, dan menyusun puzzle.</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
+                    <p class="text-sm text-steelSilver mb-5 leading-relaxed flex-grow">Aplikasi pembelajaran interaktif
+                        berbasis web untuk anak tunagrahita. Menyediakan audio interaktif, materi huruf, angka, bentuk &
+                        warna berbasis kartu edukatif, beserta fitur mini-games seperti menebak bentuk, kata, dan
+                        menyusun puzzle.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
                         <span class="tech-tag">Laravel</span>
                         <span class="tech-tag">PHP</span>
                         <span class="tech-tag">CSS/JS</span>
                         <span class="tech-tag">MySQL</span>
                     </div>
+                    <div class="flex gap-2 mt-auto pt-3">
+                        <a href="https://github.com/ZokerYuzu" target="_blank" class="project-action-btn"><i
+                                class="fab fa-github"></i> Source Code</a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Card 3: Monitoring Video Conference -->
-            <div
-                class="group bg-[#0d0d0d] rounded-2xl overflow-hidden border border-[#252525] hover:border-gray-500 transition-all duration-300 hover:-translate-y-2 fade-in-up delay-100 tilt-card flex flex-col">
-                <!-- Screenshot Area -->
-                <div class="relative h-52 overflow-hidden bg-[#151515]">
+            <!-- Card 2: Monitoring Zoom API -->
+            <div class="project-card group bg-navyCard rounded-2xl overflow-hidden border border-royalBlue/10 hover:-translate-y-2 fade-in-up delay-100 tilt-card spotlight-card flex flex-col cursor-pointer"
+                data-category="web">
+                <div class="relative overflow-hidden bg-deepNavy h-52">
                     <img src="assets/webzoom.png" alt="Monitoring Video Conference Screenshot"
-                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+                        class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
                         onerror="this.parentElement.classList.add('img-placeholder')">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-navyCard via-transparent to-transparent"></div>
                     <div class="absolute top-3 left-3 flex gap-2 flex-wrap">
                         <span
-                            class="px-2.5 py-1 text-xs font-semibold bg-black/60 backdrop-blur-sm rounded-full text-white border border-white/10">Web
-                            App</span>
+                            class="px-2.5 py-1 text-xs font-bold bg-royalBlue/30 backdrop-blur-sm rounded-full text-white border border-royalBlue/40">⭐
+                            Featured</span>
                         <span
-                            class="px-2.5 py-1 text-xs font-semibold bg-black/60 backdrop-blur-sm rounded-full text-gray-300 border border-gray-700">Laravel</span>
+                            class="px-2.5 py-1 text-xs font-semibold bg-deepNavy/60 backdrop-blur-sm rounded-full text-slateLight border border-navyLight/50">Zoom
+                            API</span>
                     </div>
                 </div>
-                <!-- Content -->
                 <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-gray-300 transition-colors">Monitoring
-                        Video Conference</h3>
-                    <p class="text-xs text-gray-500 font-medium mb-3 uppercase tracking-wide"><i
-                            class="fas fa-building mr-1"></i> PTPN IV - Regional 1</p>
-                    <p class="text-sm text-ashGray mb-5 leading-relaxed flex-grow">Sistem manajemen rapat berbasis web
-                        terintegrasi Zoom API. Pengecekan akun real-time dan otomasi pemesanan jadwal untuk mencegah
-                        bentrokan lisensi antar divisi.</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
+                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-royalBlue transition-colors">
+                        Monitoring Video Conference</h3>
+                    <p class="text-xs text-royalBlue/70 font-medium mb-3 uppercase tracking-wide"><i
+                            class="fas fa-building mr-1"></i> PTPN IV — Regional 1</p>
+                    <p class="text-sm text-steelSilver mb-5 leading-relaxed flex-grow">Sistem manajemen rapat berbasis
+                        web terintegrasi Zoom API. Pengecekan akun real-time dan otomasi pemesanan jadwal untuk mencegah
+                        bentrokan lisensi antar divisi perusahaan BUMN.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
                         <span class="tech-tag">Laravel</span>
                         <span class="tech-tag">PHP</span>
                         <span class="tech-tag">Zoom API</span>
                         <span class="tech-tag">MySQL</span>
                     </div>
+                    <div class="flex gap-2 mt-auto pt-3">
+                        <span class="project-action-btn opacity-60 cursor-default"><i class="fas fa-lock"></i> Private
+                            Project</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Card 3: PDF/Excel Extractor -->
-            <div
-                class="group bg-[#0d0d0d] rounded-2xl overflow-hidden border border-[#252525] hover:border-gray-500 transition-all duration-300 hover:-translate-y-2 fade-in-up delay-200 tilt-card flex flex-col">
-                <!-- Screenshot Area -->
-                <div
-                    class="relative h-52 overflow-hidden bg-[#151515] img-placeholder flex items-center justify-center">
-                    <img src="assets/pdfconv.png" alt="PDF Excel Extractor Screenshot"
-                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
-                        onerror="this.style.display='none'">
-                    <div
-                        class="placeholder-content absolute inset-0 flex flex-col items-center justify-center gap-3 text-gray-600">
-                        <i class="fas fa-file-excel text-4xl"></i>
-                        <!-- <span class="text-xs uppercase tracking-widest">Screenshot Coming Soon</span> -->
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent"></div>
-                    <div class="absolute top-3 left-3 flex gap-2">
+            <!-- Card 3: AR Hola -->
+            <div class="project-card group bg-navyCard rounded-2xl overflow-hidden border border-royalBlue/10 hover:-translate-y-2 fade-in-up delay-200 tilt-card spotlight-card flex flex-col"
+                data-category="mobile">
+                <div class="relative overflow-hidden bg-deepNavy h-52">
+                    <img src="assets/apphola.png" alt="AR Hola Screenshot"
+                        class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
+                        onerror="this.parentElement.classList.add('img-placeholder')">
+                    <div class="absolute inset-0 bg-gradient-to-t from-navyCard via-transparent to-transparent"></div>
+                    <div class="absolute top-3 left-3 flex gap-2 flex-wrap">
                         <span
-                            class="px-2.5 py-1 text-xs font-semibold bg-black/60 backdrop-blur-sm rounded-full text-white border border-white/10">Automation</span>
+                            class="px-2.5 py-1 text-xs font-semibold bg-royalBlue/20 backdrop-blur-sm rounded-full text-blue-200 border border-royalBlue/25">Mobile
+                            Dev</span>
+                        <span
+                            class="px-2.5 py-1 text-xs font-semibold bg-deepNavy/60 backdrop-blur-sm rounded-full text-slateLight border border-navyLight/50">UI/UX</span>
                     </div>
                 </div>
-                <!-- Content -->
                 <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-gray-300 transition-colors">PDF/Excel
-                        Extractor</h3>
-                    <p class="text-xs text-gray-500 font-medium mb-3 uppercase tracking-wide"><i
-                            class="fas fa-building mr-1"></i> PTPN IV - Regional 1</p>
-                    <p class="text-sm text-ashGray mb-5 leading-relaxed flex-grow">Otomasi konversi laporan karyawan
-                        dari PDF ke Excel menggunakan algoritma data cleaning Python. Mengurangi proses manual dari
-                        berjam-jam menjadi hitungan menit.</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
+                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-royalBlue transition-colors">
+                        Aplikasi AR "Hola"</h3>
+                    <p class="text-xs text-royalBlue/70 font-medium mb-3 uppercase tracking-wide"><i
+                            class="fas fa-trophy mr-1"></i> Innovillage 2025</p>
+                    <p class="text-sm text-steelSilver mb-5 leading-relaxed flex-grow">Memimpin proyek aplikasi edukasi
+                        anak tunagrahita. Merancang UI/UX dan prototipe interaktif menggunakan Figma.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="tech-tag">Project Lead</span>
+                        <span class="tech-tag">Figma</span>
+                        <span class="tech-tag">UI/UX</span>
+                    </div>
+                    <div class="flex gap-2 mt-auto pt-3">
+                        <span class="project-action-btn opacity-60 cursor-default"><i class="fas fa-lock"></i> Private
+                            Project</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: PDF/Excel Extractor -->
+            <div class="project-card group bg-navyCard rounded-2xl overflow-hidden border border-royalBlue/10 hover:-translate-y-2 fade-in-up tilt-card spotlight-card flex flex-col"
+                data-category="automation">
+                <div class="relative overflow-hidden bg-deepNavy h-52">
+                    <img src="assets/pdfconv.png" alt="PDF Excel Extractor Screenshot"
+                        class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
+                        onerror="this.parentElement.classList.add('img-placeholder')">
+                    <div class="absolute inset-0 bg-gradient-to-t from-navyCard via-transparent to-transparent"></div>
+                    <div class="absolute top-3 left-3">
+                        <span
+                            class="px-2.5 py-1 text-xs font-semibold bg-royalBlue/20 backdrop-blur-sm rounded-full text-blue-200 border border-royalBlue/25">Automation</span>
+                    </div>
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-royalBlue transition-colors">
+                        PDF/Excel Extractor</h3>
+                    <p class="text-xs text-royalBlue/70 font-medium mb-3 uppercase tracking-wide"><i
+                            class="fas fa-building mr-1"></i> PTPN IV — Regional 1</p>
+                    <p class="text-sm text-steelSilver mb-5 leading-relaxed flex-grow">Otomasi konversi laporan dari PDF
+                        ke Excel menggunakan Python. Mengurangi proses manual berjam-jam menjadi hitungan menit.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
                         <span class="tech-tag">Python</span>
                         <span class="tech-tag">Pandas</span>
                         <span class="tech-tag">Automation</span>
                     </div>
+                    <div class="flex gap-2 mt-auto pt-3">
+                        <a href="https://github.com/ZokerYuzu" target="_blank" class="project-action-btn"><i
+                                class="fab fa-github"></i> Source Code</a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Card 4: Laundry Management -->
-            <div
-                class="group bg-[#0d0d0d] rounded-2xl overflow-hidden border border-[#252525] hover:border-gray-500 transition-all duration-300 hover:-translate-y-2 fade-in-up tilt-card flex flex-col">
-                <!-- Screenshot Area -->
-                <div class="relative h-52 overflow-hidden bg-[#151515]">
+            <!-- Card 5: Laundry Management -->
+            <div class="project-card group bg-navyCard rounded-2xl overflow-hidden border border-royalBlue/10 hover:-translate-y-2 fade-in-up tilt-card spotlight-card flex flex-col"
+                data-category="web">
+                <div class="relative overflow-hidden bg-deepNavy h-52">
                     <img src="assets/weblaundry.png" alt="Laundry Management Screenshot"
-                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
-                        onerror="this.style.display='none'; this.parentElement.querySelector('.placeholder-content').style.display='flex'">
-                    <div
-                        class="placeholder-content absolute inset-0 hidden flex-col items-center justify-center gap-3 text-gray-600">
-                        <i class="fas fa-tshirt text-4xl"></i>
-                        <span class="text-xs uppercase tracking-widest">Screenshot Coming Soon</span>
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent"></div>
+                        class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
+                        onerror="this.parentElement.classList.add('img-placeholder')">
+                    <div class="absolute inset-0 bg-gradient-to-t from-navyCard via-transparent to-transparent"></div>
                     <div class="absolute top-3 left-3">
                         <span
-                            class="px-2.5 py-1 text-xs font-semibold bg-black/60 backdrop-blur-sm rounded-full text-white border border-white/10">Web
+                            class="px-2.5 py-1 text-xs font-semibold bg-royalBlue/20 backdrop-blur-sm rounded-full text-blue-200 border border-royalBlue/25">Web
                             App</span>
                     </div>
                 </div>
-                <!-- Content -->
                 <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-gray-300 transition-colors">Laundry
-                        Management</h3>
-                    <p class="text-xs text-gray-500 font-medium mb-3 uppercase tracking-wide"><i
+                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-royalBlue transition-colors">
+                        Laundry Management</h3>
+                    <p class="text-xs text-royalBlue/70 font-medium mb-3 uppercase tracking-wide"><i
                             class="fas fa-graduation-cap mr-1"></i> Proyek Akademik</p>
-                    <p class="text-sm text-ashGray mb-5 leading-relaxed flex-grow">Aplikasi manajemen operasional
-                        laundry lengkap: tracking status cucian, manajemen pelanggan, laporan keuangan, dan notifikasi
-                        selesai cucian.</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
+                    <p class="text-sm text-steelSilver mb-5 leading-relaxed flex-grow">Aplikasi manajemen operasional
+                        laundry: tracking status cucian, manajemen pelanggan, dan laporan keuangan.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
                         <span class="tech-tag">PHP Native</span>
                         <span class="tech-tag">MySQL</span>
                         <span class="tech-tag">Bootstrap</span>
                     </div>
+                    <div class="flex gap-2 mt-auto pt-3">
+                        <a href="https://github.com/ZokerYuzu" target="_blank" class="project-action-btn"><i
+                                class="fab fa-github"></i> Source Code</a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Card 5: Wardah Web Catalog -->
-            <div
-                class="group bg-[#0d0d0d] rounded-2xl overflow-hidden border border-[#252525] hover:border-gray-500 transition-all duration-300 hover:-translate-y-2 fade-in-up delay-100 tilt-card flex flex-col">
-                <!-- Screenshot Area -->
-                <div class="relative h-52 overflow-hidden bg-[#151515]">
+                        <!-- Card 6: Wardah Web Catalog -->
+            <div class="project-card group bg-navyCard rounded-2xl overflow-hidden border border-royalBlue/10 hover:-translate-y-2 fade-in-up tilt-card spotlight-card flex flex-col"
+                data-category="web">
+                <div class="relative overflow-hidden bg-deepNavy h-52">
                     <img src="assets/wardah.png" alt="Wardah Web Catalog Screenshot"
-                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
-                        onerror="this.style.display='none'; this.parentElement.querySelector('.placeholder-content').style.display='flex'">
-                    <div
-                        class="placeholder-content absolute inset-0 hidden flex-col items-center justify-center gap-3 text-gray-600">
-                        <i class="fas fa-spray-can text-4xl"></i>
-                        <span class="text-xs uppercase tracking-widest">Screenshot Coming Soon</span>
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent"></div>
+                        class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
+                        onerror="this.parentElement.classList.add('img-placeholder')">
+                    <div class="absolute inset-0 bg-gradient-to-t from-navyCard via-transparent to-transparent"></div>
                     <div class="absolute top-3 left-3">
                         <span
-                            class="px-2.5 py-1 text-xs font-semibold bg-black/60 backdrop-blur-sm rounded-full text-white border border-white/10">Web
+                            class="px-2.5 py-1 text-xs font-semibold bg-royalBlue/20 backdrop-blur-sm rounded-full text-blue-200 border border-royalBlue/25">Web
                             Catalog</span>
                     </div>
                 </div>
-                <!-- Content -->
                 <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-gray-300 transition-colors">Wardah Web
-                        Catalog</h3>
-                    <p class="text-xs text-gray-500 font-medium mb-3 uppercase tracking-wide"><i
+                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-royalBlue transition-colors">
+                        Wardah Web Catalog</h3>
+                    <p class="text-xs text-royalBlue/70 font-medium mb-3 uppercase tracking-wide"><i
                             class="fas fa-graduation-cap mr-1"></i> Proyek Akademik</p>
-                    <p class="text-sm text-ashGray mb-5 leading-relaxed flex-grow">Katalog produk kosmetik Wardah dengan
-                        UI yang bersih dan elegan, dilengkapi sistem administrasi backend untuk manajemen inventaris
-                        produk.</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
+                    <p class="text-sm text-steelSilver mb-5 leading-relaxed flex-grow">Katalog produk kosmetik Wardah
+                        dengan UI elegan, dilengkapi backend untuk manajemen inventaris produk.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
                         <span class="tech-tag">PHP</span>
                         <span class="tech-tag">MySQL</span>
                         <span class="tech-tag">Bootstrap</span>
                     </div>
+                    <div class="flex gap-2 mt-auto pt-3">
+                        <a href="https://github.com/ZokerYuzu" target="_blank" class="project-action-btn"><i
+                                class="fab fa-github"></i> Source Code</a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Card 6: Desa Wisata Pariangan -->
-            <div
-                class="group bg-[#0d0d0d] rounded-2xl overflow-hidden border border-[#252525] hover:border-gray-500 transition-all duration-300 hover:-translate-y-2 fade-in-up delay-200 tilt-card flex flex-col">
-                <!-- Screenshot Area -->
-                <div class="relative h-52 overflow-hidden bg-[#151515]">
+            <!-- Card 7: Desa Wisata Pariangan -->
+            <div class="project-card group bg-navyCard rounded-2xl overflow-hidden border border-royalBlue/10 hover:-translate-y-2 fade-in-up tilt-card spotlight-card flex flex-col"
+                data-category="web">
+                <div class="relative overflow-hidden bg-deepNavy h-52">
                     <img src="assets/webdesa.png" alt="Desa Wisata Pariangan Screenshot"
-                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
-                        onerror="this.style.display='none'; this.parentElement.querySelector('.placeholder-content').style.display='flex'">
-                    <div
-                        class="placeholder-content absolute inset-0 hidden flex-col items-center justify-center gap-3 text-gray-600">
-                        <i class="fas fa-mountain text-4xl"></i>
-                        <span class="text-xs uppercase tracking-widest">Screenshot Coming Soon</span>
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent"></div>
+                        class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
+                        onerror="this.parentElement.classList.add('img-placeholder')">
+                    <div class="absolute inset-0 bg-gradient-to-t from-navyCard via-transparent to-transparent"></div>
                     <div class="absolute top-3 left-3">
                         <span
-                            class="px-2.5 py-1 text-xs font-semibold bg-black/60 backdrop-blur-sm rounded-full text-white border border-white/10">Web
+                            class="px-2.5 py-1 text-xs font-semibold bg-royalBlue/20 backdrop-blur-sm rounded-full text-blue-200 border border-royalBlue/25">Web
                             Profile</span>
                     </div>
                 </div>
-                <!-- Content -->
                 <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-gray-300 transition-colors">Desa
-                        Wisata Pariangan</h3>
-                    <p class="text-xs text-gray-500 font-medium mb-3 uppercase tracking-wide"><i
+                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-royalBlue transition-colors">
+                        Desa Wisata Pariangan</h3>
+                    <p class="text-xs text-royalBlue/70 font-medium mb-3 uppercase tracking-wide"><i
                             class="fas fa-graduation-cap mr-1"></i> Proyek Akademik</p>
-                    <p class="text-sm text-ashGray mb-5 leading-relaxed flex-grow">Website profil dan promosi Desa
-                        Wisata Pariangan, desa wisata terbaik se-Asia Tenggara. Dilengkapi galeri foto interaktif dan
-                        informasi wisata lengkap.</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
+                    <p class="text-sm text-steelSilver mb-5 leading-relaxed flex-grow">Website profil dan promosi Desa
+                        Wisata Pariangan, desa wisata terbaik se-Asia Tenggara.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
                         <span class="tech-tag">PHP Native</span>
                         <span class="tech-tag">Bootstrap</span>
                         <span class="tech-tag">JavaScript</span>
                     </div>
+                    <div class="flex gap-2 mt-auto pt-3">
+                        <a href="https://github.com/ZokerYuzu" target="_blank" class="project-action-btn"><i
+                                class="fab fa-github"></i> Source Code</a>
+                    </div>
                 </div>
             </div>
 
         </div>
+        </div>
     </section>
 
-
-
-
-    <!-- Pengalaman / Karir -->
-    <section id="pengalaman" class="py-20 bg-darkCharcoal border-t border-[#202020]">
+    <!-- ============================================ -->
+    <!-- PENGALAMAN / KARIR — Timeline -->
+    <!-- ============================================ -->
+    <section id="pengalaman" class="py-24 bg-deepNavy">
         <div class="max-w-4xl mx-auto px-6">
             <div class="text-center mb-16 fade-in-up">
                 <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">Perjalanan <span
-                        class="gradient-text">Karir</span></h2>
-                <div class="w-24 h-1 bg-gray-700 mx-auto rounded-full"></div>
+                        class="gradient-text-blue">Karir</span></h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-royalBlue to-electricCyan mx-auto rounded-full"></div>
             </div>
 
-            <div class="relative border-l-2 border-gray-700 ml-4 md:ml-10 space-y-12">
-                <div class="relative pl-8 md:pl-12 group fade-in-up hover-target">
-                    <div
-                        class="absolute -left-[9px] top-1.5 w-[16px] h-[16px] rounded-full bg-darkCharcoal border-4 border-gray-600 group-hover:border-white group-hover:bg-gray-300 transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.8)] z-10">
-                    </div>
+            <div class="relative border-l-2 border-navyLight ml-4 md:ml-10 space-y-12">
+                <div class="relative pl-8 md:pl-12 group fade-in-up">
+                    <div class="absolute -left-[9px] top-1.5 timeline-dot"></div>
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                        <h3
-                            class="text-xl font-bold text-white group-hover:text-gray-300 transition-colors pointer-events-none">
+                        <h3 class="text-xl font-bold text-white group-hover:text-royalBlue transition-colors pointer-events-none">
                             Project Lead & UI/UX Designer "Hola"</h3>
-                        <span
-                            class="text-xs font-semibold text-gray-300 bg-gray-800 border border-gray-600 px-4 py-1.5 rounded-full w-fit mt-2 sm:mt-0 pointer-events-none">Sept
-                            2024 - Sekarang</span>
+                        <span class="text-xs font-semibold text-blue-300 bg-royalBlue/10 border border-royalBlue/20 px-4 py-1.5 rounded-full w-fit mt-2 sm:mt-0 pointer-events-none">Sept 2024 - Sekarang</span>
                     </div>
-                    <p class="text-sm text-gray-400 font-medium mb-3 uppercase tracking-wider pointer-events-none">
-                        Innovillage 2025</p>
-                    <p
-                        class="text-ashGray text-base leading-relaxed bg-[#0a0a0a] p-5 rounded-xl border border-[#202020] hover:border-gray-500 transition-colors pointer-events-none">
-                        Memimpin tim dalam proyek sosial pembuatan aplikasi edukasi anak tunagrahita. Berfokus merancang
-                        antarmuka pengguna (UI/UX) dan menciptakan prototipe interaktif menggunakan Figma, serta
-                        memastikan kelancaran alur manajemen kerja proyek tim.
+                    <p class="text-sm text-royalBlue/60 font-medium mb-3 uppercase tracking-wider pointer-events-none">Innovillage 2025</p>
+                    <p class="text-steelSilver text-base leading-relaxed bg-navyCard p-5 rounded-xl border border-royalBlue/10 hover:border-royalBlue/25 transition-colors pointer-events-none">
+                        Memimpin tim dalam proyek sosial pembuatan aplikasi edukasi anak tunagrahita. Berfokus merancang antarmuka pengguna (UI/UX) dan menciptakan prototipe interaktif menggunakan Figma, serta memastikan kelancaran alur manajemen kerja proyek tim.
                     </p>
                 </div>
 
-                <div class="relative pl-8 md:pl-12 group fade-in-up delay-100 hover-target">
-                    <div
-                        class="absolute -left-[9px] top-1.5 w-[16px] h-[16px] rounded-full bg-darkCharcoal border-4 border-gray-600 group-hover:border-white group-hover:bg-gray-300 transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.8)] z-10">
-                    </div>
+                <div class="relative pl-8 md:pl-12 group fade-in-up delay-100">
+                    <div class="absolute -left-[9px] top-1.5 timeline-dot"></div>
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                        <h3
-                            class="text-xl font-bold text-white group-hover:text-gray-300 transition-colors pointer-events-none">
+                        <h3 class="text-xl font-bold text-white group-hover:text-royalBlue transition-colors pointer-events-none">
                             Programmer Intern</h3>
-                        <span
-                            class="text-xs font-semibold text-gray-300 bg-gray-800 border border-gray-600 px-4 py-1.5 rounded-full w-fit mt-2 sm:mt-0 pointer-events-none">Januari
-                            - Februari 2024</span>
+                        <span class="text-xs font-semibold text-blue-300 bg-royalBlue/10 border border-royalBlue/20 px-4 py-1.5 rounded-full w-fit mt-2 sm:mt-0 pointer-events-none">Januari - Februari 2024</span>
                     </div>
-                    <p class="text-sm text-gray-400 font-medium mb-3 uppercase tracking-wider pointer-events-none">PTPN
-                        IV - Regional 1</p>
-                    <p
-                        class="text-ashGray text-base leading-relaxed bg-[#0a0a0a] p-5 rounded-xl border border-[#202020] hover:border-gray-500 transition-colors pointer-events-none">
-                        Mendigitalisasi proses manajemen SDM dan merancang algoritma ekstraksi data Python (PDF to
-                        Excel). Mengembangkan aplikasi pemesanan ruang meeting terintegrasi Zoom API dengan Laravel.
+                    <p class="text-sm text-royalBlue/60 font-medium mb-3 uppercase tracking-wider pointer-events-none">PTPN IV - Regional 1</p>
+                    <p class="text-steelSilver text-base leading-relaxed bg-navyCard p-5 rounded-xl border border-royalBlue/10 hover:border-royalBlue/25 transition-colors pointer-events-none">
+                        Mendigitalisasi proses manajemen SDM dan merancang algoritma ekstraksi data Python (PDF to Excel). Mengembangkan aplikasi pemesanan ruang meeting terintegrasi Zoom API dengan Laravel.
                     </p>
                 </div>
 
-                <div class="relative pl-8 md:pl-12 group fade-in-up delay-200 hover-target">
-                    <div
-                        class="absolute -left-[9px] top-1.5 w-[16px] h-[16px] rounded-full bg-darkCharcoal border-4 border-gray-600 group-hover:border-white group-hover:bg-gray-300 transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.8)] z-10">
-                    </div>
+                <div class="relative pl-8 md:pl-12 group fade-in-up delay-200">
+                    <div class="absolute -left-[9px] top-1.5 timeline-dot"></div>
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                        <h3
-                            class="text-xl font-bold text-white group-hover:text-gray-300 transition-colors pointer-events-none">
+                        <h3 class="text-xl font-bold text-white group-hover:text-royalBlue transition-colors pointer-events-none">
                             Ketua Unit Riset & Mentoring</h3>
-                        <span
-                            class="text-xs font-semibold text-gray-300 bg-gray-800 border border-gray-600 px-4 py-1.5 rounded-full w-fit mt-2 sm:mt-0 pointer-events-none">2024
-                            - Sekarang</span>
+                        <span class="text-xs font-semibold text-blue-300 bg-royalBlue/10 border border-royalBlue/20 px-4 py-1.5 rounded-full w-fit mt-2 sm:mt-0 pointer-events-none">2024 - Sekarang</span>
                     </div>
-                    <p class="text-sm text-gray-400 font-medium mb-3 uppercase tracking-wider pointer-events-none">
-                        HIMASI UMSU</p>
-                    <p
-                        class="text-ashGray text-base leading-relaxed bg-[#0a0a0a] p-5 rounded-xl border border-[#202020] hover:border-gray-500 transition-colors pointer-events-none">
-                        Mengorganisasikan workshop teknologi dan transfer wawasan integrasi API serta teknologi AI
-                        kepada mahasiswa secara terstruktur dalam unit ekosistem riset organisasi.
+                    <p class="text-sm text-royalBlue/60 font-medium mb-3 uppercase tracking-wider pointer-events-none">HIMASI UMSU</p>
+                    <p class="text-steelSilver text-base leading-relaxed bg-navyCard p-5 rounded-xl border border-royalBlue/10 hover:border-royalBlue/25 transition-colors pointer-events-none">
+                        Mengorganisasikan workshop teknologi dan transfer wawasan integrasi API serta teknologi AI kepada mahasiswa secara terstruktur dalam unit ekosistem riset organisasi.
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Keahlian Teknis -->
-    <section id="keahlian" class="py-20 bg-pitchBlack border-t border-[#202020]">
+    <!-- ============================================ -->
+    <!-- KEAHLIAN — Domain Cluster Badges -->
+    <!-- ============================================ -->
+    <section id="keahlian" class="py-24 bg-voidBlack">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-16 fade-in-up">
                 <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">Penguasaan <span
-                        class="gradient-text">Keahlian</span></h2>
-                <div class="w-24 h-1 bg-gray-700 mx-auto rounded-full"></div>
+                        class="gradient-text-blue">Keahlian</span></h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-royalBlue to-electricCyan mx-auto rounded-full"></div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <div class="space-y-8 fade-in-up">
-                    <div class="group hover-target p-3 rounded-xl hover:bg-[#1a1a1a] transition-colors">
-                        <div class="flex justify-between text-sm mb-2 pointer-events-none">
-                            <span class="text-white font-medium flex items-center gap-2"><i
-                                    class="fas fa-server text-gray-500"></i> Backend Development</span>
-                            <span class="text-gray-400 font-bold group-hover:text-white transition-colors">90%</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in-up">
+                <div class="skill-domain-card tilt-card">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="skill-icon w-11 h-11 rounded-xl bg-royalBlue/10 border border-royalBlue/20 flex items-center justify-center text-royalBlue text-lg transition-transform duration-300">
+                            <i class="fas fa-server"></i>
                         </div>
-                        <div class="w-full bg-[#111] rounded-full h-2.5 border border-[#333] pointer-events-none">
-                            <div class="bg-gradient-to-r from-gray-700 to-gray-200 h-2.5 rounded-full width-animate"
-                                style="--target-width: 90%;"></div>
-                        </div>
-                        <p class="text-xs text-ashGray mt-2 pointer-events-none">PHP (Native & Laravel) • Python • REST
-                            API • Web Services</p>
+                        <h3 class="text-lg font-bold text-white">Backend & Architecture</h3>
                     </div>
-                    <div class="group hover-target p-3 rounded-xl hover:bg-[#1a1a1a] transition-colors">
-                        <div class="flex justify-between text-sm mb-2 pointer-events-none">
-                            <span class="text-white font-medium flex items-center gap-2"><i
-                                    class="fas fa-laptop-code text-gray-500"></i> Frontend Development</span>
-                            <span class="text-gray-400 font-bold group-hover:text-white transition-colors">85%</span>
-                        </div>
-                        <div class="w-full bg-[#111] rounded-full h-2.5 border border-[#333] pointer-events-none">
-                            <div class="bg-gradient-to-r from-gray-700 to-gray-200 h-2.5 rounded-full width-animate"
-                                style="--target-width: 85%;"></div>
-                        </div>
-                        <p class="text-xs text-ashGray mt-2 pointer-events-none">HTML5 • CSS3 • Tailwind CSS • Bootstrap
-                            • JavaScript</p>
+                    <div class="flex flex-wrap gap-2.5">
+                        <span class="tech-tag">Laravel</span>
+                        <span class="tech-tag">PHP Native</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">REST API</span>
+                        <span class="tech-tag">MySQL</span>
+                        <span class="tech-tag">SQL Server</span>
+                        <span class="tech-tag">Zoom API</span>
                     </div>
                 </div>
 
-                <div class="space-y-8 fade-in-up delay-100">
-                    <div class="group hover-target p-3 rounded-xl hover:bg-[#1a1a1a] transition-colors">
-                        <div class="flex justify-between text-sm mb-2 pointer-events-none">
-                            <span class="text-white font-medium flex items-center gap-2"><i
-                                    class="fas fa-database text-gray-500"></i> Database Management</span>
-                            <span class="text-gray-400 font-bold group-hover:text-white transition-colors">80%</span>
+                <div class="skill-domain-card tilt-card">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="skill-icon w-11 h-11 rounded-xl bg-royalBlue/10 border border-royalBlue/20 flex items-center justify-center text-electricCyan text-lg transition-transform duration-300">
+                            <i class="fas fa-laptop-code"></i>
                         </div>
-                        <div class="w-full bg-[#111] rounded-full h-2.5 border border-[#333] pointer-events-none">
-                            <div class="bg-gradient-to-r from-gray-700 to-gray-200 h-2.5 rounded-full width-animate"
-                                style="--target-width: 80%;"></div>
-                        </div>
-                        <p class="text-xs text-ashGray mt-2 pointer-events-none">MySQL • SQL Server • ERD Design •
-                            Relational Logic</p>
+                        <h3 class="text-lg font-bold text-white">Frontend & UI/UX</h3>
                     </div>
+                    <div class="flex flex-wrap gap-2.5">
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">Tailwind CSS</span>
+                        <span class="tech-tag">Bootstrap</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Figma</span>
+                        <span class="tech-tag">Prototyping</span>
+                    </div>
+                </div>
 
-                    <div class="p-3 hover-target">
-                        <h4
-                            class="text-sm text-gray-300 mb-4 uppercase tracking-wider font-semibold pointer-events-none">
-                            Tools & Software Tambahan</h4>
-                        <div class="flex flex-wrap gap-3 pointer-events-none">
-                            <span
-                                class="px-4 py-2 bg-[#121212] text-gray-300 hover:text-white hover:bg-gray-800 transition-colors rounded-lg text-sm border border-[#303030] flex items-center gap-2"><i
-                                    class="fab fa-git-alt"></i> Git/Github</span>
-                            <!-- <span
-                                class="px-4 py-2 bg-[#121212] text-gray-300 hover:text-white hover:bg-gray-800 transition-colors rounded-lg text-sm border border-[#303030] flex items-center gap-2"><i
-                                    class="fab fa-unity"></i> Unity</span> -->
-                            <span
-                                class="px-4 py-2 bg-[#121212] text-gray-300 hover:text-white hover:bg-gray-800 transition-colors rounded-lg text-sm border border-[#303030] flex items-center gap-2"><i
-                                    class="fas fa-puzzle-piece"></i> Problem Solving</span>
-                            <span
-                                class="px-4 py-2 bg-[#121212] text-gray-300 hover:text-white hover:bg-gray-800 transition-colors rounded-lg text-sm border border-[#303030] flex items-center gap-2"><i
-                                    class="fas fa-clock"></i> Time Delivery</span>
+                <div class="skill-domain-card tilt-card">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="skill-icon w-11 h-11 rounded-xl bg-royalBlue/10 border border-royalBlue/20 flex items-center justify-center text-blue-400 text-lg transition-transform duration-300">
+                            <i class="fas fa-robot"></i>
                         </div>
+                        <h3 class="text-lg font-bold text-white">Data & Automation</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2.5">
+                        <span class="tech-tag">Python Pandas</span>
+                        <span class="tech-tag">Data Cleaning</span>
+                        <span class="tech-tag">PDF Extraction</span>
+                        <span class="tech-tag">Automation Scripts</span>
+                    </div>
+                </div>
+
+                <div class="skill-domain-card tilt-card">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="skill-icon w-11 h-11 rounded-xl bg-royalBlue/10 border border-royalBlue/20 flex items-center justify-center text-blue-300 text-lg transition-transform duration-300">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Tools & Methodologies</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2.5">
+                        <span class="tech-tag">Git / GitHub</span>
+                        <span class="tech-tag">Project Management</span>
+                        <span class="tech-tag">Problem Solving</span>
+                        <span class="tech-tag">Time Delivery</span>
+                        <span class="tech-tag">ERD Design</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Gelar & Pendidikan -->
-    <section class="py-20 bg-darkCharcoal border-t border-b border-[#202020]">
+    <!-- ============================================ -->
+    <!-- GELAR & SERTIFIKASI -->
+    <!-- ============================================ -->
+    <section class="py-24 bg-deepNavy">
         <div class="max-w-5xl mx-auto px-6">
             <div class="text-center mb-16 fade-in-up">
                 <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">Gelar & <span
-                        class="gradient-text">Lisensi</span></h2>
-                <div class="w-24 h-1 bg-gray-700 mx-auto rounded-full"></div>
+                        class="gradient-text-blue">Lisensi</span></h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-royalBlue to-electricCyan mx-auto rounded-full"></div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div
-                    class="p-8 bg-[#0a0a0a] rounded-3xl border border-gray-800 hover:border-gray-500 transition-colors group fade-in-up hover-target tilt-card">
-                    <div
-                        class="w-16 h-16 rounded-2xl bg-[#1a1a1a] flex items-center justify-center text-gray-400 text-3xl mb-6 group-hover:text-white group-hover:scale-110 transition-all border border-gray-700 pointer-events-none">
+                <div class="p-8 bg-navyCard rounded-3xl border border-royalBlue/10 hover:border-royalBlue/25 transition-all group fade-in-up tilt-card">
+                    <div class="w-16 h-16 rounded-2xl bg-royalBlue/10 flex items-center justify-center text-royalBlue text-3xl mb-6 group-hover:scale-110 transition-transform border border-royalBlue/15 pointer-events-none">
                         <i class="fas fa-university"></i>
                     </div>
                     <div class="pointer-events-none">
                         <h3 class="text-2xl font-bold text-white mb-2">S1 Sistem Informasi</h3>
-                        <p class="text-gray-400 font-medium mb-1">Universitas Muhammadiyah Sumatera Utara</p>
-                        <p class="text-sm font-semibold text-gray-500 mb-6 bg-gray-900 inline-block px-3 py-1 rounded">
-                            2023 - Sekarang</p>
-                        <div class="pt-4 border-t border-gray-800">
-                            <p class="text-4xl font-extrabold text-white">3.83<span
-                                    class="text-lg text-gray-500 font-normal"> / 4.00 IPK</span></p>
+                        <p class="text-steelSilver font-medium mb-1">Universitas Muhammadiyah Sumatera Utara</p>
+                        <p class="text-sm font-semibold text-royalBlue/60 mb-6 bg-royalBlue/5 inline-block px-3 py-1 rounded border border-royalBlue/10">2023 - Sekarang</p>
+                        <div class="pt-4">
+                            <p class="text-4xl font-extrabold text-white">3.83<span class="text-lg text-steelSilver font-normal"> / 4.00 IPK</span></p>
                         </div>
                     </div>
                 </div>
 
-                <div
-                    class="p-8 bg-[#0a0a0a] rounded-3xl border border-gray-800 hover:border-gray-500 transition-colors group fade-in-up delay-100 hover-target tilt-card">
-                    <div
-                        class="w-16 h-16 rounded-2xl bg-[#1a1a1a] flex items-center justify-center text-gray-400 text-3xl mb-6 group-hover:text-white group-hover:scale-110 transition-all border border-gray-700 pointer-events-none">
+                <div class="p-8 bg-navyCard rounded-3xl border border-royalBlue/10 hover:border-royalBlue/25 transition-all group fade-in-up delay-100 tilt-card">
+                    <div class="w-16 h-16 rounded-2xl bg-royalBlue/10 flex items-center justify-center text-electricCyan text-3xl mb-6 group-hover:scale-110 transition-transform border border-royalBlue/15 pointer-events-none">
                         <i class="fas fa-certificate"></i>
                     </div>
                     <div class="pointer-events-none">
                         <h3 class="text-2xl font-bold text-white mb-4">Sertifikasi Profesional</h3>
                         <ul class="space-y-4">
                             <li class="flex items-start gap-3">
-                                <i class="fas fa-check-circle text-gray-400 mt-1"></i>
+                                <i class="fas fa-check-circle text-royalBlue mt-1"></i>
                                 <div>
-                                    <h4 class="font-bold text-gray-200">Junior Web Developer</h4>
-                                    <p class="text-sm text-gray-500">Badan Nasional Sertifikasi Profesi (BNSP)</p>
+                                    <h4 class="font-bold text-slate-200">Junior Web Developer</h4>
+                                    <p class="text-sm text-steelSilver">Badan Nasional Sertifikasi Profesi (BNSP)</p>
                                 </div>
                             </li>
                             <li class="flex items-start gap-3">
-                                <i class="fas fa-check-circle text-gray-400 mt-1"></i>
+                                <i class="fas fa-check-circle text-royalBlue mt-1"></i>
                                 <div>
-                                    <h4 class="font-bold text-gray-200">Code Generation & Optimization</h4>
-                                    <p class="text-sm text-gray-500">IBM Granite / Hacktiv8 Indonesia</p>
+                                    <h4 class="font-bold text-slate-200">Code Generation & Optimization</h4>
+                                    <p class="text-sm text-steelSilver">IBM Granite / Hacktiv8 Indonesia</p>
                                 </div>
                             </li>
                         </ul>
@@ -745,47 +796,127 @@
         </div>
     </section>
 
-    <!-- Footer Action CTA -->
-    <section class="py-24 px-6 text-center relative overflow-hidden bg-[#050505] fade-in-up">
-        <div class="absolute inset-0 bg-gradient-to-b from-[#111] to-[#050505] pointer-events-none"></div>
-        <div class="relative z-10">
+    <!-- ============================================ -->
+    <!-- TESTIMONI -->
+    <!-- ============================================ -->
+    <section class="py-24 bg-voidBlack">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">Kata <span
+                        class="gradient-text-blue">Mereka</span></h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-royalBlue to-electricCyan mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in-up">
+                <div class="testimonial-card">
+                    <p class="text-steelSilver text-[0.95rem] leading-relaxed mb-5 italic">"Yudha menunjukkan inisiatif
+                        tinggi dan kemampuan teknis yang solid selama magang. Ia mampu mengembangkan sistem terintegrasi
+                        Zoom API secara mandiri dan menyelesaikan otomasi data cleaning yang menghemat waktu kerja
+                        signifikan."</p>
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 rounded-full bg-royalBlue/15 flex items-center justify-center text-royalBlue font-bold text-sm border border-royalBlue/20">
+                            S</div>
+                        <div>
+                            <p class="text-white font-semibold text-sm">Supervisor IT</p>
+                            <p class="text-steelSilver text-xs">PTPN IV — Regional 1</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <p class="text-steelSilver text-[0.95rem] leading-relaxed mb-5 italic">"Sebagai project lead,
+                        Yudha berhasil mengkoordinasikan tim dengan baik dan menghasilkan prototipe UI/UX yang intuitif
+                        untuk aplikasi edukasi Hola. Ia memiliki kemampuan komunikasi dan manajemen proyek yang sangat
+                        baik."</p>
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 rounded-full bg-royalBlue/15 flex items-center justify-center text-electricCyan font-bold text-sm border border-royalBlue/20">
+                            D</div>
+                        <div>
+                            <p class="text-white font-semibold text-sm">Dosen Pembimbing</p>
+                            <p class="text-steelSilver text-xs">Innovillage 2025 — UMSU</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- FOOTER CTA -->
+    <!-- ============================================ -->
+    <section class="py-32 bg-deepNavy fade-in-up">
+        <div class="max-w-7xl mx-auto px-6">
+        <div class="relative text-center overflow-hidden">
+            <div class="absolute inset-0 pointer-events-none">
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-royalBlue/5 rounded-full blur-[120px]"></div>
+            </div>
+            <div class="relative z-10">
             <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-6">Punya Ide Proyek? <br /> Mari <span
-                    class="gradient-text">Wujudkan Bersama.</span></h2>
-            <p class="text-ashGray max-w-2xl mx-auto mb-10 text-lg">
+                    class="gradient-text-blue">Wujudkan Bersama.</span></h2>
+            <p class="text-steelSilver max-w-2xl mx-auto mb-10 text-lg">
                 Terbuka untuk kolaborasi proyek IT, pengembangan arsitektur web, atau sekadar diskusi seputar industri
                 teknologi.
             </p>
-            <a href="mailto:zokeryudha00@gmail.com"
-                class="ripple-btn inline-flex items-center justify-center px-10 py-5 text-lg font-bold text-[#050505] bg-white rounded-full hover:scale-105 hover:bg-gray-200 border border-gray-300 shadow-[0_0_30px_rgba(255,255,255,0.15)] transition-all duration-300 hover-target overflow-hidden">
-                <i class="fas fa-envelope mr-3 pointer-events-none"></i>
-                <span class="pointer-events-none">Tulis Pesan kepada Saya</span>
-            </a>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="mailto:zokeryudha00@gmail.com"
+                    class="ripple-btn inline-flex items-center justify-center px-10 py-4 text-lg font-bold text-voidBlack bg-gradient-to-r from-royalBlue to-electricCyan rounded-full hover:scale-105 shadow-[0_0_40px_rgba(59,130,246,0.2)] transition-all duration-300 overflow-hidden">
+                    <i class="fas fa-envelope mr-3 pointer-events-none"></i>
+                    <span class="pointer-events-none">Tulis Pesan</span>
+                </a>
+                <button
+                    class="copy-email-btn inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-transparent border-2 border-royalBlue/30 rounded-full hover:bg-royalBlue/10 hover:border-royalBlue/50 transition-all duration-300">
+                    <i class="fas fa-copy mr-3 pointer-events-none"></i>
+                    <span class="pointer-events-none">Salin Email</span>
+                </button>
+            </div>
+        </div>
+        </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-[#202020] py-8 bg-[#0a0a0a]">
+    <footer class="py-8 bg-voidBlack">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="font-bold text-white text-xl">Yudha.</div>
-            <p class="text-sm text-gray-500 text-center">
+            <div class="font-bold text-white text-xl">Yudha<span class="text-royalBlue">.</span></div>
+            <p class="text-sm text-steelSilver text-center">
                 &copy; 2026 Yudha Pratama. Didesain dengan minimalisme & presisi.
             </p>
-            <div class="flex space-x-4">
-                <a href="https://github.com/ZokerYuzu"
-                    class="w-10 h-10 rounded-full flex items-center justify-center bg-[#151515] text-gray-500 hover:text-white hover:bg-gray-800 transition border border-[#252525] hover-target">
+            <div class="flex space-x-3">
+                <a href="https://github.com/ZokerYuzu" target="_blank"
+                    class="w-10 h-10 rounded-full flex items-center justify-center bg-navyCard text-steelSilver hover:text-royalBlue hover:bg-royalBlue/10 transition-all border border-royalBlue/10">
                     <i class="fab fa-github pointer-events-none"></i>
                 </a>
                 <a href="https://linkedin.com/in/yudha-pratama-7a10382b4" target="_blank"
-                    class="w-10 h-10 rounded-full flex items-center justify-center bg-[#151515] text-gray-500 hover:text-white hover:bg-gray-800 transition border border-[#252525] hover-target">
+                    class="w-10 h-10 rounded-full flex items-center justify-center bg-navyCard text-steelSilver hover:text-royalBlue hover:bg-royalBlue/10 transition-all border border-royalBlue/10">
                     <i class="fab fa-linkedin-in pointer-events-none"></i>
                 </a>
                 <a href="https://instagram.com/yudhavillyy" target="_blank"
-                    class="w-10 h-10 rounded-full flex items-center justify-center bg-[#151515] text-gray-500 hover:text-white hover:bg-gray-800 transition border border-[#252525] hover-target">
+                    class="w-10 h-10 rounded-full flex items-center justify-center bg-navyCard text-steelSilver hover:text-royalBlue hover:bg-royalBlue/10 transition-all border border-royalBlue/10">
                     <i class="fab fa-instagram pointer-events-none"></i>
                 </a>
             </div>
         </div>
     </footer>
+
+    <!-- Project Modal -->
+    <div id="project-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Tutup modal" onclick="closeProjectModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="modal-image" class="modal-image" src="" alt="">
+            <div class="modal-header">
+                <h3 id="modal-title" class="modal-title"></h3>
+                <div id="modal-meta" class="modal-meta"></div>
+            </div>
+            <p id="modal-description" class="modal-description"></p>
+            <div id="modal-features" class="modal-features"></div>
+            <div id="modal-techs" class="modal-techs"></div>
+            <div id="modal-actions" class="modal-actions"></div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
