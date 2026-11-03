@@ -11,4 +11,14 @@ export default defineConfig({
       '@': path.resolve(import.meta.dirname, './src'),
     },
   },
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+    allowedHosts: true, // Izinkan akses dari domain custom Cloudflare Tunnel
+  },
+  preview: {
+    host: '0.0.0.0',
+    port: 5173,
+    allowedHosts: true,
+  },
 })
