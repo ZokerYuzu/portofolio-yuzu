@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { TECH_BRANCHES, TECH_TREE } from '../../data/arcade-portfolio';
+import { TECH_BRANCHES, TECH_TREE, STAGES, TROPHIES } from '../../data/arcade-portfolio';
 import type { TechSkill } from '../../data/arcade-portfolio';
-import { PixelStar } from '../ui/pixel-icons';
+import { PixelStar, PixelTrophy, PixelScroll, PixelBolt } from '../ui/pixel-icons';
 import { useArcadeAudio } from '../../hooks/use-arcade-audio';
 
 interface TechTreeProps {
@@ -13,232 +13,243 @@ export const TechTree: React.FC<TechTreeProps> = ({ onOpenStage }) => {
   const [selectedSkillId, setSelectedSkillId] = useState<string>(TECH_TREE[0]?.id || 'laravel');
   const { playBleep } = useArcadeAudio();
 
-  const filteredSkills = TECH_TREE.filter((skill) => {
-    if (activeBranch === 'all') return true;
-    return skill.branch === activeBranch;
-  });
-
   const selectedSkill: TechSkill = TECH_TREE.find((s) => s.id === selectedSkillId) || TECH_TREE[0];
+
+  const branchesToShow = activeBranch === 'all'
+    ? TECH_BRANCHES
+    : TECH_BRANCHES.filter((b) => b.id === activeBranch);
 
   const handleBranchClick = (branchId: string) => {
     setActiveBranch(branchId);
-    playBleep(440, 'square', 0.04);
+    playBleep(450, 'square', 0.05);
   };
 
   const handleSkillSelect = (skill: TechSkill) => {
     setSelectedSkillId(skill.id);
-    playBleep(640, 'square', 0.04);
+    playBleep(skill.freq, 'square', 0.08);
   };
 
-  // Convert skill.level (1-5) to 10 XP pips
-  const filledPips = Math.round((selectedSkill.level / 5) * 10);
+  const filledPips = Math.round(selectedSkill.xp / 10);
+
+  const getTrophyIcon = (icon: 'trophy' | 'scroll' | 'bolt') => {
+    switch (icon) {
+      case 'trophy':
+        return <PixelTrophy className="w-4 h-4 text-[var(--amber)]" />;
+      case 'scroll':
+        return <PixelScroll className="w-4 h-4 text-[var(--blue)]" />;
+      case 'bolt':
+        return <PixelBolt className="w-4 h-4 text-amber-400" />;
+      default:
+        return <PixelTrophy className="w-4 h-4 text-[var(--amber)]" />;
+    }
+  };
 
   return (
-    <section id="skill" className="py-16 md:py-20 border-b-2 border-[var(--line)] bg-[var(--ink)]">
-      <div className="max-w-6xl mx-auto px-4 md:px-8">
+    <section className="section py-16 md:py-20 border-b-2 border-[var(--line)]" id="skill">
+      <div className="shell">
         
-        {/* Section Header */}
-        <div className="mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 border-2 border-[var(--line-2)] bg-[var(--panel)] font-mono text-[9px] tracking-widest uppercase text-[var(--amber)] mb-3">
-            <span>[SKILL MATRIX]</span>
-            <span>·</span>
-            <span>TECH TREE HUD</span>
+        {/* Section Head */}
+        <div className="sec-head">
+          <div className="sec-head__left">
+            <span className="sec-head__num">03</span>
+            <h2>TECH TREE & INVENTORY</h2>
           </div>
-          <h2 className="font-pixel text-lg sm:text-2xl text-[var(--cream)] tracking-tight">
-            POHON SKILL &amp; KOMPETENSI
-          </h2>
-          <p className="font-mono text-xs text-[#a39c8a] mt-2 max-w-xl">
-            Pilih node keahlian untuk memeriksa level penguasaan, implementasi production, dan stage proyek terkait.
-          </p>
+          <span className="sec-head__note">INTERACTIVE SKILL MATRIX · KLIK NODE UNTUK INSPECT</span>
         </div>
 
-        {/* Branch Filter Tabs */}
-        <div className="flex items-center gap-2 mb-8 flex-wrap" role="tablist" aria-label="Kategori skill">
+        {/* Tree Branch Nav */}
+        <div className="tree-nav" role="tablist" aria-label="Filter Cabang Keahlian">
           <button
+            className={`tree-nav-btn ${activeBranch === 'all' ? 'is-active' : ''}`}
             type="button"
-            role="tab"
-            aria-selected={activeBranch === 'all'}
             onClick={() => handleBranchClick('all')}
-            className={`px-3.5 py-1.5 border-2 font-mono text-[10px] tracking-wider uppercase transition-all cursor-pointer shadow-[3px_3px_0_rgba(0,0,0,0.6)] ${
-              activeBranch === 'all'
-                ? 'border-[var(--amber)] bg-[var(--amber)] text-[var(--ink)] font-bold translate-x-0.5 translate-y-0.5 shadow-none'
-                : 'border-[var(--line-2)] bg-[var(--panel)] text-[#a39c8a] hover:border-[var(--line)] hover:text-[var(--cream)]'
-            }`}
           >
-            SEMUA CABANG
+            SEMUA CABANG [12]
           </button>
-          {TECH_BRANCHES.map((branch) => (
-            <button
-              key={branch.id}
-              type="button"
-              role="tab"
-              aria-selected={activeBranch === branch.id}
-              onClick={() => handleBranchClick(branch.id)}
-              className={`px-3.5 py-1.5 border-2 font-mono text-[10px] tracking-wider uppercase transition-all cursor-pointer shadow-[3px_3px_0_rgba(0,0,0,0.6)] ${
-                activeBranch === branch.id
-                  ? 'border-[var(--amber)] bg-[var(--amber)] text-[var(--ink)] font-bold translate-x-0.5 translate-y-0.5 shadow-none'
-                  : 'border-[var(--line-2)] bg-[var(--panel)] text-[#a39c8a] hover:border-[var(--line)] hover:text-[var(--cream)]'
-              }`}
-            >
-              {branch.name}
-            </button>
-          ))}
+          {TECH_BRANCHES.map((b) => {
+            const count = TECH_TREE.filter((s) => s.branch === b.id).length;
+            return (
+              <button
+                key={b.id}
+                className={`tree-nav-btn ${activeBranch === b.id ? 'is-active' : ''}`}
+                type="button"
+                onClick={() => handleBranchClick(b.id)}
+              >
+                {b.name} [{count}]
+              </button>
+            );
+          })}
         </div>
 
-        {/* Grid Layout: Left Nodes + Right RPG Inspector */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Tree Shell: Left Branch Groups + Right Inspector */}
+        <div className="tree-shell">
           
-          {/* Left Column: Skill Nodes (col-span-7) */}
-          <div className="lg:col-span-7">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-              {filteredSkills.map((skill) => {
-                const isSelected = selectedSkill.id === skill.id;
-                return (
-                  <button
-                    key={skill.id}
-                    type="button"
-                    onClick={() => handleSkillSelect(skill)}
-                    className={`p-3.5 border-2 text-left transition-all flex flex-col justify-between cursor-pointer ${
-                      isSelected
-                        ? 'border-[var(--amber)] bg-[var(--panel)] shadow-[4px_4px_0_rgba(245,165,36,0.35)] translate-x-0.5 translate-y-0.5'
-                        : 'border-[var(--line-2)] bg-[var(--panel-2)] hover:border-[var(--line)] text-[#cfc7b4] shadow-[3px_3px_0_rgba(0,0,0,0.7)] hover:-translate-y-0.5'
-                    }`}
-                    aria-pressed={isSelected}
-                  >
-                    <div>
-                      {/* Node Top Header */}
-                      <div className="flex items-center justify-between font-mono text-[8.5px] uppercase tracking-wider text-[#8e8878] mb-1.5">
-                        <span className="flex items-center gap-1.5">
-                          {isSelected && <span className="text-[var(--amber)] font-bold">▶</span>}
-                          <span>{skill.branch}</span>
-                        </span>
-                        <span className="px-1.5 py-0.2 border border-[var(--line)] bg-[var(--ink)] text-[var(--blue)] font-bold">
-                          {skill.tier}
-                        </span>
-                      </div>
+          {/* Left: Branch Groups */}
+          <div className="tree-branches">
+            {branchesToShow.map((branch) => {
+              const skillsInBranch = TECH_TREE.filter((s) => s.branch === branch.id);
+              if (!skillsInBranch.length) return null;
 
-                      {/* Skill Name */}
-                      <div className="text-sm font-bold text-[var(--cream)] leading-snug">
-                        {skill.name}
-                      </div>
-                    </div>
+              return (
+                <div key={branch.id} className="tree-branch-group">
+                  <div className="tree-branch-header">
+                    <span className="tree-branch-title">{branch.name}</span>
+                    <span className="tree-branch-count">{skillsInBranch.length} NODES</span>
+                  </div>
 
-                    {/* Star Rating & Stage Count */}
-                    <div className="flex items-center justify-between pt-2.5 mt-2.5 border-t border-[var(--line)] font-mono text-[9px]">
-                      <div className="flex items-center gap-1" aria-label={`Rating ${skill.level} dari 5`}>
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <PixelStar
-                            key={star}
-                            size={11}
-                            className={star <= skill.level ? 'text-[var(--amber)]' : 'text-[#3d3d46]'}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-[#8e8878]">
-                        {skill.stages.length} STAGE
-                      </span>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+                  <div className="tree-nodes-grid">
+                    {skillsInBranch.map((skill) => {
+                      const isSelected = skill.id === selectedSkillId;
+
+                      return (
+                        <button
+                          key={skill.id}
+                          type="button"
+                          className={`tree-node ${isSelected ? 'is-selected' : ''}`}
+                          onMouseEnter={() => playBleep(skill.freq * 0.8, 'triangle', 0.03)}
+                          onClick={() => handleSkillSelect(skill)}
+                        >
+                          <div className="tree-node-top">
+                            <span className="tree-node-tier">{skill.tier}</span>
+                            <span className="tree-node-status">{skill.status}</span>
+                          </div>
+
+                          <div className="tree-node-name">{skill.name}</div>
+
+                          <div className="tree-node-meta">
+                            <span className="flex items-center gap-0.5" aria-label={`Rating ${skill.level} dari 5`}>
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <PixelStar
+                                  key={star}
+                                  size={10}
+                                  className={star <= skill.level ? 'text-[var(--amber)]' : 'text-[#3d3d46]'}
+                                />
+                              ))}
+                            </span>
+                            <span>
+                              LVL <b>{skill.level}</b>
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
-          {/* Right Column: RPG HUD Inspector (col-span-5) */}
-          <div className="lg:col-span-5">
-            <div className="sticky top-20 border-2 border-[var(--amber)] bg-[var(--panel)] p-5 sm:p-6 shadow-[8px_8px_0_rgba(0,0,0,0.9)] flex flex-col gap-4">
-              
-              {/* Inspector Top Bar */}
-              <div className="flex items-center justify-between pb-3 border-b-2 border-[var(--line)]">
-                <span className="font-pixel text-[9px] text-[var(--amber)]">
-                  [INSPECTOR]
-                </span>
-                <span className="px-2 py-0.5 border border-emerald-500/40 bg-emerald-950/30 font-mono text-[8.5px] tracking-widest uppercase text-emerald-400 font-bold">
-                  {selectedSkill.status}
-                </span>
+          {/* Right: Sticky Inspector */}
+          <aside className="tree-inspector" aria-label="Skill Inspector">
+            <div className="inspector-bar">
+              <span className="inspector-title-code pixel">
+                {TECH_BRANCHES.find((b) => b.id === selectedSkill.branch)?.name || 'SKILL MATRIX'}
+              </span>
+              <span className="inspector-status-badge mono">
+                {selectedSkill.status}
+              </span>
+            </div>
+
+            <div>
+              <h3 className="inspector-name">{selectedSkill.name}</h3>
+              <div className="inspector-tier">
+                {selectedSkill.tier} · LVL {selectedSkill.level}
               </div>
+            </div>
 
-              {/* Title & Tier */}
-              <div>
-                <h3 className="text-xl sm:text-2xl font-bold text-[var(--cream)] tracking-tight">
-                  {selectedSkill.name}
-                </h3>
-                <div className="font-mono text-[10px] tracking-widest uppercase text-[var(--blue)] font-bold mt-1">
-                  {selectedSkill.tier} · {selectedSkill.branch.toUpperCase()}
-                </div>
+            <div className="inspector-xp-wrap">
+              <div className="inspector-xp-head">
+                <span>PROFICIENCY / XP GAUGE</span>
+                <span>{selectedSkill.xp}%</span>
               </div>
-
-              {/* 10-Pip XP Gauge */}
-              <div className="p-3 border border-[var(--line)] bg-[var(--panel-2)]">
-                <div className="flex items-center justify-between font-mono text-[9px] tracking-widest uppercase text-[#a39c8a] mb-2">
-                  <span>MASTERY GAUGE</span>
-                  <span className="text-[var(--amber)] font-bold">{selectedSkill.level} / 5 ({selectedSkill.xp}% XP)</span>
-                </div>
-                <div className="inspector-xp-gauge flex gap-1 h-2.5">
-                  {[...Array(10)].map((_, i) => (
-                    <div
-                      key={i}
-                      className={`flex-1 transition-colors ${
-                        i < filledPips ? 'bg-[var(--amber)]' : 'bg-[#2a2a34]'
-                      }`}
-                    />
-                  ))}
-                </div>
+              <div className="inspector-xp-gauge">
+                {[...Array(10)].map((_, i) => (
+                  <div
+                    key={i}
+                    className={`xp-pip ${i < filledPips ? 'is-filled' : ''}`}
+                  />
+                ))}
               </div>
+            </div>
 
-              {/* Real-World Context Description */}
-              <p className="text-xs sm:text-sm text-[#d8d0bd] leading-relaxed font-sans">
-                {selectedSkill.desc}
-              </p>
+            <p className="inspector-desc">{selectedSkill.desc}</p>
 
-              {/* Production Perks */}
-              <div className="pt-2 border-t border-[var(--line)]">
-                <div className="font-mono text-[9px] tracking-widest uppercase text-[#8e8878] mb-2 font-bold">
-                  [FITUR &amp; PERK PRODUKSI]
-                </div>
-                <ul className="space-y-1.5 text-xs text-[#cfc7b4]">
-                  {selectedSkill.perks.map((perk, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <span className="text-[var(--amber)] select-none mt-0.5">■</span>
-                      <span className="leading-snug">{perk}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            <div>
+              <h4 className="inspector-h">Yang Dibangun / Production Perks</h4>
+              <ul className="inspector-perks">
+                {selectedSkill.perks.map((perk, i) => (
+                  <li key={i}>{perk}</li>
+                ))}
+              </ul>
+            </div>
 
-              {/* Cross-Link Stage Pills */}
-              <div className="pt-3 border-t border-[var(--line)]">
-                <div className="font-mono text-[9px] tracking-widest uppercase text-[#8e8878] mb-2 font-bold">
-                  [TERVERIFIKASI PADA STAGE]
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {selectedSkill.stages.length > 0 ? (
-                    selectedSkill.stages.map((stageCode) => (
+            <div>
+              <h4 className="inspector-h">Dipakai Di Proyek / Stages (Klik untuk Modal)</h4>
+              <div className="inspector-stages">
+                {selectedSkill.stages.length > 0 ? (
+                  selectedSkill.stages.map((stageCode) => {
+                    const stageObj = STAGES.find((s) => s.code === stageCode);
+                    const stageName = stageObj ? stageObj.name : stageCode;
+
+                    return (
                       <button
                         key={stageCode}
                         type="button"
+                        className="stage-tag-btn"
+                        title={`Buka detail modal proyek ${stageName}`}
                         onClick={() => {
-                          playBleep(600, 'square', 0.05);
+                          playBleep(620, 'square', 0.07);
                           onOpenStage(stageCode);
                         }}
-                        className="px-2.5 py-1 border border-[var(--line-2)] hover:border-[var(--amber)] bg-[var(--ink)] text-[var(--cream)] hover:text-[var(--amber)] font-mono text-[9.5px] uppercase tracking-wider transition-colors cursor-pointer flex items-center gap-1.5"
-                        aria-label={`Buka modal untuk stage ${stageCode}`}
                       >
-                        <span>[{stageCode}]</span>
-                        <span>▶</span>
+                        <i aria-hidden="true" />
+                        <span>{stageCode} · {stageName}</span>
                       </button>
-                    ))
-                  ) : (
-                    <span className="font-mono text-[9px] text-[#7d7666]">
-                      [CORE ARCHITECTURE &amp; WORKFLOW]
-                    </span>
-                  )}
-                </div>
+                    );
+                  })
+                ) : (
+                  <span className="mono text-[9px] text-[#7d7666]">
+                    DIPAKAI DI WORKFLOW UTAMA
+                  </span>
+                )}
               </div>
-
             </div>
+          </aside>
+
+        </div>
+
+        {/* Integrated Trophy Shelf */}
+        <div className="trophy-shelf">
+          <div className="trophy-shelf-header">
+            <span className="trophy-shelf-title">ACHIEVEMENT &amp; TROPHY VAULT</span>
+            <span className="trophy-shelf-note">OFFICIAL LICENSES &amp; HONORS</span>
           </div>
 
+          <div className="trophy-grid">
+            {TROPHIES.map((trophy) => (
+              <div key={trophy.id} className="trophy-card">
+                <div className="trophy-card-top">
+                  <span className="trophy-icon" aria-hidden="true">
+                    {getTrophyIcon(trophy.icon)}
+                  </span>
+                  <span className="trophy-badge">{trophy.badge}</span>
+                </div>
+
+                <div>
+                  <span className="trophy-role">{trophy.role}</span>
+                  <h3 className="trophy-name">{trophy.name}</h3>
+                  <p className="trophy-issuer">{trophy.issuer}</p>
+                </div>
+
+                <div className="trophy-foot">
+                  <span>
+                    {trophy.metricLabel} <b>{trophy.metricValue}</b>
+                  </span>
+                  <span className="trophy-metric">[VERIFIED]</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
       </div>

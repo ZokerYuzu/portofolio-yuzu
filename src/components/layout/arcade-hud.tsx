@@ -16,82 +16,80 @@ export const ArcadeHud: React.FC = () => {
   const handleSfxToggle = () => {
     toggleSfx();
     if (!sfxEnabled) {
-      // playing a chime on turn-on
       setTimeout(() => playBleep(660, 'square', 0.08), 50);
     }
   };
 
   return (
     <header className="sticky top-0 z-50 border-b-2 border-[var(--line)] bg-[var(--ink)]/95 backdrop-blur-md">
-      <div className="max-w-6xl mx-auto px-4 md:px-8 flex items-center justify-between min-h-[64px] gap-4">
-        {/* Coin Mark / Player Identity */}
-        <a 
-          href="#top" 
-          onClick={(e) => handleNavClick(e, 'top')} 
-          className="inline-flex items-center gap-3 no-underline group focus-visible:outline-2 focus-visible:outline-[var(--amber)]"
+      <div className="shell flex items-center gap-6 min-h-[64px]">
+        {/* Coin / Logo */}
+        <a
+          href="#main"
+          onClick={(e) => handleNavClick(e, 'main')}
+          className="inline-flex items-center gap-2.5 no-underline group focus-visible:outline-2 focus-visible:outline-[var(--amber)]"
         >
-          <div className="w-8 h-8 grid place-items-center bg-[var(--amber)] text-[var(--ink)] font-pixel text-[10px] font-bold shadow-[2px_2px_0_rgba(0,0,0,0.85)] group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform">
+          <span className="grid place-items-center w-[30px] h-[30px] bg-[var(--amber)] text-[var(--ink)] font-pixel text-[9px] font-bold shadow-[2px_2px_0_rgba(0,0,0,0.85)] group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform">
             YP
-          </div>
-          <div className="hidden sm:block font-pixel text-[9px] leading-tight text-[var(--cream)]">
-            <div className="tracking-wide">YUDHA PRATAMA</div>
-            <div className="font-mono text-[9px] text-[#8e8878] tracking-widest mt-1">SISTEM INFORMASI · UMSU</div>
-          </div>
+          </span>
+          <span className="font-pixel text-[9px] leading-snug text-[var(--cream)]">
+            YUDHA<br />PRATAMA
+          </span>
         </a>
 
-        {/* Center / Right Nav Items */}
-        <nav className="flex items-center gap-1 sm:gap-2" aria-label="Arcade Main Navigation">
+        {/* Navigation Links */}
+        <nav className="flex items-center gap-1 ml-auto" aria-label="Navigasi utama">
           <a
             href="#stage"
             onClick={(e) => handleNavClick(e, 'stage')}
-            className="px-2 sm:px-3 py-1.5 border-2 border-transparent hover:border-[var(--line-2)] hover:bg-[var(--panel)] font-mono text-[10px] tracking-wider text-[#b9b19c] hover:text-[var(--cream)] uppercase transition-colors"
+            className="inline-flex items-center gap-2 min-h-[40px] px-3 border-2 border-transparent hover:border-[var(--line-2)] hover:bg-[var(--panel)] font-mono text-[10px] tracking-widest text-[#b9b19c] hover:text-[var(--cream)] uppercase transition-colors before:content-['·'] hover:before:content-['▶'] hover:before:text-[var(--amber)]"
           >
-            STAGE
+            01 Proyek
+          </a>
+          <a
+            href="#pengalaman"
+            onClick={(e) => handleNavClick(e, 'pengalaman')}
+            className="hidden sm:inline-flex items-center gap-2 min-h-[40px] px-3 border-2 border-transparent hover:border-[var(--line-2)] hover:bg-[var(--panel)] font-mono text-[10px] tracking-widest text-[#b9b19c] hover:text-[var(--cream)] uppercase transition-colors before:content-['·'] hover:before:content-['▶'] hover:before:text-[var(--amber)]"
+          >
+            02 Pengalaman
           </a>
           <a
             href="#skill"
             onClick={(e) => handleNavClick(e, 'skill')}
-            className="px-2 sm:px-3 py-1.5 border-2 border-transparent hover:border-[var(--line-2)] hover:bg-[var(--panel)] font-mono text-[10px] tracking-wider text-[#b9b19c] hover:text-[var(--cream)] uppercase transition-colors"
+            className="inline-flex items-center gap-2 min-h-[40px] px-3 border-2 border-transparent hover:border-[var(--line-2)] hover:bg-[var(--panel)] font-mono text-[10px] tracking-widest text-[#b9b19c] hover:text-[var(--cream)] uppercase transition-colors before:content-['·'] hover:before:content-['▶'] hover:before:text-[var(--amber)]"
           >
-            SKILL
-          </a>
-          <a
-            href="#trophy"
-            onClick={(e) => handleNavClick(e, 'trophy')}
-            className="px-2 sm:px-3 py-1.5 border-2 border-transparent hover:border-[var(--line-2)] hover:bg-[var(--panel)] font-mono text-[10px] tracking-wider text-[#b9b19c] hover:text-[var(--cream)] uppercase transition-colors"
-          >
-            TROPHY
+            03 Skill
           </a>
           <a
             href="#kontak"
             onClick={(e) => handleNavClick(e, 'kontak')}
-            className="px-2 sm:px-3 py-1.5 border-2 border-transparent hover:border-[var(--line-2)] hover:bg-[var(--panel)] font-mono text-[10px] tracking-wider text-[#b9b19c] hover:text-[var(--cream)] uppercase transition-colors"
+            className="inline-flex items-center gap-2 min-h-[40px] px-3 border-2 border-transparent hover:border-[var(--line-2)] hover:bg-[var(--panel)] font-mono text-[10px] tracking-widest text-[#b9b19c] hover:text-[var(--cream)] uppercase transition-colors before:content-['·'] hover:before:content-['▶'] hover:before:text-[var(--amber)]"
           >
-            KONTAK
+            04 Kontak
           </a>
         </nav>
 
-        {/* Right HUD Controls: Hi-Score & SFX */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          <div className="hidden lg:inline-flex items-center gap-2 px-3 py-1.5 border-2 border-[var(--line)] font-mono text-[10px] tracking-wider text-[#b9b19c]">
-            <span>HI-SCORE</span>
-            <b className="text-[var(--amber)] font-bold">3.83</b>
-          </div>
+        {/* Hi Score & SFX */}
+        <div className="flex items-center gap-3">
+          <span className="hidden md:inline-flex items-center gap-2 px-3 py-2 border-2 border-[var(--line)] font-mono text-[10px] tracking-wider text-[#b9b19c] whitespace-nowrap">
+            HI SCORE <b className="text-[var(--amber)] font-bold">3.83</b>
+          </span>
 
           <button
             type="button"
             onClick={handleSfxToggle}
-            className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 border-2 font-mono text-[10px] tracking-wider transition-colors cursor-pointer ${
+            className={`inline-flex items-center gap-1.5 px-3 py-2 border-2 font-mono text-[10px] tracking-wider transition-colors cursor-pointer whitespace-nowrap ${
               sfxEnabled
                 ? 'border-[var(--amber)] text-[var(--amber)] bg-[var(--panel)]'
-                : 'border-[var(--line)] text-[#8e8878] hover:border-[var(--line-2)] hover:text-[#b9b19c] bg-transparent'
+                : 'border-[var(--line)] text-[#b9b19c] hover:border-[var(--line-2)] bg-transparent'
             }`}
-            aria-label={`Toggle sound effects, currently ${sfxEnabled ? 'on' : 'off'}`}
+            aria-pressed={sfxEnabled}
+            title="Efek Suara 8-Bit Chiptune"
           >
             <span>SFX:</span>
-            <span className={sfxEnabled ? 'text-emerald-400 font-bold' : 'text-[#8e8878] font-bold'}>
+            <b className={sfxEnabled ? 'text-emerald-400 font-bold' : 'text-[#7d7666] font-bold'}>
               {sfxEnabled ? 'ON' : 'OFF'}
-            </span>
+            </b>
           </button>
         </div>
       </div>

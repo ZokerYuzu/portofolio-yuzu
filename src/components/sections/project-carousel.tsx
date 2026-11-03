@@ -4,29 +4,31 @@ import type { Stage } from '../../data/arcade-portfolio';
 import { useArcadeAudio } from '../../hooks/use-arcade-audio';
 
 interface ProjectCarouselProps {
-  onSelectStage: (stage: Stage) => void;
+  onSelectStage: (stage: Stage, index: number) => void;
   activeStageCode?: string;
 }
 
-type FilterCategory = 'SEMUA' | 'INTERNAL' | 'SHIPPED' | 'ARCHIVE';
+type FilterCategory = 'all' | 'INTERNAL' | 'SHIPPED' | 'ARCHIVE';
 
-const FILTERS: FilterCategory[] = ['SEMUA', 'INTERNAL', 'SHIPPED', 'ARCHIVE'];
+const pad = (n: number) => String(n).padStart(2, '0');
 
 export const ProjectCarousel: React.FC<ProjectCarouselProps> = ({ onSelectStage, activeStageCode }) => {
-  const [activeFilter, setActiveFilter] = useState<FilterCategory>('SEMUA');
+  const [activeFilter, setActiveFilter] = useState<FilterCategory>('all');
   const [currentIndex, setCurrentIndex] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
   const { playBleep } = useArcadeAudio();
 
-  const filteredStages = STAGES.filter((stage) => {
-    if (activeFilter === 'SEMUA') return true;
-    return stage.flag === activeFilter;
-  });
+  const filteredStagesWithIndex = STAGES.map((stage, originalIdx) => ({ stage, originalIdx })).filter(
+    ({ stage }) => {
+      if (activeFilter === 'all') return true;
+      return stage.flag === activeFilter;
+    }
+  );
 
   const handleFilterClick = (filter: FilterCategory) => {
     setActiveFilter(filter);
     setCurrentIndex(0);
-    playBleep(480, 'square', 0.04);
+    playBleep(480, 'square', 0.05);
     if (trackRef.current) {
       trackRef.current.scrollTo({ left: 0, behavior: 'smooth' });
     }
@@ -34,13 +36,11 @@ export const ProjectCarousel: React.FC<ProjectCarouselProps> = ({ onSelectStage,
 
   const scrollToIndex = (index: number) => {
     if (!trackRef.current) return;
-    const items = trackRef.current.children;
-    if (index >= 0 && index < items.length) {
-      const targetElement = items[index] as HTMLElement;
-      targetElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-      setCurrentIndex(index);
-      playBleep(520, 'square', 0.04);
-    }
+    const card = trackRef.current.querySelector('.stage') as HTMLElement;
+    const cardWidth = card ? card.offsetWidth + 20 : 380;
+    trackRef.current.scrollTo({ left: index * cardWidth, behavior: 'smooth' });
+    setCurrentIndex(index);
+    playBleep(520, 'square', 0.05);
   };
 
   const handlePrev = () => {
@@ -50,187 +50,139 @@ export const ProjectCarousel: React.FC<ProjectCarouselProps> = ({ onSelectStage,
   };
 
   const handleNext = () => {
-    if (currentIndex < filteredStages.length - 1) {
+    if (currentIndex < filteredStagesWithIndex.length - 1) {
       scrollToIndex(currentIndex + 1);
     }
   };
 
-  // Sync scroll position with current index
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
     const handleScroll = () => {
-      const scrollLeft = track.scrollLeft;
-      const itemWidth = track.firstElementChild ? (track.firstElementChild as HTMLElement).offsetWidth + 20 : 400;
-      const newIndex = Math.round(scrollLeft / itemWidth);
-      if (newIndex >= 0 && newIndex < filteredStages.length && newIndex !== currentIndex) {
-        setCurrentIndex(newIndex);
+      const card = track.querySelector('.stage') as HTMLElement;
+      const cardWidth = card ? card.offsetWidth + 20 : 380;
+      const scrollPos = track.scrollLeft;
+      const newIdx = Math.min(
+        filteredStagesWithIndex.length - 1,
+        Math.max(0, Math.round(scrollPos / cardWidth))
+      );
+      if (newIdx !== currentIndex) {
+        setCurrentIndex(newIdx);
       }
     };
 
     track.addEventListener('scroll', handleScroll, { passive: true });
     return () => track.removeEventListener('scroll', handleScroll);
-  }, [currentIndex, filteredStages.length]);
+  }, [currentIndex, filteredStagesWithIndex.length]);
 
   return (
-    <section id="stage" className="py-16 md:py-20 border-b-2 border-[var(--line)] bg-[var(--ink)]">
-      <div className="max-w-6xl mx-auto px-4 md:px-8">
+    <section className="section py-16 md:py-20 border-b-2 border-[var(--line)]" id="stage">
+      <div className="shell">
         
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 border-2 border-[var(--line-2)] bg-[var(--panel)] font-mono text-[9px] tracking-widest uppercase text-[var(--amber)] mb-3">
-              <span>[STAGE SELECT]</span>
-              <span>·</span>
-              <span>11 PROYEK TERUJI</span>
-            </div>
-            <h2 className="font-pixel text-lg sm:text-2xl text-[var(--cream)] tracking-tight">
-              PILIH STAGE PROYEK
-            </h2>
-            <p className="font-mono text-xs text-[#a39c8a] mt-2 max-w-xl">
-              Geser kartu secara horizontal atau klik navigasi untuk meninjau detail arsitektur, stack, dan tantangan teknis.
-            </p>
+        {/* Section Head */}
+        <div className="sec-head">
+          <div className="sec-head__left">
+            <span className="sec-head__num">01</span>
+            <h2>SELECT STAGE</h2>
           </div>
-
-          {/* Carousel Controls (PREV / NEXT / COUNTER) */}
-          <div className="flex items-center gap-3">
-            <div className="px-3 py-2 border-2 border-[var(--line)] bg-[var(--panel-2)] font-mono text-[10px] tracking-widest text-[var(--amber)]">
-              STAGE {String(currentIndex + 1).padStart(2, '0')} / {String(filteredStages.length).padStart(2, '0')}
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={handlePrev}
-                disabled={currentIndex === 0}
-                className="stage-ctrl-btn px-3 py-2 border-2 border-[var(--line-2)] disabled:border-[var(--line)] disabled:opacity-30 bg-[var(--panel)] hover:border-[var(--amber)] text-[var(--cream)] hover:text-[var(--amber)] font-mono text-[10px] tracking-wider uppercase transition-all shadow-[3px_3px_0_rgba(0,0,0,0.7)] disabled:shadow-none cursor-pointer disabled:cursor-not-allowed"
-                aria-label="Previous Project"
-              >
-                ◀ PREV
-              </button>
-
-              <button
-                type="button"
-                onClick={handleNext}
-                disabled={currentIndex === filteredStages.length - 1}
-                className="stage-ctrl-btn px-3 py-2 border-2 border-[var(--line-2)] disabled:border-[var(--line)] disabled:opacity-30 bg-[var(--panel)] hover:border-[var(--amber)] text-[var(--cream)] hover:text-[var(--amber)] font-mono text-[10px] tracking-wider uppercase transition-all shadow-[3px_3px_0_rgba(0,0,0,0.7)] disabled:shadow-none cursor-pointer disabled:cursor-not-allowed"
-                aria-label="Next Project"
-              >
-                NEXT ▶
-              </button>
-            </div>
-          </div>
+          <span className="sec-head__note">11 STAGE · 2023—2026</span>
         </div>
 
-        {/* Filter Tabs */}
-        <div className="flex items-center gap-2 mb-8 flex-wrap" role="tablist" aria-label="Filter proyek">
-          {FILTERS.map((filter) => (
+        {/* Head Controls Row: Filters + Prev/Counter/Next */}
+        <div className="stages-head-row">
+          <div className="stage-filters" role="tablist" aria-label="Filter Proyek">
             <button
-              key={filter}
+              className={`filter-btn ${activeFilter === 'all' ? 'is-active' : ''}`}
               type="button"
-              role="tab"
-              aria-selected={activeFilter === filter}
-              onClick={() => handleFilterClick(filter)}
-              className={`px-3.5 py-1.5 border-2 font-mono text-[10px] tracking-wider uppercase transition-all cursor-pointer shadow-[3px_3px_0_rgba(0,0,0,0.6)] ${
-                activeFilter === filter
-                  ? 'border-[var(--amber)] bg-[var(--amber)] text-[var(--ink)] font-bold translate-x-0.5 translate-y-0.5 shadow-none'
-                  : 'border-[var(--line-2)] bg-[var(--panel)] text-[#a39c8a] hover:border-[var(--line)] hover:text-[var(--cream)]'
-              }`}
+              onClick={() => handleFilterClick('all')}
             >
-              {filter}
+              SEMUA [11]
             </button>
-          ))}
+            <button
+              className={`filter-btn ${activeFilter === 'INTERNAL' ? 'is-active' : ''}`}
+              type="button"
+              onClick={() => handleFilterClick('INTERNAL')}
+            >
+              INTERNAL AVI [4]
+            </button>
+            <button
+              className={`filter-btn ${activeFilter === 'SHIPPED' ? 'is-active' : ''}`}
+              type="button"
+              onClick={() => handleFilterClick('SHIPPED')}
+            >
+              SHIPPED / PUBLIK [4]
+            </button>
+            <button
+              className={`filter-btn ${activeFilter === 'ARCHIVE' ? 'is-active' : ''}`}
+              type="button"
+              onClick={() => handleFilterClick('ARCHIVE')}
+            >
+              ARSIP AKADEMIK [3]
+            </button>
+          </div>
+
+          <div className="stages-ctrls">
+            <button
+              className="stage-ctrl-btn"
+              type="button"
+              onClick={handlePrev}
+              disabled={currentIndex === 0}
+              aria-label="Tahap Sebelumnya"
+            >
+              ◄ PREV
+            </button>
+            <span className="stage-counter-badge mono">
+              {pad(currentIndex + 1)} / {pad(filteredStagesWithIndex.length)}
+            </span>
+            <button
+              className="stage-ctrl-btn"
+              type="button"
+              onClick={handleNext}
+              disabled={currentIndex >= filteredStagesWithIndex.length - 1}
+              aria-label="Tahap Berikutnya"
+            >
+              NEXT ►
+            </button>
+          </div>
         </div>
 
-        {/* Horizontal Snap Track */}
-        <div className="relative">
-          <div
-            ref={trackRef}
-            className="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-6 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-            style={{ scrollSnapType: 'x mandatory' }}
-          >
-            {filteredStages.map((stage, idx) => {
+        {/* Carousel Track */}
+        <div className="stages-carousel-wrapper">
+          <div ref={trackRef} className="stages-track">
+            {filteredStagesWithIndex.map(({ stage, originalIdx }, index) => {
               const isSelected = activeStageCode === stage.code;
-              const stackPills = stage.stack.split(' · ');
 
               return (
-                <div
+                <button
                   key={stage.code}
-                  className={`flex-shrink-0 w-[88vw] sm:w-[380px] md:w-[420px] snap-start border-2 bg-[var(--panel)] p-5 flex flex-col justify-between cursor-pointer transition-all ${
-                    isSelected
-                      ? 'border-[var(--amber)] shadow-[6px_6px_0_rgba(245,165,36,0.3)]'
-                      : 'border-[var(--line-2)] hover:border-[var(--amber)] shadow-[5px_5px_0_rgba(0,0,0,0.8)] hover:-translate-y-1'
-                  }`}
+                  type="button"
+                  className="stage"
+                  aria-current={isSelected}
+                  onMouseEnter={() => playBleep(360, 'triangle', 0.03)}
                   onClick={() => {
-                    playBleep(580, 'square', 0.05);
-                    onSelectStage(stage);
+                    playBleep(640, 'square', 0.08);
+                    onSelectStage(stage, originalIdx);
                   }}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      playBleep(580, 'square', 0.05);
-                      onSelectStage(stage);
-                    }
-                  }}
-                  aria-label={`Lihat detail ${stage.name}`}
                 >
-                  <div>
-                    {/* Stage Header */}
-                    <div className="flex items-center justify-between pb-3 mb-3 border-b-2 border-[var(--line)]">
-                      <div className="flex items-center gap-2">
-                        <span className="font-pixel text-[9px] text-[var(--amber)]">
-                          STAGE {String(idx + 1).padStart(2, '0')}
-                        </span>
-                        <span className="font-mono text-[9px] text-[#7d7666]">[{stage.code}]</span>
-                      </div>
-                      <span className="px-2 py-0.5 border border-[var(--line-2)] font-mono text-[8px] tracking-wider uppercase text-[var(--blue)] font-bold bg-[var(--panel-2)]">
-                        {stage.flag}
-                      </span>
-                    </div>
+                  <span
+                    className={`stage__thumb ${stage.image ? '' : 'stage__thumb--flat'}`}
+                    style={stage.image ? { backgroundImage: `url('${stage.image}')` } : undefined}
+                  >
+                    <span className="stage__num">{pad(index + 1)}</span>
+                    {!stage.image && <span className="stage__ghost">{pad(index + 1)}</span>}
+                    <span className="stage__open">Detail</span>
+                  </span>
 
-                    {/* Stage Title & Year */}
-                    <div className="flex items-baseline justify-between gap-2 mb-2">
-                      <h3 className="text-base sm:text-lg font-bold text-[var(--cream)] group-hover:text-[var(--amber)] leading-tight">
-                        {stage.name}
-                      </h3>
-                      <span className="font-mono text-[9px] text-[#8e8878]">{stage.year}</span>
-                    </div>
-
-                    {/* Summary */}
-                    <p className="text-xs text-[#b9b19c] leading-relaxed mb-4 line-clamp-3 font-sans">
-                      {stage.summary}
-                    </p>
-
-                    {/* Tech Stack Pills */}
-                    <div className="flex flex-wrap gap-1.5 mb-5">
-                      {stackPills.slice(0, 4).map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-2 py-0.5 border border-[var(--line)] bg-[var(--ink)] font-mono text-[8.5px] text-[#cfc7b4]"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                      {stackPills.length > 4 && (
-                        <span className="px-1.5 py-0.5 font-mono text-[8.5px] text-[#7d7666]">
-                          +{stackPills.length - 4}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Stage Card Footer CTA */}
-                  <div className="pt-3 border-t-2 border-[var(--line)] flex items-center justify-between font-mono text-[9.5px]">
-                    <span className="text-[#8e8878]">{stage.role}</span>
-                    <span className="text-[var(--amber)] font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                      <span>DETAIL</span>
-                      <span>▶</span>
+                  <span className="stage__body">
+                    <span className="stage__meta">
+                      <span>{stage.code}</span>
+                      <span>{stage.year}</span>
                     </span>
-                  </div>
-                </div>
+                    <span className="stage__name">{stage.name}</span>
+                    <span className="stage__stack">{stage.stack}</span>
+                  </span>
+                </button>
               );
             })}
           </div>
