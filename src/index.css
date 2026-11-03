@@ -1,0 +1,347 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/plus-jakarta-sans";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-heading: var(--font-sans);
+    --font-sans: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', sans-serif;
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+
+    /* Token kustom portfolio */
+    --color-void: #030712;
+    --color-deep-navy: #070c18;
+    --color-electric: #38bdf8;
+
+    --animate-blob: blob 10s infinite;
+    --animate-float: float 6s ease-in-out infinite;
+    --animate-marquee: marquee-scroll 32s linear infinite;
+    --animate-blink: blink 0.9s step-end infinite;
+    --animate-ping-slow: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    --animate-idle-bob: idle-bob 2.4s steps(2) infinite;
+
+    @keyframes idle-bob {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-4px); }
+    }
+
+    @keyframes blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    @keyframes marquee-scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+    @keyframes ping-slow {
+        75%, 100% { transform: scale(2.5); opacity: 0; }
+    }
+}
+
+/* ============================================================
+   TEMA — dark-first (portfolio selalu gelap)
+   Mapping dari palet lama: voidBlack, deepNavy, navyCard,
+   royalBlue, electricCyan, slateLight, steelSilver
+   ============================================================ */
+:root {
+    --ink: #08080a;
+    --panel: #111116;
+    --panel-2: #17171d;
+    --cream: #f3ead3;
+    --amber: #f5a524;
+    --blue: #2b6bd4;
+    --red: #e5484d;
+    --line: #2c2c33;
+    --line-2: #3d3d46;
+    --pixel: 'Press Start 2P', monospace;
+    --sans: 'Geist', system-ui, sans-serif;
+    --mono: 'Geist Mono', ui-monospace, monospace;
+
+    --background: #08080a;
+    --foreground: #f3ead3;
+    --card: #111116;
+    --card-foreground: #f3ead3;
+    --popover: #111116;
+    --popover-foreground: #f3ead3;
+    --primary: #f5a524;
+    --primary-foreground: #08080a;
+    --secondary: #17171d;
+    --secondary-foreground: #f3ead3;
+    --muted: #111116;
+    --muted-foreground: #a39c8a;
+    --accent: #17171d;
+    --accent-foreground: #f5a524;
+    --destructive: #e5484d;
+    --border: #2c2c33;
+    --input: #2c2c33;
+    --ring: #f5a524;
+    --chart-1: #f5a524;
+    --chart-2: #2b6bd4;
+    --chart-3: #60a5fa;
+    --chart-4: #1e40af;
+    --chart-5: #93c5fd;
+    --radius: 0.75rem;
+    --sidebar: #0f172a;
+    --sidebar-foreground: #cbd5e1;
+    --sidebar-primary: #3b82f6;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #16223c;
+    --sidebar-accent-foreground: #dbeafe;
+    --sidebar-border: rgba(59, 130, 246, 0.16);
+    --sidebar-ring: #3b82f6;
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+    html {
+        @apply scroll-smooth font-sans;
+    }
+    body {
+        @apply bg-background text-foreground w-full overflow-x-hidden antialiased;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    ::selection {
+        background-color: rgba(59, 130, 246, 0.35);
+        color: #ffffff;
+    }
+
+    /* Scrollbar tipis bergaya navy */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #040711;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #1e293b;
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #3b82f6;
+    }
+}
+
+@layer components {
+    /* Kartu glass navbar */
+    .navy-glass {
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(59, 130, 246, 0.1);
+    }
+    .navbar-scrolled {
+        background: rgba(8, 13, 26, 0.85) !important;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: 0 1px 20px rgba(59, 130, 246, 0.08);
+    }
+    .navy-glass-solid {
+        background-color: #0f172a;
+        border: 1px solid rgba(59, 130, 246, 0.12);
+    }
+
+    /* Teks gradien biru */
+    .gradient-text-blue {
+        background: linear-gradient(135deg, #60a5fa, #3b82f6, #38bdf8);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+
+    /* Garis pemisah section halus */
+    .section-divider::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.14), transparent);
+        pointer-events: none;
+    }
+
+    /* Reveal on scroll — gating via class .js agar konten tetap tampil tanpa JS */
+    html.js .reveal {
+        opacity: 0;
+        transform: translateY(36px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    html.js .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .reveal-delay-100 { transition-delay: 100ms; }
+    .reveal-delay-200 { transition-delay: 200ms; }
+
+    /* Underline nav link */
+    .nav-link {
+        position: relative;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #60a5fa, #3b82f6);
+        transition: width 0.3s ease;
+    }
+    .nav-link:hover::after,
+    .nav-link[data-active='true']::after {
+        width: 100%;
+    }
+
+    /* Spotlight kartu proyek (CSS murni, koordinat via CSS vars) */
+    .spotlight-card {
+        position: relative;
+        overflow: hidden;
+    }
+    .spotlight-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            600px at var(--mouse-x, 0) var(--mouse-y, 0),
+            rgba(59, 130, 246, 0.15),
+            transparent 80%
+        );
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+    .spotlight-card:hover::before {
+        opacity: 1;
+    }
+
+    /* Placeholder gambar gagal load */
+    .img-placeholder {
+        background: repeating-linear-gradient(135deg, #080d1a, #080d1a 10px, #0f172a 10px, #0f172a 20px);
+    }
+}
+
+@layer utilities {
+    /* Shimmer border reactive effect */
+    .shimmer-border {
+        position: relative;
+    }
+    .shimmer-border::after {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        background: radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59, 130, 246, 0.45), transparent 60%);
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .shimmer-border:hover::after {
+        opacity: 1;
+    }
+
+    /* Glow stat card */
+    .stat-glow {
+        position: relative;
+        overflow: hidden;
+    }
+    .stat-glow::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 60%);
+        pointer-events: none;
+    }
+    /* Kutipan besar kartu testimoni */
+    .quote-mark::before {
+        content: '\201C';
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 6rem;
+        color: rgba(59, 130, 246, 0.06);
+        line-height: 1;
+        pointer-events: none;
+        font-family: serif;
+    }
+}
+
+/* ============================================================
+   REDUCED MOTION — hormati preferensi OS pengguna
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    html.js .reveal {
+        opacity: 1;
+        transform: none;
+    }
+}

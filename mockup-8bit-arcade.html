@@ -1,0 +1,2528 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Yudha Pratama — Player 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #08080a;
+    --panel: #111116;
+    --panel-2: #17171d;
+    --cream: #f3ead3;
+    --amber: #f5a524;
+    --blue: #2b6bd4;
+    --red: #e5484d;
+    --line: #2c2c33;
+    --line-2: #3d3d46;
+    --max: 1200px;
+    --pad: 32px;
+    --pixel: 'Press Start 2P', ui-monospace, monospace;
+    --sans: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: 'Geist Mono', ui-monospace, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    overflow-x: clip;
+    background: var(--ink);
+    color: var(--cream);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, rgba(243, 234, 211, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(243, 234, 211, 0.035) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    pointer-events: none;
+    background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.22) 0 1px, transparent 1px 3px);
+    opacity: 0.5;
+  }
+
+  a { color: inherit; }
+
+  :focus-visible {
+    outline: 3px solid var(--amber);
+    outline-offset: 3px;
+  }
+
+  .pixel {
+    font-family: var(--pixel);
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+  }
+
+  .mono {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .skip {
+    position: fixed;
+    left: 16px;
+    top: -80px;
+    z-index: 100;
+    padding: 12px 16px;
+    background: var(--amber);
+    color: var(--ink);
+    font-family: var(--pixel);
+    font-size: 10px;
+    text-decoration: none;
+  }
+  .skip:focus { top: 12px; }
+
+  .shell {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 var(--pad);
+  }
+
+  /* ---------- hud ---------- */
+
+  .hud {
+    position: sticky;
+    top: 0;
+    z-index: 70;
+    border-bottom: 2px solid var(--line);
+    background: var(--ink);
+  }
+
+  .hud__in {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    min-height: 64px;
+  }
+
+  .coin {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .coin__mark {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    background: var(--amber);
+    color: var(--ink);
+    font-family: var(--pixel);
+    font-size: 9px;
+  }
+  .coin__name {
+    font-family: var(--pixel);
+    font-size: 9px;
+    line-height: 1.7;
+  }
+
+  .hud__nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+  }
+  .hud__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 12px;
+    border: 2px solid transparent;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #b9b19c;
+    text-decoration: none;
+  }
+  .hud__link::before { content: '·'; color: var(--line-2); }
+  .hud__link:hover,
+  .hud__link:focus-visible {
+    border-color: var(--line-2);
+    color: var(--cream);
+    background: var(--panel);
+  }
+  .hud__link:hover::before,
+  .hud__link:focus-visible::before { content: '▶'; color: var(--amber); }
+
+  .hud__hi {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 2px solid var(--line);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: #b9b19c;
+    white-space: nowrap;
+  }
+  .hud__hi b { color: var(--amber); font-weight: 500; }
+
+  .hud__sfx {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border: 2px solid var(--line);
+    background: transparent;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: #b9b19c;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: border-color 120ms linear, color 120ms linear, background 120ms linear;
+  }
+  .hud__sfx:hover,
+  .hud__sfx:focus-visible {
+    border-color: var(--amber);
+    color: var(--cream);
+    background: var(--panel);
+  }
+  .hud__sfx.is-active {
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+  .hud__sfx.is-active b {
+    color: #10b981;
+  }
+
+  /* ---------- hero ---------- */
+
+  .hero {
+    position: relative;
+    padding: 72px 0 56px;
+  }
+
+  .hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 48px;
+    align-items: start;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 22px;
+    padding: 7px 12px;
+    border: 2px solid var(--line-2);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+  .tag i { width: 8px; height: 8px; background: var(--amber); }
+
+  h1 {
+    margin: 0;
+    font-family: var(--pixel);
+    font-size: clamp(1.7rem, 3.4vw, 2.9rem);
+    line-height: 1.5;
+    letter-spacing: 0;
+    color: var(--cream);
+  }
+  h1 .cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 0.9em;
+    margin-left: 0.2em;
+    background: var(--amber);
+    vertical-align: -0.08em;
+    animation: blink 1.1s step-end infinite;
+  }
+
+  @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+  .role {
+    margin: 20px 0 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--blue);
+    filter: brightness(1.35);
+  }
+
+  .lede {
+    margin: 18px 0 0;
+    max-width: 46ch;
+    font-size: 15.5px;
+    line-height: 1.75;
+    color: #cfc7b4;
+  }
+
+  .cta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 0 20px;
+    border: 2px solid var(--cream);
+    background: transparent;
+    color: var(--cream);
+    font-family: var(--pixel);
+    font-size: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.85);
+    transition: transform 90ms steps(2, end), box-shadow 90ms steps(2, end), background 120ms linear, color 120ms linear;
+  }
+  .btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.85); }
+  .btn:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.85); }
+  .btn--amber {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: var(--ink);
+  }
+  .btn--amber:hover { background: #ffb63c; border-color: #ffb63c; }
+  .btn--ghost { border-color: var(--line-2); color: #cfc7b4; }
+
+  .hint {
+    margin: 18px 0 0;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7d7666;
+  }
+
+  /* ---------- sprite ---------- */
+
+  .player {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 2px solid var(--line-2);
+    background: var(--panel);
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.85);
+  }
+
+  .player__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 12px;
+    border-bottom: 2px solid var(--line);
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #b9b19c;
+  }
+  .player__bar b { color: var(--amber); font-weight: 500; }
+
+  .player__screen {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-bottom: 2px solid var(--line);
+    background-color: var(--cream);
+  }
+  .player__screen img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center bottom;
+    image-rendering: pixelated;
+  }
+  .player__screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.09) 0 2px, transparent 2px 6px);
+    pointer-events: none;
+  }
+
+  .player__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 11px 12px;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #b9b19c;
+  }
+  .hearts { display: inline-flex; gap: 4px; }
+  .hearts i {
+    width: 9px;
+    height: 9px;
+    background: var(--red);
+    clip-path: polygon(50% 100%, 0 40%, 0 15%, 25% 0, 50% 20%, 75% 0, 100% 15%, 100% 40%);
+  }
+
+  /* ---------- score strip ---------- */
+
+  .score {
+    border-top: 2px solid var(--line);
+    border-bottom: 2px solid var(--line);
+    background: var(--panel);
+  }
+  .score__in {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2px;
+  }
+  .score__cell {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 20px 4px;
+  }
+  .score__num {
+    font-family: var(--pixel);
+    font-size: 17px;
+    color: var(--amber);
+  }
+  .score__label {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #a39c8a;
+  }
+
+  /* ---------- sections ---------- */
+
+  .section { position: relative; padding: 84px 0; }
+  section[id] { scroll-margin-top: 76px; }
+
+  .sec-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--line);
+    flex-wrap: wrap;
+  }
+  .sec-head__left { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .sec-head__num {
+    font-family: var(--pixel);
+    font-size: 11px;
+    color: var(--amber);
+  }
+  .sec-head h2 {
+    margin: 0;
+    font-family: var(--pixel);
+    font-size: clamp(0.95rem, 1.7vw, 1.35rem);
+    line-height: 1.7;
+    color: var(--cream);
+  }
+  .sec-head__note {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7d7666;
+  }
+
+  /* ---------- stage select ---------- */
+
+  .stage-filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 38px;
+    padding: 0 14px;
+    border: 2px solid var(--line-2);
+    background: var(--panel);
+    color: #a39c8a;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.7);
+    transition: transform 90ms steps(2, end), box-shadow 90ms steps(2, end), border-color 120ms linear, color 120ms linear, background 120ms linear;
+  }
+  .filter-btn:hover {
+    border-color: var(--amber);
+    color: var(--cream);
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.7);
+  }
+  .filter-btn.is-active {
+    border-color: var(--amber);
+    background: var(--amber);
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* Carousel Navigation & Header */
+  .stages-head-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .stages-ctrls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .stage-ctrl-btn {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 38px;
+    padding: 0 14px;
+    border: 2px solid var(--line-2);
+    background: var(--panel);
+    color: var(--cream);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.75);
+    transition: transform 90ms steps(2, end), box-shadow 90ms steps(2, end), border-color 120ms linear;
+  }
+  .stage-ctrl-btn:hover {
+    border-color: var(--amber);
+    color: var(--amber);
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.85);
+  }
+  .stage-ctrl-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+    border-color: var(--line);
+    color: #7d7666;
+    transform: none;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+  }
+  .stage-counter-badge {
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    color: var(--amber);
+    white-space: nowrap;
+  }
+
+  .stages-carousel-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .stages-track {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 20px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .stages-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .stage {
+    flex: 0 0 min(440px, calc(50% - 10px));
+    scroll-snap-align: start;
+    appearance: none;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border: 2px solid var(--line-2);
+    background: var(--panel);
+    color: var(--cream);
+    font-family: var(--sans);
+    text-align: left;
+    cursor: pointer;
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.75);
+    transition: transform 90ms steps(2, end), box-shadow 90ms steps(2, end), border-color 120ms linear;
+  }
+  .stage:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.75); border-color: var(--amber); }
+  .stage:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.75); }
+  .stage[aria-current='true'] { border-color: var(--amber); }
+  .stage[aria-current='true'] .stage__num { background: var(--amber); color: var(--ink); }
+
+  .stage__thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-bottom: 2px solid var(--line);
+    background-color: #0d0d11;
+    background-size: cover;
+    background-position: center top;
+    filter: saturate(0.86) brightness(0.86);
+    transition: filter 120ms linear;
+  }
+  .stage:hover .stage__thumb { filter: saturate(1) brightness(1); }
+
+  .stage__thumb--flat {
+    display: grid;
+    place-items: center;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(243, 234, 211, 0.06) 0 1px, transparent 1px 14px),
+      repeating-linear-gradient(0deg, rgba(243, 234, 211, 0.06) 0 1px, transparent 1px 14px);
+  }
+  .stage__ghost {
+    font-family: var(--pixel);
+    font-size: 42px;
+    line-height: 1;
+    color: #2b2b35;
+    user-select: none;
+  }
+
+  .stage__open {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    z-index: 2;
+    padding: 4px 7px;
+    border: 2px solid var(--line-2);
+    background: rgba(8, 8, 10, 0.86);
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #a39c8a;
+    transition: color 120ms linear, border-color 120ms linear;
+  }
+  .stage:hover .stage__open,
+  .stage:focus-visible .stage__open { color: var(--amber); border-color: var(--amber); }
+
+  .stage__num {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: grid;
+    place-items: center;
+    min-width: 34px;
+    height: 26px;
+    padding: 0 6px;
+    background: var(--ink);
+    border-right: 2px solid var(--line);
+    border-bottom: 2px solid var(--line);
+    font-family: var(--pixel);
+    font-size: 8px;
+    color: var(--amber);
+  }
+
+  .stage__body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 13px 14px;
+  }
+  .stage__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #7d7666;
+  }
+  .stage__name { font-size: 17px; font-weight: 500; letter-spacing: -0.015em; line-height: 1.2; }
+  .stage__stack {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #a39c8a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ---------- modal ---------- */
+
+  .modal {
+    width: min(940px, calc(100vw - 32px));
+    max-width: none;
+    max-height: calc(100vh - 48px);
+    padding: 0;
+    border: 2px solid var(--amber);
+    background: var(--panel);
+    color: var(--cream);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.85);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  .modal[open] { animation: modal-in 150ms steps(2, end); }
+  @keyframes modal-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .modal::backdrop {
+    background: rgba(4, 4, 6, 0.86);
+  }
+
+  .modal__bar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--line);
+    background: var(--panel-2);
+  }
+  .modal__code { font-size: 9px; color: var(--amber); }
+  .modal__flag {
+    padding: 3px 7px;
+    border: 2px solid var(--line-2);
+    font-size: 8px;
+    color: #a39c8a;
+  }
+  .modal__x {
+    appearance: none;
+    margin-left: auto;
+    min-height: 34px;
+    padding: 0 12px;
+    border: 2px solid var(--line-2);
+    background: transparent;
+    color: var(--cream);
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .modal__x:hover { border-color: var(--cream); background: var(--panel); }
+
+  .modal__body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .modal--noshot .modal__media { display: none; }
+
+  .modal__media {
+    position: relative;
+    aspect-ratio: 2 / 1;
+    max-height: 46vh;
+    border-bottom: 2px solid var(--line);
+    background-color: #0b0b0e;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+  }
+
+  .modal__note {
+    margin: 14px 0 0;
+    padding-left: 10px;
+    border-left: 2px solid var(--line-2);
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #8a8375;
+  }
+  .modal__note[hidden] { display: none; }
+
+  .modal__text {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 20px 20px 22px;
+  }
+  .modal__head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.86fr);
+    gap: 22px;
+    align-items: start;
+  }
+  .modal__year { margin: 0 0 8px; font-size: 9px; color: var(--amber); }
+  .modal__name { margin: 0; font-size: 26px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.15; }
+  .modal__summary { margin: 12px 0 0; font-size: 15px; line-height: 1.7; color: #d8d0bd; }
+
+  .modal__cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.86fr);
+    gap: 22px;
+  }
+
+  .modal__h {
+    margin: 0 0 8px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7d7666;
+  }
+
+  .modal__foot {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-top: 2px solid var(--line);
+    background: var(--panel-2);
+  }
+  .modal__step {
+    appearance: none;
+    min-height: 40px;
+    padding: 0 14px;
+    border: 2px solid var(--line-2);
+    background: transparent;
+    color: var(--cream);
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .modal__step:hover { border-color: var(--amber); color: var(--amber); }
+  .modal__step:disabled { opacity: 0.35; cursor: default; border-color: var(--line); color: #7d7666; }
+  .modal__index { margin: 0 auto; font-size: 9.5px; color: #7d7666; }
+
+  .build { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+  .build li {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+    color: #d8d0bd;
+  }
+  .build li::before { content: '›'; color: var(--amber); }
+
+  .meta { margin: 0; border-top: 1px solid var(--line); }
+  .meta div { padding: 9px 0; border-bottom: 1px solid var(--line); }
+  .meta dt {
+    font-family: var(--mono);
+    font-size: 8.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7d7666;
+  }
+  .meta dd { margin: 3px 0 0; font-size: 13.5px; color: #d8d0bd; }
+
+  .modal__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+  .modal__act-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 16px;
+    border: 2px solid var(--line-2);
+    background: var(--panel-2);
+    color: var(--cream);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.7);
+    transition: transform 90ms steps(2, end), box-shadow 90ms steps(2, end), border-color 120ms linear, color 120ms linear;
+  }
+  .modal__act-btn:hover {
+    border-color: var(--amber);
+    color: var(--amber);
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.7);
+  }
+  .modal__act-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7d7666;
+  }
+  .modal__act-badge i { display: inline-block; width: 6px; height: 6px; background: var(--amber); }
+
+  /* ---------- experience ---------- */
+
+  .clears { border-top: 2px solid var(--line); }
+  .clear {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr) auto;
+    gap: 24px;
+    align-items: start;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .clear__when {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+  .clear__role { font-size: 16.5px; font-weight: 500; }
+  .clear__org { margin-top: 3px; font-family: var(--mono); font-size: 10px; color: #a39c8a; }
+  .clear__desc { margin: 9px 0 0; max-width: 62ch; font-size: 14px; line-height: 1.65; color: #b9b19c; }
+  .clear__badge {
+    padding: 4px 8px;
+    border: 2px solid var(--line-2);
+    font-family: var(--mono);
+    font-size: 8.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #a39c8a;
+    white-space: nowrap;
+  }
+
+  /* ---------- tech tree & inventory ---------- */
+
+  .tree-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.98fr);
+    gap: 28px;
+    align-items: start;
+  }
+
+  .tree-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .tree-nav-btn {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 38px;
+    padding: 0 14px;
+    border: 2px solid var(--line-2);
+    background: var(--panel);
+    color: #a39c8a;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.7);
+    transition: transform 90ms steps(2, end), box-shadow 90ms steps(2, end), border-color 120ms linear, color 120ms linear, background 120ms linear;
+  }
+  .tree-nav-btn:hover {
+    border-color: var(--amber);
+    color: var(--cream);
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.7);
+  }
+  .tree-nav-btn.is-active {
+    border-color: var(--amber);
+    background: var(--amber);
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .tree-branches {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .tree-branch-group {
+    border: 2px solid var(--line);
+    background: var(--panel);
+    padding: 16px 18px 20px;
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.75);
+    transition: border-color 140ms linear;
+  }
+  .tree-branch-group:hover {
+    border-color: var(--line-2);
+  }
+  .tree-branch-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .tree-branch-title {
+    font-family: var(--pixel);
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    color: var(--amber);
+  }
+  .tree-branch-count {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7d7666;
+  }
+
+  .tree-nodes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .tree-node {
+    appearance: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 14px;
+    border: 2px solid var(--line-2);
+    background: var(--panel-2);
+    color: var(--cream);
+    text-align: left;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.7);
+    transition: transform 90ms steps(2, end), box-shadow 90ms steps(2, end), border-color 120ms linear, background 120ms linear;
+    position: relative;
+  }
+  .tree-node:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.85);
+    border-color: var(--amber);
+  }
+  .tree-node:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.85);
+  }
+  .tree-node.is-selected {
+    border-color: var(--amber);
+    background: #1c1913;
+    box-shadow: 5px 5px 0 rgba(245, 165, 36, 0.35);
+  }
+  .tree-node.is-selected::after {
+    content: '▶';
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--amber);
+    animation: blink 1.1s step-end infinite;
+  }
+
+  .tree-node-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .tree-node-tier {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7d7666;
+  }
+  .tree-node-status {
+    font-family: var(--pixel);
+    font-size: 7px;
+    color: var(--amber);
+  }
+  .tree-node-name {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    color: var(--cream);
+  }
+  .tree-node-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 4px;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: #a39c8a;
+  }
+  .tree-node-stars {
+    color: var(--amber);
+    letter-spacing: 2px;
+  }
+
+  /* Inspector Panel (HUD) */
+  .tree-inspector {
+    position: sticky;
+    top: 84px;
+    border: 2px solid var(--amber);
+    background: var(--panel);
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.9);
+    padding: 22px 22px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: transform 90ms steps(2, end);
+  }
+  .inspector-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--line);
+  }
+  .inspector-title-code {
+    font-family: var(--pixel);
+    font-size: 8.5px;
+    color: var(--amber);
+  }
+  .inspector-status-badge {
+    padding: 3px 8px;
+    border: 1px solid var(--amber);
+    background: rgba(245, 165, 36, 0.12);
+    font-family: var(--mono);
+    font-size: 8.5px;
+    letter-spacing: 0.12em;
+    color: var(--amber);
+    text-transform: uppercase;
+  }
+  .inspector-name {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--cream);
+  }
+  .inspector-tier {
+    margin-top: 4px;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    filter: brightness(1.3);
+  }
+  .inspector-xp-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 12px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+  }
+  .inspector-xp-head {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: #a39c8a;
+  }
+  .inspector-xp-gauge {
+    display: flex;
+    gap: 3px;
+    height: 10px;
+  }
+  .xp-pip {
+    flex: 1;
+    background: #2a2a34;
+    transition: background 120ms steps(2, end);
+  }
+  .xp-pip.is-filled {
+    background: var(--amber);
+  }
+
+  .inspector-desc {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #d8d0bd;
+  }
+  .inspector-h {
+    margin: 0 0 8px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7d7666;
+  }
+  .inspector-perks {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+  .inspector-perks li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+    color: #b9b19c;
+  }
+  .inspector-perks li::before {
+    content: '+';
+    color: #10b981;
+    font-family: var(--mono);
+    font-weight: 600;
+  }
+
+  .inspector-stages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .stage-tag-btn {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border: 1px solid var(--line-2);
+    background: var(--panel-2);
+    color: var(--cream);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: border-color 100ms linear, color 100ms linear, transform 90ms steps(2, end);
+  }
+  .stage-tag-btn:hover {
+    border-color: var(--amber);
+    color: var(--amber);
+    transform: translate(-1px, -1px);
+  }
+  .stage-tag-btn i {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background: var(--amber);
+  }
+
+  /* ---------- trophy shelf & credentials ---------- */
+
+  .trophy-shelf {
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 2px solid var(--line);
+  }
+  .trophy-shelf-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .trophy-shelf-title {
+    font-family: var(--pixel);
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+    color: var(--amber);
+  }
+  .trophy-shelf-note {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7d7666;
+  }
+
+  .trophy-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .trophy-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 18px 18px 16px;
+    border: 2px solid var(--line-2);
+    background: var(--panel);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.75);
+    transition: transform 90ms steps(2, end), box-shadow 90ms steps(2, end), border-color 120ms linear;
+    position: relative;
+  }
+  .trophy-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.85);
+    border-color: var(--amber);
+  }
+  .trophy-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .trophy-icon {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    background: var(--panel-2);
+    border: 1px solid var(--line-2);
+    font-size: 14px;
+  }
+  .trophy-badge {
+    padding: 3px 7px;
+    border: 1px solid var(--amber);
+    background: rgba(245, 165, 36, 0.1);
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+  .trophy-role {
+    font-family: var(--mono);
+    font-size: 8.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue);
+    filter: brightness(1.3);
+  }
+  .trophy-name {
+    margin: 4px 0 0;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    color: var(--cream);
+  }
+  .trophy-issuer {
+    margin-top: 4px;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: #a39c8a;
+  }
+  .trophy-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 9px;
+    color: #7d7666;
+  }
+  .trophy-metric {
+    color: var(--cream);
+    font-weight: 500;
+  }
+
+  /* ---------- contact ---------- */
+
+  .contact { padding: 92px 0 72px; }
+
+  .contact__box {
+    border: 2px solid var(--line-2);
+    background: var(--panel);
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.85);
+    padding: 36px 32px;
+  }
+
+  .continue {
+    margin: 0 0 18px;
+    font-family: var(--pixel);
+    font-size: 11px;
+    color: var(--amber);
+  }
+  .continue span { color: var(--cream); }
+
+  .contact h2 {
+    margin: 0;
+    font-family: var(--pixel);
+    font-size: clamp(1.2rem, 2.4vw, 1.9rem);
+    line-height: 1.6;
+    color: var(--cream);
+  }
+
+  .contact__mail {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    margin-top: 22px;
+    font-family: var(--mono);
+    font-size: 17px;
+    letter-spacing: 0.02em;
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 2px solid var(--line-2);
+  }
+  .contact__mail:hover { border-color: var(--amber); }
+
+  .contact__row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .socials { display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; }
+  .socials a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 12px;
+    border: 2px solid var(--line);
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #cfc7b4;
+    text-decoration: none;
+  }
+  .socials a:hover { border-color: var(--cream); color: var(--cream); }
+
+  /* ---------- footer ---------- */
+
+  .footer {
+    position: relative;
+    z-index: 2;
+    border-top: 2px solid var(--line);
+    padding: 20px 0 34px;
+  }
+  .footer__in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7d7666;
+  }
+
+  /* ---------- responsive ---------- */
+
+  @media (max-width: 1000px) {
+    :root { --pad: 24px; }
+    .hero__grid { grid-template-columns: 1fr; gap: 34px; }
+    .player { max-width: 380px; }
+    .stages { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tree-shell { grid-template-columns: 1fr; gap: 24px; }
+    .tree-inspector { position: static; }
+    .modal__body { grid-template-columns: 1fr; }
+    .modal__media { min-height: 200px; border-right: 0; border-bottom: 2px solid var(--line); }
+    .modal__media--flat { border-right: 0; }
+    .clear { grid-template-columns: 150px minmax(0, 1fr); }
+    .clear__badge { grid-column: 2; }
+  }
+
+  @media (max-width: 720px) {
+    .hud__nav { display: none; }
+    .hud__in { min-height: 58px; }
+    .hud__hi { margin-left: auto; }
+    .hero { padding: 48px 0 40px; }
+    h1 { font-size: clamp(1.4rem, 7.2vw, 2rem); }
+    .score__in { grid-template-columns: 1fr 1fr; }
+    .score__cell { padding: 14px 4px; border-bottom: 1px solid var(--line); }
+    .stage { flex: 0 0 85vw; scroll-snap-align: center; }
+    .stages-ctrls { width: 100%; justify-content: space-between; }
+    .tree-nodes-grid { grid-template-columns: 1fr; }
+    .trophy-grid { grid-template-columns: 1fr; }
+    .section { padding: 62px 0; }
+    .clear { grid-template-columns: 1fr; gap: 6px; }
+    .clear__badge { grid-column: 1; justify-self: start; }
+    .contact__box { padding: 24px 18px; }
+    .modal { width: calc(100vw - 20px); max-height: calc(100vh - 24px); }
+    .modal__cols { grid-template-columns: 1fr; gap: 16px; }
+    .modal__name { font-size: 22px; }
+    .modal__text { padding: 16px 14px 18px; }
+    .modal__step { padding: 0 10px; font-size: 8.5px; }
+    .modal__index { font-size: 8.5px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    .scanlines { display: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">LEWATI KE KONTEN</a>
+<div class="scanlines" aria-hidden="true"></div>
+
+<header class="hud">
+  <div class="shell hud__in">
+    <a class="coin" href="#main">
+      <span class="coin__mark">YP</span>
+      <span class="coin__name">YUDHA<br />PRATAMA</span>
+    </a>
+    <nav class="hud__nav" aria-label="Navigasi utama">
+      <a class="hud__link" href="#stage">01 Proyek</a>
+      <a class="hud__link" href="#pengalaman">02 Pengalaman</a>
+      <a class="hud__link" href="#skill">03 Skill</a>
+      <a class="hud__link" href="#kontak">04 Kontak</a>
+    </nav>
+    <span class="hud__hi">HI SCORE <b>3.83</b></span>
+    <button class="hud__sfx mono" type="button" id="toggle-sfx" aria-pressed="false" title="Efek Suara 8-Bit Chiptune">SFX: <b>OFF</b></button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="shell hero__grid">
+      <div>
+        <p class="tag"><i></i> Player 1 · Medan, ID</p>
+        <h1>YUDHA<br />PRATAMA<span class="cursor" aria-hidden="true"></span></h1>
+        <p class="role">Web &amp; Full-Stack Developer</p>
+        <p class="lede">
+          Saya bangun sistem internal yang dipakai tiap hari. Sekarang magang di Angkasa Pura
+          Aviasi, Kualanamu — empat sistem sudah jalan di sana: budaya kerja, tata kelola
+          dokumen, manajemen tugas, dan kupon undian event.
+        </p>
+        <div class="cta">
+          <a class="btn btn--amber" href="#stage">PRESS START</a>
+          <a class="btn btn--ghost" href="#kontak">KIRIM EMAIL</a>
+        </div>
+        <p class="hint">INSERT COIN · 1 CREDIT · KLIK STAGE UNTUK DETAIL</p>
+      </div>
+
+      <div class="player">
+        <div class="player__bar">
+          <span>PLAYER 1</span>
+          <span>LVL <b>4</b></span>
+        </div>
+        <div class="player__screen">
+          <img src="sprite-840.png" width="840" height="850" alt="Potret pixel Yudha Pratama sedang bekerja di laptop" />
+        </div>
+        <div class="player__foot">
+          <span>HP 5/5</span>
+          <span class="hearts" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+          <span>COIN 03</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="score">
+    <div class="shell score__in">
+      <div class="score__cell"><span class="score__num">04</span><span class="score__label">Sistem internal</span></div>
+      <div class="score__cell"><span class="score__num">11</span><span class="score__label">Proyek</span></div>
+      <div class="score__cell"><span class="score__num">02</span><span class="score__label">Pengalaman industri</span></div>
+      <div class="score__cell"><span class="score__num">3.83</span><span class="score__label">IPK / 4.00</span></div>
+    </div>
+  </div>
+
+  <section class="section" id="stage">
+    <div class="shell">
+      <div class="sec-head">
+        <div class="sec-head__left">
+          <span class="sec-head__num">01</span>
+          <h2>SELECT STAGE</h2>
+        </div>
+        <span class="sec-head__note">11 STAGE · 2023—2026</span>
+      </div>
+
+      <div class="stages-head-row">
+        <div class="stage-filters" id="stage-filters" role="tablist" aria-label="Filter Proyek">
+          <button class="filter-btn is-active" type="button" data-filter="all">SEMUA [11]</button>
+          <button class="filter-btn" type="button" data-filter="INTERNAL">INTERNAL AVI [3]</button>
+          <button class="filter-btn" type="button" data-filter="SHIPPED">SHIPPED / PUBLIK [5]</button>
+          <button class="filter-btn" type="button" data-filter="ARCHIVE">ARSIP AKADEMIK [3]</button>
+        </div>
+
+        <div class="stages-ctrls">
+          <button class="stage-ctrl-btn" type="button" id="stage-prev-btn" aria-label="Tahap Sebelumnya">◄ PREV</button>
+          <span class="stage-counter-badge mono" id="stage-counter">01 / 11</span>
+          <button class="stage-ctrl-btn" type="button" id="stage-next-btn" aria-label="Tahap Berikutnya">NEXT ►</button>
+        </div>
+      </div>
+
+      <div class="stages-carousel-wrapper">
+        <div class="stages-track" id="stages"></div>
+      </div>
+    </div>
+  </section>
+
+  <dialog class="modal" id="modal" aria-labelledby="modal-name">
+    <div class="modal__bar">
+      <span class="modal__code pixel" id="modal-code">AVI-001</span>
+      <span class="modal__flag mono" id="modal-flag">INTERNAL</span>
+      <button class="modal__x" type="button" id="modal-close">TUTUP [ESC]</button>
+    </div>
+
+    <div class="modal__body">
+      <div class="modal__media" id="modal-media"></div>
+
+      <div class="modal__text">
+        <div class="modal__title">
+          <p class="mono modal__year" id="modal-year">2026</p>
+          <h2 class="modal__name" id="modal-name">Avi Culture</h2>
+          <p class="modal__summary" id="modal-summary"></p>
+          <p class="modal__note" id="modal-note" hidden>Screenshot tidak dipublikasikan karena sistem internal perusahaan.</p>
+        </div>
+
+        <div class="modal__cols">
+          <div>
+            <h3 class="modal__h">Yang dibangun</h3>
+            <ol class="build" id="modal-built"></ol>
+          </div>
+          <div>
+            <h3 class="modal__h">Data</h3>
+            <dl class="meta">
+              <div><dt>Peran</dt><dd id="modal-role"></dd></div>
+              <div><dt>Stack</dt><dd id="modal-stack"></dd></div>
+              <div><dt>Konteks</dt><dd id="modal-context"></dd></div>
+              <div><dt>Status</dt><dd id="modal-status"></dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="modal__actions" id="modal-actions"></div>
+      </div>
+    </div>
+
+    <div class="modal__foot">
+      <button class="modal__step" type="button" id="modal-prev">← SEBELUMNYA</button>
+      <span class="modal__index mono" id="modal-index">01 / 11</span>
+      <button class="modal__step" type="button" id="modal-next">BERIKUTNYA →</button>
+    </div>
+  </dialog>
+
+  <section class="section" id="pengalaman">
+    <div class="shell">
+      <div class="sec-head">
+        <div class="sec-head__left">
+          <span class="sec-head__num">02</span>
+          <h2>STAGE CLEAR</h2>
+        </div>
+        <span class="sec-head__note">4 STAGE SELESAI</span>
+      </div>
+
+      <div class="clears">
+        <div class="clear">
+          <div class="clear__when">Agu 2026 — sekarang</div>
+          <div>
+            <div class="clear__role">Staff Corporate Planning (Intern)</div>
+            <div class="clear__org">PT Angkasa Pura Aviasi · Kualanamu</div>
+            <p class="clear__desc">Empat sistem internal untuk kerja kantor harian: skor budaya kerja, tata kelola dokumen, manajemen tugas, dan kupon undian event.</p>
+          </div>
+          <span class="clear__badge">ONGOING</span>
+        </div>
+        <div class="clear">
+          <div class="clear__when">Sep 2024 — Mar 2025</div>
+          <div>
+            <div class="clear__role">Project Lead &amp; UI/UX Designer</div>
+            <div class="clear__org">Innovillage 2025</div>
+            <p class="clear__desc">Memimpin tim yang membangun platform desa wisata dan aplikasi AR pendampingnya.</p>
+          </div>
+          <span class="clear__badge">CLEARED</span>
+        </div>
+        <div class="clear">
+          <div class="clear__when">Jan — Feb 2024</div>
+          <div>
+            <div class="clear__role">Programmer Intern</div>
+            <div class="clear__org">PTPN IV Regional 1</div>
+            <p class="clear__desc">Membangun monitoring video conference dan alat konversi laporan PDF ke Excel.</p>
+          </div>
+          <span class="clear__badge">CLEARED</span>
+        </div>
+        <div class="clear">
+          <div class="clear__when">2024 — sekarang</div>
+          <div>
+            <div class="clear__role">Ketua Unit Riset &amp; Mentoring</div>
+            <div class="clear__org">HIMASI UMSU</div>
+            <p class="clear__desc">Mengelola workshop riset dan mentoring untuk mahasiswa.</p>
+          </div>
+          <span class="clear__badge">SIDE QUEST</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="skill">
+    <div class="shell">
+      <div class="sec-head">
+        <div class="sec-head__left">
+          <span class="sec-head__num">03</span>
+          <h2>TECH TREE &amp; INVENTORY</h2>
+        </div>
+        <span class="sec-head__note">INTERACTIVE SKILL MATRIX · KLIK NODE UNTUK INSPECT</span>
+      </div>
+
+      <div class="tree-nav" id="tree-nav" role="tablist" aria-label="Filter Cabang Keahlian">
+        <button class="tree-nav-btn is-active" type="button" data-branch="all">SEMUA CABANG [12]</button>
+        <button class="tree-nav-btn" type="button" data-branch="backend">BACKEND CORE [4]</button>
+        <button class="tree-nav-btn" type="button" data-branch="frontend">FRONTEND ARC [3]</button>
+        <button class="tree-nav-btn" type="button" data-branch="data">DATA &amp; OTOMASI [2]</button>
+        <button class="tree-nav-btn" type="button" data-branch="practice">PRACTICE &amp; LEAD [3]</button>
+      </div>
+
+      <div class="tree-shell">
+        <div class="tree-branches" id="tree-branches"></div>
+
+        <aside class="tree-inspector" id="tree-inspector" aria-label="Skill Inspector">
+          <div class="inspector-bar">
+            <span class="inspector-title-code pixel" id="insp-branch">BACKEND CORE</span>
+            <span class="inspector-status-badge mono" id="insp-status">EQUIPPED</span>
+          </div>
+          <div>
+            <h3 class="inspector-name" id="insp-name">Laravel</h3>
+            <div class="inspector-tier" id="insp-tier">CORE FRAMEWORK · TIER 4</div>
+          </div>
+          <div class="inspector-xp-wrap">
+            <div class="inspector-xp-head">
+              <span>PROFICIENCY / XP GAUGE</span>
+              <span id="insp-xp-num">92%</span>
+            </div>
+            <div class="inspector-xp-gauge" id="insp-xp-gauge"></div>
+          </div>
+          <p class="inspector-desc" id="insp-desc"></p>
+          <div>
+            <h4 class="inspector-h">Yang Dibangun / Production Perks</h4>
+            <ul class="inspector-perks" id="insp-perks"></ul>
+          </div>
+          <div>
+            <h4 class="inspector-h">Dipakai Di Proyek / Stages (Klik untuk Modal)</h4>
+            <div class="inspector-stages" id="insp-stages"></div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="trophy-shelf">
+        <div class="trophy-shelf-header">
+          <span class="trophy-shelf-title">ACHIEVEMENT &amp; TROPHY VAULT</span>
+          <span class="trophy-shelf-note">OFFICIAL LICENSES &amp; HONORS</span>
+        </div>
+
+        <div class="trophy-grid">
+          <div class="trophy-card">
+            <div class="trophy-card-top">
+              <span class="trophy-icon" aria-hidden="true">🏆</span>
+              <span class="trophy-badge">VERIFIED</span>
+            </div>
+            <div>
+              <span class="trophy-role">ACADEMIC EXCELLENCE</span>
+              <h3 class="trophy-name">Sistem Informasi, S.Kom (Cand.)</h3>
+              <p class="trophy-issuer">Universitas Muhammadiyah Sumatera Utara</p>
+            </div>
+            <div class="trophy-foot">
+              <span>IPK <b>3.83</b> / 4.00</span>
+              <span class="trophy-metric">DEAN'S LIST</span>
+            </div>
+          </div>
+
+          <div class="trophy-card">
+            <div class="trophy-card-top">
+              <span class="trophy-icon" aria-hidden="true">📜</span>
+              <span class="trophy-badge">VERIFIED</span>
+            </div>
+            <div>
+              <span class="trophy-role">PROFESSIONAL LICENSE</span>
+              <h3 class="trophy-name">Junior Web Developer</h3>
+              <p class="trophy-issuer">Badan Nasional Sertifikasi Profesi (BNSP)</p>
+            </div>
+            <div class="trophy-foot">
+              <span>STANDAR BNSP</span>
+              <span class="trophy-metric">NASIONAL ID</span>
+            </div>
+          </div>
+
+          <div class="trophy-card">
+            <div class="trophy-card-top">
+              <span class="trophy-icon" aria-hidden="true">⚡</span>
+              <span class="trophy-badge">VERIFIED</span>
+            </div>
+            <div>
+              <span class="trophy-role">AI &amp; OPTIMIZATION</span>
+              <h3 class="trophy-name">Code Generation &amp; Optimization</h3>
+              <p class="trophy-issuer">IBM Granite &amp; Hacktiv8 Indonesia</p>
+            </div>
+            <div class="trophy-foot">
+              <span>ENTERPRISE AI</span>
+              <span class="trophy-metric">AUTHORIZED</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="kontak">
+    <div class="shell">
+      <div class="contact__box">
+        <p class="continue">CONTINUE? <span>9 · 8 · 7 · 6 · 5</span></p>
+        <h2>PUNYA YANG MAU DIBANGUN?</h2>
+        <a class="contact__mail" href="mailto:zokeryudha00@gmail.com">zokeryudha00@gmail.com</a>
+        <div class="contact__row">
+          <button class="btn btn--amber" type="button" id="copy-mail">SALIN EMAIL</button>
+          <span class="mono" style="color: #7d7666;">MEDAN · UTC+7</span>
+        </div>
+        <div class="socials">
+          <a href="https://github.com/ZokerYuzu">GitHub</a>
+          <a href="https://linkedin.com/in/yudha-pratama-7a10382b4">LinkedIn</a>
+          <a href="https://instagram.com/yudhavillyy">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="shell footer__in">
+      <span>© 2026 Yudha Pratama</span>
+      <span>Built with Laravel, React &amp; terlalu banyak kopi</span>
+      <span>1 CREDIT · GAME OVER?</span>
+    </div>
+  </footer>
+</main>
+
+<script>
+  const ASSET = 'file:///D:/portofolio-yuzu/public/assets/'
+
+  const STAGES = [
+    {
+      code: 'AVI-001', name: 'Avi Culture', year: '2026', flag: 'INTERNAL',
+      kind: 'Sistem internal', role: 'Fullstack Engineer', stack: 'Laravel · Vue · Tailwind',
+      context: 'PT Angkasa Pura Aviasi', status: 'Dipakai internal',
+      summary: 'Pengukuran budaya kerja per divisi dan per karyawan. Gap dipetakan, lalu diterjemahkan menjadi rencana aksi untuk menaikkan skor budaya kerja.',
+      built: ['Penilaian per karyawan', 'Agregasi skor per divisi', 'Peta gap budaya kerja', 'Rencana aksi'],
+    },
+    {
+      code: 'AVI-002', name: 'AVI Coupon', year: '2026', flag: 'SHIPPED',
+      kind: 'Sistem internal', role: 'Fullstack Developer', stack: 'Laravel · Tailwind · PostgreSQL',
+      context: 'PT Angkasa Pura Aviasi', status: 'Dipakai sampai akhir Autoshow 90s X Kualanamu',
+      summary: 'Kupon undian: kupon dibuat dan dikirim ke email, input user lewat approval admin, pemenang diundi tiap 3 jam.',
+      built: ['Aturan kupon perusahaan', 'Approval admin', 'Pengiriman email', 'Undian terjadwal tiap 3 jam', 'Halaman pemenang'],
+    },
+    {
+      code: 'AVI-003', name: 'Avi Compass', year: '2026', flag: 'INTERNAL',
+      kind: 'Sistem internal', role: 'QA', stack: 'PHP Native',
+      context: 'PT Angkasa Pura Aviasi', status: 'Dipakai internal',
+      summary: 'Tata kelola dokumen: tiap orang menerima dokumen sesuai kebutuhannya, tiap unduhan diberi stamp, dan setiap akses tercatat di audit trail.',
+      built: ['Kontrol akses per kebutuhan', 'Stamp pada setiap unduhan', 'Audit trail akses', 'Pengujian alur dokumen'],
+    },
+    {
+      code: 'AVI-004', name: 'Ruangkerja', year: '2026', flag: 'INTERNAL',
+      kind: 'Sistem internal', role: 'Backend, QA, audit UI/UX', stack: 'PHP Native',
+      context: 'PT Angkasa Pura Aviasi', status: 'Dipakai internal',
+      summary: 'Tata kelola tugas: manager memberi pekerjaan ke staff, progres dan riwayatnya terlihat.',
+      built: ['Backend alur tugas', 'Pengujian fungsional', 'Audit antarmuka'],
+    },
+    {
+      code: 'INV-001', name: 'Hola Web', year: '2025', flag: 'SHIPPED', image: 'webhola.webp',
+      kind: 'Program inovasi sosial', role: 'Project Lead, UI/UX', stack: 'Laravel · Tailwind',
+      context: 'Innovillage 2025', status: 'Selesai Maret 2025', repo: 'https://github.com/ZokerYuzu',
+      summary: 'Platform edukasi desa wisata untuk program Innovillage 2025.',
+      built: ['Arah produk dan alur pengguna', 'Desain antarmuka', 'Koordinasi tim'],
+    },
+    {
+      code: 'INV-002', name: 'Hola AR', year: '2025', flag: 'SHIPPED', image: 'apphola.webp',
+      kind: 'Program inovasi sosial', role: 'Project Lead, UI/UX', stack: 'Unity · AR',
+      context: 'Innovillage 2025', status: 'Selesai Maret 2025', repo: 'https://github.com/ZokerYuzu',
+      summary: 'Aplikasi AR pendamping platform desa wisata.',
+      built: ['Konsep pengalaman AR', 'Alur penggunaan', 'Koordinasi tim'],
+    },
+    {
+      code: 'PTP-001', name: 'Zoom Monitoring', year: '2024', flag: 'SHIPPED', image: 'webzoom.webp',
+      kind: 'Magang industri', role: 'Programmer Intern', stack: 'PHP · MySQL',
+      context: 'PTPN IV Regional 1', status: 'Selesai Februari 2024',
+      summary: 'Monitoring video conference untuk kebutuhan operasional.',
+      built: ['Pencatatan sesi', 'Rekap penggunaan'],
+    },
+    {
+      code: 'PTP-002', name: 'PDF / Excel Extractor', year: '2024', flag: 'SHIPPED', image: 'pdfconv.webp',
+      kind: 'Magang industri', role: 'Programmer Intern', stack: 'Python · Pandas',
+      context: 'PTPN IV Regional 1', status: 'Selesai Februari 2024',
+      summary: 'Alat ekstraksi data PDF dan Excel untuk pelaporan.',
+      built: ['Parsing dokumen', 'Rekap ke tabel'],
+    },
+    {
+      code: 'ARS-001', name: 'Laundry Management', year: '2024', flag: 'ARCHIVE', image: 'weblaundry.webp',
+      kind: 'Proyek kuliah', role: 'Fullstack', stack: 'Laravel · MySQL',
+      context: 'UMSU', status: 'Arsip', repo: 'https://github.com/ZokerYuzu',
+      summary: 'Pencatatan order dan status cucian.',
+      built: ['Data order', 'Status pengerjaan'],
+    },
+    {
+      code: 'ARS-002', name: 'Wardah Web Catalog', year: '2023', flag: 'ARCHIVE', image: 'file:///C:/Users/ASUS/.opencode/plan/shot-wardah.png',
+      kind: 'Proyek kuliah', role: 'Fullstack', stack: 'PHP · Tailwind',
+      context: 'UMSU', status: 'Arsip', repo: 'https://github.com/ZokerYuzu',
+      summary: 'Katalog produk berbasis web.',
+      built: ['Halaman katalog', 'Detail produk'],
+    },
+    {
+      code: 'ARS-003', name: 'Desa Wisata Pariangan', year: '2024', flag: 'ARCHIVE', image: 'webdesa.webp',
+      kind: 'Proyek kuliah', role: 'Fullstack', stack: 'PHP · MySQL',
+      context: 'UMSU', status: 'Arsip', repo: 'https://github.com/ZokerYuzu',
+      summary: 'Profil dan informasi kunjungan desa wisata.',
+      built: ['Halaman profil', 'Informasi kunjungan'],
+    },
+  ]
+
+  const stagesEl = document.getElementById('stages')
+  const modal = document.getElementById('modal')
+  const modalCode = document.getElementById('modal-code')
+  const modalFlag = document.getElementById('modal-flag')
+  const modalYear = document.getElementById('modal-year')
+  const modalName = document.getElementById('modal-name')
+  const modalSummary = document.getElementById('modal-summary')
+  const modalBuild = document.getElementById('modal-built')
+  const modalRole = document.getElementById('modal-role')
+  const modalStack = document.getElementById('modal-stack')
+  const modalContext = document.getElementById('modal-context')
+  const modalStatus = document.getElementById('modal-status')
+  const modalMedia = document.getElementById('modal-media')
+  const modalActions = document.getElementById('modal-actions')
+  const modalIndex = document.getElementById('modal-index')
+  const modalPrev = document.getElementById('modal-prev')
+  const modalNext = document.getElementById('modal-next')
+  const stagePrevBtn = document.getElementById('stage-prev-btn')
+  const stageNextBtn = document.getElementById('stage-next-btn')
+  const stageCounter = document.getElementById('stage-counter')
+  const sfxBtn = document.getElementById('toggle-sfx')
+
+  const pad = (n) => String(n).padStart(2, '0')
+  const src = (file) => (file.startsWith('file:') ? file : ASSET + file)
+
+  let current = 0
+  let currentFilter = 'all'
+  let visibleIndices = STAGES.map((_, i) => i)
+
+  /* --- Web Audio 8-bit Synthesizer --- */
+  let audioCtx = null
+  let sfxEnabled = false
+
+  function playBleep(freq = 440, type = 'square', duration = 0.07) {
+    if (!sfxEnabled) return
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+      if (audioCtx.state === 'suspended') audioCtx.resume()
+      const osc = audioCtx.createOscillator()
+      const gain = audioCtx.createGain()
+      osc.type = type
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime)
+      osc.frequency.exponentialRampToValueAtTime(freq * 1.5, audioCtx.currentTime + duration)
+      gain.gain.setValueAtTime(0.06, audioCtx.currentTime)
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration)
+      osc.connect(gain)
+      gain.connect(audioCtx.destination)
+      osc.start()
+      osc.stop(audioCtx.currentTime + duration)
+    } catch (e) {}
+  }
+
+  function updateStageCounter() {
+    if (!stageCounter || !stagesEl) return
+    const card = stagesEl.querySelector('.stage')
+    const cardWidth = card ? card.offsetWidth + 20 : 380
+    const scrollPos = stagesEl.scrollLeft
+    const activeIdx = Math.min(visibleIndices.length, Math.max(1, Math.round(scrollPos / cardWidth) + 1))
+    stageCounter.textContent = `${pad(activeIdx)} / ${pad(visibleIndices.length)}`
+
+    if (stagePrevBtn) stagePrevBtn.disabled = stagesEl.scrollLeft <= 8
+    if (stageNextBtn) {
+      const maxScroll = stagesEl.scrollWidth - stagesEl.clientWidth
+      stageNextBtn.disabled = stagesEl.scrollLeft >= maxScroll - 8
+    }
+  }
+
+  if (stagesEl) {
+    stagesEl.addEventListener('scroll', () => {
+      window.requestAnimationFrame(updateStageCounter)
+    }, { passive: true })
+  }
+
+  if (stagePrevBtn) {
+    stagePrevBtn.addEventListener('click', () => {
+      const card = stagesEl.querySelector('.stage')
+      const cardWidth = card ? card.offsetWidth + 20 : 380
+      playBleep(440, 'square', 0.05)
+      stagesEl.scrollBy({ left: -cardWidth, behavior: 'smooth' })
+    })
+  }
+
+  if (stageNextBtn) {
+    stageNextBtn.addEventListener('click', () => {
+      const card = stagesEl.querySelector('.stage')
+      const cardWidth = card ? card.offsetWidth + 20 : 380
+      playBleep(520, 'square', 0.05)
+      stagesEl.scrollBy({ left: cardWidth, behavior: 'smooth' })
+    })
+  }
+
+  if (sfxBtn) {
+    sfxBtn.addEventListener('click', () => {
+      sfxEnabled = !sfxEnabled
+      sfxBtn.classList.toggle('is-active', sfxEnabled)
+      sfxBtn.setAttribute('aria-pressed', String(sfxEnabled))
+      sfxBtn.innerHTML = `SFX: <b>${sfxEnabled ? 'ON' : 'OFF'}</b>`
+      if (sfxEnabled) playBleep(580, 'square', 0.1)
+    })
+  }
+
+  function buildStages(filter = 'all') {
+    currentFilter = filter
+    stagesEl.innerHTML = ''
+    visibleIndices = []
+
+    STAGES.forEach((stage, index) => {
+      if (filter !== 'all' && stage.flag !== filter) return
+      visibleIndices.push(index)
+
+      const card = document.createElement('button')
+      card.type = 'button'
+      card.className = 'stage'
+      card.dataset.code = stage.code
+      card.innerHTML = `
+        <span class="stage__thumb ${stage.image ? '' : 'stage__thumb--flat'}"
+          ${stage.image ? `style="background-image: url('${src(stage.image)}')"` : ''}>
+          <span class="stage__num">${pad(index + 1)}</span>
+          ${stage.image ? '' : `<span class="stage__ghost">${pad(index + 1)}</span>`}
+          <span class="stage__open">Detail</span>
+        </span>
+        <span class="stage__body">
+          <span class="stage__meta"><span>${stage.code}</span><span>${stage.year}</span></span>
+          <span class="stage__name">${stage.name}</span>
+          <span class="stage__stack">${stage.stack}</span>
+        </span>
+      `
+      card.addEventListener('mouseenter', () => playBleep(360, 'triangle', 0.03))
+      card.addEventListener('click', () => {
+        playBleep(640, 'square', 0.08)
+        openStage(index)
+      })
+      stagesEl.appendChild(card)
+    })
+
+    stagesEl.scrollLeft = 0
+    updateStageCounter()
+  }
+
+  const filterButtons = document.querySelectorAll('.filter-btn')
+  filterButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach((b) => b.classList.remove('is-active'))
+      btn.classList.add('is-active')
+      playBleep(480, 'square', 0.05)
+      buildStages(btn.dataset.filter)
+    })
+  })
+
+  function fillModal(stage) {
+    modalCode.textContent = stage.code
+    modalFlag.textContent = stage.flag
+    modalYear.textContent = stage.year
+    modalName.textContent = stage.name
+    modalSummary.textContent = stage.summary
+    modalRole.textContent = stage.role
+    modalStack.textContent = stage.stack
+    modalContext.textContent = stage.context
+    modalStatus.textContent = stage.status
+
+    modalBuild.innerHTML = ''
+    stage.built.forEach((item) => {
+      const li = document.createElement('li')
+      li.textContent = item
+      modalBuild.appendChild(li)
+    })
+
+    modalMedia.className = 'modal__media'
+    modalMedia.style.backgroundImage = stage.image ? `url('${src(stage.image)}')` : ''
+    modalMedia.innerHTML = ''
+    modal.classList.toggle('modal--noshot', !stage.image)
+    document.getElementById('modal-note').hidden = Boolean(stage.image)
+
+    modalActions.innerHTML = ''
+    if (stage.repo) {
+      const a = document.createElement('a')
+      a.href = stage.repo
+      a.target = '_blank'
+      a.rel = 'noreferrer noopener'
+      a.className = 'modal__act-btn'
+      a.textContent = 'Lihat di GitHub ↗'
+      modalActions.appendChild(a)
+    }
+    if (stage.flag === 'INTERNAL') {
+      const badge = document.createElement('span')
+      badge.className = 'modal__act-badge'
+      badge.innerHTML = '<i></i> Sistem Internal Perusahaan (Confidential)'
+      modalActions.appendChild(badge)
+    } else if (stage.flag === 'ARCHIVE') {
+      const badge = document.createElement('span')
+      badge.className = 'modal__act-badge'
+      badge.innerHTML = '<i></i> Proyek Akademik / Kuliah'
+      modalActions.appendChild(badge)
+    }
+
+    const posInVisible = Math.max(0, visibleIndices.indexOf(current))
+    modalIndex.textContent = `${pad(posInVisible + 1)} / ${pad(visibleIndices.length)}`
+    modalPrev.disabled = posInVisible <= 0
+    modalNext.disabled = posInVisible >= visibleIndices.length - 1
+    modal.scrollTop = 0
+  }
+
+  function openStage(index) {
+    current = Math.max(0, Math.min(STAGES.length - 1, index))
+    fillModal(STAGES[current])
+
+    if (!modal.open) {
+      modal.showModal()
+      document.documentElement.style.overflow = 'hidden'
+    }
+
+    stagesEl.querySelectorAll('.stage').forEach((el) => {
+      if (el.dataset.code === STAGES[current].code) el.setAttribute('aria-current', 'true')
+      else el.removeAttribute('aria-current')
+    })
+  }
+
+  modal.addEventListener('close', () => {
+    document.documentElement.style.overflow = ''
+    stagesEl.querySelectorAll('.stage').forEach((el) => el.removeAttribute('aria-current'))
+  })
+
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) {
+      playBleep(320, 'square', 0.05)
+      modal.close()
+    }
+  })
+
+  modal.addEventListener('keydown', (event) => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
+    event.preventDefault()
+    const pos = visibleIndices.indexOf(current)
+    if (event.key === 'ArrowRight' && pos < visibleIndices.length - 1) {
+      playBleep(520, 'square', 0.05)
+      openStage(visibleIndices[pos + 1])
+    } else if (event.key === 'ArrowLeft' && pos > 0) {
+      playBleep(420, 'square', 0.05)
+      openStage(visibleIndices[pos - 1])
+    }
+  })
+
+  document.getElementById('modal-close').addEventListener('click', () => {
+    playBleep(320, 'square', 0.05)
+    modal.close()
+  })
+
+  modalPrev.addEventListener('click', () => {
+    const pos = visibleIndices.indexOf(current)
+    if (pos > 0) {
+      playBleep(420, 'square', 0.05)
+      openStage(visibleIndices[pos - 1])
+    }
+  })
+
+  modalNext.addEventListener('click', () => {
+    const pos = visibleIndices.indexOf(current)
+    if (pos < visibleIndices.length - 1) {
+      playBleep(520, 'square', 0.05)
+      openStage(visibleIndices[pos + 1])
+    }
+  })
+
+  document.getElementById('copy-mail').addEventListener('click', async (event) => {
+    playBleep(740, 'square', 0.1)
+    const button = event.currentTarget
+    const original = button.textContent
+    try {
+      await navigator.clipboard.writeText('zokeryudha00@gmail.com')
+    } catch {
+      const area = document.createElement('textarea')
+      area.value = 'zokeryudha00@gmail.com'
+      document.body.appendChild(area)
+      area.select()
+      document.execCommand('copy')
+      area.remove()
+    }
+    button.textContent = 'EMAIL DISALIN'
+    window.setTimeout(() => { button.textContent = original }, 1600)
+  })
+
+  /* --- Interactive Tech Tree --- */
+  const TECH_BRANCHES = [
+    { id: 'backend', name: 'BACKEND CORE', count: '4 NODES' },
+    { id: 'frontend', name: 'FRONTEND ARC', count: '3 NODES' },
+    { id: 'data', name: 'DATA & OTOMASI', count: '2 NODES' },
+    { id: 'practice', name: 'PRACTICE & LEAD', count: '3 NODES' },
+  ]
+
+  const TECH_TREE = [
+    {
+      id: 'php-native',
+      name: 'PHP Native',
+      branch: 'backend',
+      tier: 'FOUNDATION',
+      level: 4,
+      xp: 90,
+      status: 'MASTERED',
+      freq: 440,
+      desc: 'Fondasi arsitektur procedural & OOP tanpa framework bloated. Menangani sistem enterprise dengan kontrol penuh atas memory, session security, dan optimasi query database.',
+      perks: ['Session Security & Custom Auth Guards', 'Direct PDO MySQL Performance Tuning', 'Clean Architectural Seams & No Bloat'],
+      stages: ['AVI-003', 'AVI-004', 'ARS-002', 'ARS-003']
+    },
+    {
+      id: 'laravel',
+      name: 'Laravel',
+      branch: 'backend',
+      tier: 'CORE STACK',
+      level: 4,
+      xp: 94,
+      status: 'EQUIPPED',
+      freq: 480,
+      desc: 'Framework utama untuk pembangunan backend terstruktur: database migration, queue worker, multi-role middleware, dan REST API enterprise.',
+      perks: ['Eloquent Optimization & Indexing', 'Scheduled Background Jobs (Queue Worker)', 'Role-Based Access Control (RBAC)'],
+      stages: ['AVI-001', 'AVI-002', 'INV-001', 'ARS-001']
+    },
+    {
+      id: 'postgres-mysql',
+      name: 'PostgreSQL & MySQL',
+      branch: 'backend',
+      tier: 'DATABASE',
+      level: 4,
+      xp: 88,
+      status: 'EQUIPPED',
+      freq: 460,
+      desc: 'Perancangan skema relasional, normalisasi data, append-only audit trail logging, dan transaksi aman ACID untuk data perusahaan.',
+      perks: ['Foreign Key Relational Data Integrity', 'Append-Only Audit Logs Compliance', 'High-Concurrency Event Draw Indexing'],
+      stages: ['AVI-002', 'AVI-001', 'ARS-001']
+    },
+    {
+      id: 'rest-api',
+      name: 'REST API & Integration',
+      branch: 'backend',
+      tier: 'SYSTEM ARCH',
+      level: 4,
+      xp: 89,
+      status: 'EQUIPPED',
+      freq: 500,
+      desc: 'Pembuatan endpoint RESTful JSON terstandar, integrasi third-party API (Zoom API, Mailer), dan token auth handler.',
+      perks: ['Clean JSON Contract Response', 'OAuth & API Key Handling', 'Rate Limiting & Error Guarding'],
+      stages: ['PTP-001', 'AVI-002']
+    },
+    {
+      id: 'vue-js',
+      name: 'Vue.js',
+      branch: 'frontend',
+      tier: 'REACTIVE UI',
+      level: 3,
+      xp: 82,
+      status: 'IN-USE',
+      freq: 550,
+      desc: 'Komponen frontend reaktif untuk dashboard internal penilaian budaya kerja PT Angkasa Pura Aviasi.',
+      perks: ['State Management & Computed Scores', 'Dynamic Gap Mapping Visuals', 'Instant Real-Time Form Validation'],
+      stages: ['AVI-001']
+    },
+    {
+      id: 'react-ts',
+      name: 'React 19 & TypeScript',
+      branch: 'frontend',
+      tier: 'MODERN CLIENT',
+      level: 4,
+      xp: 88,
+      status: 'EQUIPPED',
+      freq: 580,
+      desc: 'Membangun Single Page Application type-safe berkinerja tinggi dengan Vite, modular Radix UI primitives, dan custom hooks.',
+      perks: ['Strict TypeScript Safety', 'Composable Custom Hooks (useInView, etc)', 'Accessible Radix UI Dialogs'],
+      stages: []
+    },
+    {
+      id: 'tailwind-css',
+      name: 'Tailwind CSS v4',
+      branch: 'frontend',
+      tier: 'DESIGN SYSTEM',
+      level: 4,
+      xp: 95,
+      status: 'MASTERED',
+      freq: 620,
+      desc: 'Pengembangan antarmuka responsif tanpa runtime overhead, kustomisasi design tokens, dan CSS native modern.',
+      perks: ['Strict Mobile-First Breakpoints', 'Consistent Design Tokens & Theme Variables', 'Zero-Slop High-Contrast Typography'],
+      stages: ['AVI-001', 'AVI-002', 'INV-001', 'ARS-002']
+    },
+    {
+      id: 'python-pandas',
+      name: 'Python & Pandas',
+      branch: 'data',
+      tier: 'AUTOMATION CORE',
+      level: 3,
+      xp: 84,
+      status: 'EQUIPPED',
+      freq: 660,
+      desc: 'Pipeline pemrosesan data otomatis di PTPN IV: parsing dokumen PDF tidak terstruktur ke spreadsheet Excel bersih.',
+      perks: ['Complex Table Parsing & Regex', 'Automated Data Cleansing with Pandas', 'Batch Processing Engine (Menit vs Jam)'],
+      stages: ['PTP-002']
+    },
+    {
+      id: 'zoom-automation',
+      name: 'Zoom API Engine',
+      branch: 'data',
+      tier: 'INTEGRATION',
+      level: 3,
+      xp: 80,
+      status: 'EQUIPPED',
+      freq: 690,
+      desc: 'Otomasi monitoring license & meeting room BUMN: sinkronisasi status akun real-time dan pencegahan jadwal bentrok.',
+      perks: ['Real-Time Account License Polling', 'Room Conflict Prevention Logic', 'Automated Meeting Session Ledger'],
+      stages: ['PTP-001']
+    },
+    {
+      id: 'qa-testing',
+      name: 'QA & Functional Testing',
+      branch: 'practice',
+      tier: 'QUALITY ASSURANCE',
+      level: 4,
+      xp: 88,
+      status: 'EQUIPPED',
+      freq: 720,
+      desc: 'Pengujian sistem menyeluruh (role-based matrix, cross-unit boundary checking, data consistency, & security audit).',
+      perks: ['Multi-Role Matrix Verification', 'Append-Only DB Audit Verification', 'Negative Testing & Edge Case Traps'],
+      stages: ['AVI-003', 'AVI-004']
+    },
+    {
+      id: 'ui-ux-audit',
+      name: 'UI/UX Audit & Design',
+      branch: 'practice',
+      tier: 'PRODUCT DESIGN',
+      level: 4,
+      xp: 90,
+      status: 'EQUIPPED',
+      freq: 750,
+      desc: 'Project Lead di Innovillage 2025: perancangan aksesibilitas kognitif, prototipe Figma, dan audit kenyamanan antarmuka internal.',
+      perks: ['Cognitive Accessibility Research', 'High-Fidelity Figma Prototyping', 'Cross-Functional Team Leadership'],
+      stages: ['INV-001', 'INV-002', 'AVI-004']
+    },
+    {
+      id: 'git-linux',
+      name: 'Git & Linux Environment',
+      branch: 'practice',
+      tier: 'WORKFLOW',
+      level: 4,
+      xp: 85,
+      status: 'EQUIPPED',
+      freq: 780,
+      desc: 'Version control rapi, branch hygiene, environment configuration lokal Apache/MySQL, dan deployment server.',
+      perks: ['Semantic Commit Hygiene & Clean Branches', 'Local Virtual Host & Apache Configuration', 'Linux Terminal Tooling'],
+      stages: []
+    }
+  ]
+
+  const treeBranchesEl = document.getElementById('tree-branches')
+  const treeNavButtons = document.querySelectorAll('.tree-nav-btn')
+
+  const inspBranch = document.getElementById('insp-branch')
+  const inspStatus = document.getElementById('insp-status')
+  const inspName = document.getElementById('insp-name')
+  const inspTier = document.getElementById('insp-tier')
+  const inspXpNum = document.getElementById('insp-xp-num')
+  const inspXpGauge = document.getElementById('insp-xp-gauge')
+  const inspDesc = document.getElementById('insp-desc')
+  const inspPerks = document.getElementById('insp-perks')
+  const inspStages = document.getElementById('insp-stages')
+
+  let selectedSkillId = 'laravel'
+  let currentTreeBranch = 'all'
+
+  function renderTechTree(filterBranch = 'all') {
+    currentTreeBranch = filterBranch
+    treeBranchesEl.innerHTML = ''
+
+    const branchesToShow = filterBranch === 'all' 
+      ? TECH_BRANCHES 
+      : TECH_BRANCHES.filter(b => b.id === filterBranch)
+
+    branchesToShow.forEach(branch => {
+      const skillsInBranch = TECH_TREE.filter(s => s.branch === branch.id)
+      if (!skillsInBranch.length) return
+
+      const groupEl = document.createElement('div')
+      groupEl.className = 'tree-branch-group'
+      groupEl.innerHTML = `
+        <div class="tree-branch-header">
+          <span class="tree-branch-title">${branch.name}</span>
+          <span class="tree-branch-count">${skillsInBranch.length} NODES</span>
+        </div>
+        <div class="tree-nodes-grid" id="branch-nodes-${branch.id}"></div>
+      `
+      treeBranchesEl.appendChild(groupEl)
+
+      const nodesGrid = groupEl.querySelector(`#branch-nodes-${branch.id}`)
+      skillsInBranch.forEach(skill => {
+        const nodeBtn = document.createElement('button')
+        nodeBtn.type = 'button'
+        nodeBtn.className = `tree-node ${skill.id === selectedSkillId ? 'is-selected' : ''}`
+        nodeBtn.dataset.skillId = skill.id
+
+        const stars = '★'.repeat(skill.level) + '☆'.repeat(Math.max(0, 4 - skill.level))
+
+        nodeBtn.innerHTML = `
+          <div class="tree-node-top">
+            <span class="tree-node-tier">${skill.tier}</span>
+            <span class="tree-node-status">${skill.status}</span>
+          </div>
+          <div class="tree-node-name">${skill.name}</div>
+          <div class="tree-node-meta">
+            <span class="tree-node-stars">${stars}</span>
+            <span>LVL <b>${skill.level}</b></span>
+          </div>
+        `
+
+        nodeBtn.addEventListener('mouseenter', () => playBleep(skill.freq * 0.8, 'triangle', 0.03))
+        nodeBtn.addEventListener('click', () => {
+          selectSkill(skill.id)
+        })
+
+        nodesGrid.appendChild(nodeBtn)
+      })
+    })
+
+    highlightSelectedNode()
+  }
+
+  function highlightSelectedNode() {
+    treeBranchesEl.querySelectorAll('.tree-node').forEach(node => {
+      node.classList.toggle('is-selected', node.dataset.skillId === selectedSkillId)
+    })
+  }
+
+  function selectSkill(skillId) {
+    selectedSkillId = skillId
+    highlightSelectedNode()
+
+    const skill = TECH_TREE.find(s => s.id === skillId)
+    if (!skill) return
+
+    playBleep(skill.freq, 'square', 0.08)
+
+    const branchInfo = TECH_BRANCHES.find(b => b.id === skill.branch)
+    inspBranch.textContent = branchInfo ? branchInfo.name : 'SKILL MATRIX'
+    inspStatus.textContent = skill.status
+    inspName.textContent = skill.name
+    inspTier.textContent = `${skill.tier} · LVL ${skill.level}`
+    inspXpNum.textContent = `${skill.xp}%`
+
+    inspXpGauge.innerHTML = ''
+    const filledCount = Math.round(skill.xp / 10)
+    for (let i = 0; i < 10; i++) {
+      const pip = document.createElement('div')
+      pip.className = `xp-pip ${i < filledCount ? 'is-filled' : ''}`
+      inspXpGauge.appendChild(pip)
+    }
+
+    inspDesc.textContent = skill.desc
+
+    inspPerks.innerHTML = ''
+    skill.perks.forEach(perk => {
+      const li = document.createElement('li')
+      li.textContent = perk
+      inspPerks.appendChild(li)
+    })
+
+    inspStages.innerHTML = ''
+    if (skill.stages.length) {
+      skill.stages.forEach(stageCode => {
+        const stageObj = STAGES.find(s => s.code === stageCode)
+        const stageName = stageObj ? stageObj.name : stageCode
+        const btn = document.createElement('button')
+        btn.type = 'button'
+        btn.className = 'stage-tag-btn'
+        btn.innerHTML = `<i></i> <span>${stageCode} · ${stageName}</span>`
+        btn.title = `Buka detail modal proyek ${stageName}`
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation()
+          playBleep(620, 'square', 0.07)
+          const targetIndex = STAGES.findIndex(s => s.code === stageCode)
+          if (targetIndex !== -1) {
+            openStage(targetIndex)
+          }
+        })
+        inspStages.appendChild(btn)
+      })
+    } else {
+      const emptyNote = document.createElement('span')
+      emptyNote.className = 'mono'
+      emptyNote.style.color = '#7d7666'
+      emptyNote.style.fontSize = '9px'
+      emptyNote.textContent = 'DIPAKAI DI WORKFLOW UTAMA'
+      inspStages.appendChild(emptyNote)
+    }
+  }
+
+  treeNavButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      treeNavButtons.forEach(b => b.classList.remove('is-active'))
+      btn.classList.add('is-active')
+      playBleep(450, 'square', 0.05)
+      renderTechTree(btn.dataset.branch)
+    })
+  })
+
+  buildStages()
+  renderTechTree('all')
+  selectSkill('laravel')
+</script>
+</body>
+</html>
